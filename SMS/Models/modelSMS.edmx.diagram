@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a839b11c640d4f9fbe037d766979b627" Name="Diagram1">
+        <EntityTypeShape EntityType="dbSMSNSModel.Branch" Width="1.5" PointX="7.5" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.CenterCode" Width="1.5" PointX="9.75" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.CenterCodePartnerDetail" Width="1.5" PointX="12" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Country" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Course" Width="1.5" PointX="20.25" PointY="33.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.CourseSeriesType" Width="1.5" PointX="18.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.CourseSubTitle" Width="1.5" PointX="21" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.CourseType" Width="1.5" PointX="18.75" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Designation" Width="1.5" PointX="5.25" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.District" Width="1.5" PointX="5.25" PointY="28.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.EmailVerification" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Employee" Width="1.5" PointX="7.5" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.EmployeeCenter" Width="1.5" PointX="15" PointY="27.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Firm" Width="1.5" PointX="7.5" PointY="33.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.KnowHowN" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Menu" Width="1.5" PointX="8.25" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.MenuRole" Width="1.5" PointX="10.5" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.MobileVerification" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.MultiCourse" Width="1.5" PointX="23.25" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.MultiCourseDetail" Width="1.5" PointX="28.5" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.QlfnMain" Width="1.5" PointX="3" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.QlfnSub" Width="1.5" PointX="5.25" PointY="31.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.QlfnType" Width="1.5" PointX="0.75" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Role" Width="1.5" PointX="3" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.ServiceTax" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.State" Width="1.5" PointX="3" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentFeedback" Width="1.5" PointX="22.5" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentProjectApproval" Width="1.5" PointX="27.75" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentReceiptSerialNo" Width="1.5" PointX="12" PointY="30.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentRegistrationCourse" Width="1.5" PointX="25.5" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentRelation" Width="1.5" PointX="20.25" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentSerialNo" Width="1.5" PointX="12" PointY="32.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentWalkInn" Width="1.5" PointX="18" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentWalkInnCourse" Width="1.5" PointX="25.25" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.SubDistrict" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.TransactionDetail" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.User" Width="1.5" PointX="9.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSMSNSModel.WhyN" Width="1.5" PointX="15.75" PointY="24.25" IsExpanded="true" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CenterCode_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CenterCode_District" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CenterCode_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CenterCode_Firm" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CenterCode_State" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CenterCodePartnerDetails_CenterCode" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_EmployeeCenter_CenterCode" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_ReceiptSerialNo_CenterCode" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentSerialNo_CenterCode" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_CenterCode" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_MultiCourseDetails_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentFeedback_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInnCourse_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CourseSubTitle_CourseSeriesType" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_CourseSubTitle_CourseType" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_MultiCourse_CourseSubTitle" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Designation_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Employee_Designation" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_MenuRole_Designation" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_dbo_Districts_dbo_States_StateId" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Employee_Districts" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_Districts" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Employee_QlfnMain" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Employee_QlfnSub" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Employee_QlfnType" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_EmployeeCenter_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_ProjectApprovalTrainer_Trainer" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentFeedback_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentProjectApproval_Leader" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_Employee1" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_Employee2" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Users_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_MenuRole_Menu" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_MultiCourseDetails_MultiCourse" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentRegistrationCourse_MultiCourse" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_QlfnMain_QlfnType" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_QlfnSub_QlfnMain" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_QlfnMain" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_QlfnSub" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_QlfnType" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentProjectApproval_StudentFeedback" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentRelation_StudentWalkInn" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInn_WhyNS" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentWalkInnCourse_StudentWalkInn" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentLogin" Width="1.5" PointX="22.5" PointY="33.75" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentRegistration" Width="1.5" PointX="20.25" PointY="21.75" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentFeedback_StudentRegistration" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentLogin_StudentRegistration" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentRegistration_StudentWalkInn" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentRegistrationCourse_StudentRegistration" />
+        <EntityTypeShape EntityType="dbSMSNSModel.StudentReceipt" Width="1.5" PointX="25.5" PointY="25.875" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentReceipt_Employee" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentReceipt_StudentRegistration" />
+        <EntityTypeShape EntityType="dbSMSNSModel.Group_CentreCode_Setting" Width="1.5" PointX="12" PointY="36.25" />
+        <AssociationConnector Association="dbSMSNSModel.FK_Group_CenterCode" />
+        <EntityTypeShape EntityType="dbSMSNSModel.DiscountSetting" Width="1.5" PointX="26" PointY="18.625" />
+        <AssociationConnector Association="dbSMSNSModel.FK_DiscountSetting_CourseSeriesType" />
+        <AssociationConnector Association="dbSMSNSModel.FK_DiscountSetting_Role" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

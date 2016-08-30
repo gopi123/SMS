@@ -1,0 +1,77 @@
+﻿@model SMS.Models.ServiceTax
+
+<!--Style is added to show bootstrap datepicker inside the modal-->
+<style type="text/css">
+    .datepicker {
+        z-index: 1151 !important;
+    }
+</style>
+
+<form id="frmEdit" class="form-horizontal">
+    <div class="box-body ">
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label class="control-label">
+                    Name
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                <label>ServiceTax</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label class="control-label">
+                    Percentage
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.Percentage,
+                                 new { @class = "form-control", @placeholder = "Percentage", @id = "txtPercentage" })
+                @Html.ValidationMessageFor(m => m.Percentage)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label class="control-label">
+                    FromDate
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(x => x.FromDate,
+                                 new { @class = "form-control modalDate", @placeholder = "Select Date", @id = "txtFromDate" })
+                @Html.ValidationMessageFor(m => m.FromDate)
+            </div>
+        </div>
+    </div>
+</form>
+<!--Scripts should be added for inputmask to work-->
+<script src="~/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="~/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="~/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Scripts should be added to enable validation
+        $('#frmEdit').removeData("validator");
+        $('#frmEdit').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse('#frmEdit');
+
+        //datepicker plugin
+        $(".modalDate").datepicker({
+            startDate: new Date(),
+           autoclose: true
+        });
+
+        //inputmask        
+        $("#txtFromDate").inputmask("mm/dd/yyyy", { "placeholder": "mm/dd/yyyy" })
+
+        // calling validation function of textbox change
+        $("#txtFromDate").change(function (evt, params) {
+            $(evt.target).valid();
+        });
+
+
+    });
+</script>

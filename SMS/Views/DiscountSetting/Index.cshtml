@@ -1,0 +1,91 @@
+﻿@model SMS.Models.ViewModel.DiscountSettingVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/dataTableStyle")
+
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Discount Settings
+        </h4>
+
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a id="btnAddNew" class="btn btn-info" href="@Url.Action("Add")" data-groupcount-href="@Url.Action("GetGroupCount")"
+                           data-group-href="@Url.Action("Index","Group")">
+                            <i class="fa fa-plus"></i>
+                            AddNew
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmIndex" data-url="@Url.Action("Index")" class="form-horizontal" data-delete-url="@Url.Action("Delete")"
+                          data-edit-url="@Url.Action("Edit", new { GroupName = "param_placeholder" })">
+                        <!-- /.box-body -->
+                        <div class="box-body ">
+                            <table class="table table-bordered table-striped dTable" data-url="@Url.Action("GetDataTable")">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Group Name </th>
+                                        <th>Centre  </th>
+                                        <th>From Date</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="box-footer col-md-12">
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+
+                    <!-- /.modal -->
+                    <div class="box-footer col-md-12">
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/dataTableScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+
+    <script src="~/Scriptz/DiscountSetting/Index.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+
+
+
+
+
+        });
+
+    </script>
+}

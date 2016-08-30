@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/dataTableStyle")
+
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            View Center
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Add", "CenterCode")">
+                            <i class="fa fa-plus"></i>
+                            AddNew
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmIndex" data-url="@Url.Action("Index", "CenterCode")" class="form-horizontal" data-delete-url="@Url.Action("Delete", "CenterCode")" data-redirect-url="@Url.Action("Edit", "CenterCode", new { centerCodeId = "param1_placeholder" })">
+                        <!-- /.box-body -->
+                        <div class="box-body ">
+                            <table class="table table-bordered table-striped dTable" data-url="@Url.Action("GetDataTable", "CenterCode")">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>CenterCode </th>
+                                        <th>Address  </th>
+                                        <th>PhoneNo</th>
+                                        <th>EmployeeName</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="box-footer col-md-12">
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    
+                    <!-- /.modal -->
+                    <div class="box-footer col-md-12">
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+@section scripts{
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/dataTableScript")
+    <script src="~/Scriptz/CenterCode/Index.js"></script>
+}

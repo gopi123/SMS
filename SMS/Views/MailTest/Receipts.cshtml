@@ -1,0 +1,294 @@
+﻿
+@model SMS.Models.ViewModel.ReceiptPdfVM
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+    <style type="text/css">
+        <!--
+        .style2 {
+            font-family: Calibri;
+            font-size: 12px;
+        }
+
+        .style4 {
+            font-family: Calibri;
+            font-size: 16px;
+        }
+
+        body, td, th {
+            font-family: Calibri;
+            font-size: 18px;
+        }
+
+        .style5 {
+            color: #FF0000;
+            font-weight: bold;
+        }
+
+        .style6 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .style7 {
+            font-size: 12px;
+        }
+
+        .style8 {
+            font-size: 18px;
+        }
+        -->
+    </style>
+</head>
+
+<body>
+   
+        
+        <table width="830" border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#4A7035">
+            <tr>
+                <td width="827" height="1050" bgcolor="#ffffff">
+                    <table width="827" border="0" style="margin-top:-250px" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="16" height="71" rowspan="2">&nbsp;</td>
+                            <td width="298" height="43" valign="top">
+                                <span class="style4">
+                                    @Model.CompanyAddress<br />
+
+                                    Ph: @Model.CompanyPhoneNo
+                                </span><br />
+                            </td>
+                            <td width="252" rowspan="2"><img src="~/Styles/ReceiptImages/EReceipt-logo_03.jpg" width="268" height="71" /></td>
+                            <td width="261"><img src="~/Styles/ReceiptImages/Mslogo_04.jpg" width="261" height="43" /></td>
+                        </tr>
+                        <tr>
+                            <td height="15"><span class="style2">Service Tax Registration No. : @Model.ServiceTaxRegistrationNo</span></td>
+                            <td width="261" align="center" valign="middle">Centre Code : @Model.CentreCode</td>
+                        </tr>
+                        <tr>
+                            <td height="7" colspan="4" bgcolor="#2e3192">&nbsp;</td>
+                        </tr>
+                    </table>
+                    <table width="828" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Date </td>
+                            <td height="20">:</td>
+                            <td height="20">@Model.ReceiptDate</td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td width="7" height="21">&nbsp;</td>
+                            <td height="21">Receipt No  </td>
+                            <td height="21">:</td>
+                            <td height="21"><span class="style5">@Model.ReceiptNo</span></td>
+                            <td width="232" rowspan="13" style="vertical-align:top">
+                                <table width="231" border="1" cellpadding="0" cellspacing="0" bordercolor="#CCCCCC">
+                                    <tr>
+                                        <td colspan="3" align="center">
+                                            <span class="style6">Fee Payment Details / Schedule</span>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th width="54" height="25" align="center"><span class="style8">Amount</span></th>
+                                        <th width="122" align="center" valign="middle">
+                                            <span class="style8">
+                                                Date Paid
+                                                / Due Date
+                                            </span>
+                                        </th>
+                                        <th width="47" align="center" valign="middle">
+                                            <span class="style7">
+                                                <span class="style8">Rec.No</span> <br />
+                                            </span>
+                                        </th>
+                                    </tr>
+                                    @foreach (var item in Model.ReceiptDetailsList)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.CourseFee
+                                            </td>
+                                            <td>
+                                                @item.DatePaid
+                                            </td>
+                                            <td>
+                                                @item.ReceiptNo
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </td>
+                            <td width="9">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td width="146" height="20">Student ID </td>
+                            <td width="7">:</td>
+                            <td width="419">@Model.RegistrationNumber</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Student Name </td>
+                            <td>:</td>
+                            <td>@Model.StudentName</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" valign="top">Course Title </td>
+                            <td valign="top">:</td>
+                            <td style="text-align:left">
+                                @Model.CourseTitle
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Duration</td>
+                            <td>:</td>
+                            <td>@Model.Duration</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Type of Payment </td>
+                            <td>:</td>
+                            <td>@Model.FeeMode</td>
+                        </tr>
+
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Mode of Payment</td>
+                            <td>:</td>
+                            <td>@Model.ModeOfPayment</td>
+                        </tr>
+
+                        @if (Model.ModeOfPayment == "CHEQUE")
+                        {
+                            <tr>
+                                <td height="20">&nbsp;</td>
+                                <td height="20">Bank Name </td>
+                                <td>:</td>
+                                <td>@Model.BankName</td>
+                            </tr>
+                            <tr>
+                                <td height="20">&nbsp;</td>
+                                <td height="20">Branch/Place </td>
+                                <td>:</td>
+                                <td>@Model.BranchName</td>
+                            </tr>
+                            <tr>
+                                <td height="20">&nbsp;</td>
+                                <td height="20">Ch./DD No. </td>
+                                <td>:</td>
+                                <td>@Model.ChequeNo</td>
+                            </tr>
+                            <tr>
+                                <td height="20">&nbsp;</td>
+                                <td height="20">Ch./DD Date </td>
+                                <td>:</td>
+                                <td>@Model.ChequeDate</td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Course Fee</td>
+                            <td>:</td>
+                            <td>Rs. @Model.CurrCourseFee</td>
+                            <td width="4">&nbsp;</td>
+                            <td width="4">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Service Tax</td>
+                            <td>:</td>
+                            <td>Rs. @Model.CurrSTAmount</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Total Amount</td>
+                            <td>:</td>
+                            <td>Rs. @Model.CurrPaidTotal</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" valign="top">Received Rupees <br /> (In words)</td>
+                            <td valign="bottom">:</td>
+                            <td valign="bottom" colspan="2"> @Model.TotalAmountInWords ONLY</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20">Balance Payable</td>
+                            <td>:</td>
+                            <td>Rs. @Model.BalanceAmount (INCLUDING ST)</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" valign="top">&nbsp;</td>
+                            <td valign="top">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="7" colspan="7" bgcolor="#2e3192">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" colspan="3">CRO or Executive Name : @Model.CROName </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" colspan="3">This receipt details are entered and cross checked by : @Model.LoginPersonName</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" colspan="3">Receipt details SMS to @Model.StudentMaskedMobileNo</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" colspan="3">Receipt details email to @Model.StudentMaskedEmailId</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="20">&nbsp;</td>
+                            <td height="20" colspan="4">This is a computer generated receipt, hence signature is not required </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td height="20" colspan="4">&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    
+    
+</body>
+</html>
+
+

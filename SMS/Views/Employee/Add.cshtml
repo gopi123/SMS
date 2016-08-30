@@ -1,0 +1,468 @@
+﻿@model SMS.Models.ViewModel.EmployeeVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/bootstrapSwitchStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+    <style>
+        #chkbxGender, #chkbxMaritalStatus {
+            display: none !important;
+        }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add Employee Details
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index", "Employee")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("Add", "Employee")' method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body ">
+                            <div id="employeeStepz">
+                                <h3>PERSONAL DATA</h3>
+                                <section>
+                                    <div class="col-md-5">
+
+
+                                        <div class=" form-group ">
+
+                                            <label for="txtEmployee" class=" control-label">
+                                                Name
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.Employee.Name,
+                                                     new { @class = "form-control toUpper", @placeholder = "Name", @id = "txtEmployee" })
+                                            @Html.ValidationMessageFor(m => m.Employee.Name)
+
+                                        </div>
+                                        <div class=" form-group ">
+
+                                            <label for="txtAddress" class=" control-label">
+                                                Address
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+
+                                            @Html.TextAreaFor(m => m.Employee.Address,
+                                                              new { @class = "form-control toUpper", @placeholder = "Address", @id = "txtAddress", @rows = 3 })
+                                            @Html.ValidationMessageFor(m => m.Employee.Address)
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="ddlState" class=" control-label">
+                                                State
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            @Html.DropDownListFor(m => m.StateId
+                                                , Model.StateList
+                                                , ""
+                                                , new { @class = "form-control select2 ", @id = "ddlState" })
+                                            @Html.ValidationMessageFor(m => m.StateId)
+
+
+                                            <div class="pull-left spinner col-sm-3" style="display:none">
+                                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                                            </div>
+
+
+                                        </div>
+                                        <div id="divDistrict" class="form-group" data-url="@Url.Action("GetDistrict", "Employee")">
+
+                                            <label for="txtSingleFee" class=" control-label">
+                                                District
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.DropDownListFor(m => m.DistrictId
+                                            , Model.DistrictList
+                                            , ""
+                                            , new { @class = "form-control select2 courseList", @id = "ddlDistrict" })
+                                            @Html.ValidationMessageFor(m => m.DistrictId)
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtPincode" class=" control-label">
+                                                Pincode
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.Employee.Pincode,
+                                                              new { @class = "form-control numberOnly", @placeholder = "Pincode", @id = "txtPincode" })
+                                            @Html.ValidationMessageFor(m => m.Employee.Pincode)
+
+
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtDOB" class=" control-label">
+                                                Date Of Birth
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.Employee.DOB,
+                                                     new { @class = "form-control", @placeholder = "DOB", @id = "txtDOB" })
+                                            @Html.ValidationMessageFor(m => m.Employee.DOB)
+
+
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtDOB" class=" control-label">
+                                                UserName
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.UserName,
+                                                     new { @class = "form-control", @placeholder = "UserName", @id = "txtUserName" })
+                                            @Html.ValidationMessageFor(m => m.UserName)
+
+
+
+                                        </div>
+                                        <div class="form-group  ">
+                                            <label for="chkbxGender" class=" control-label">
+                                                Gender
+                                            </label>
+                                            <br />
+
+                                            @*@Html.CheckBoxFor(m => m.Gender, new { @class = "chkbxSwitch", @id = "chkbxGender" })*@
+
+                                            @Html.CheckBoxFor(m => m.Gender, new { @class = "chkbxSwitch", @id = "chkbxGender" })
+
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+
+                                        <div class="form-group  ">
+
+                                            <label for="txtMobileNo" class=" control-label">
+                                                MobileNo
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.Employee.MobileNo,
+                                                        new { @class = "form-control numberOnly", @placeholder = "MobileNo", @id = "txtMobileNo" })
+                                            @Html.ValidationMessageFor(m => m.Employee.MobileNo)
+
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtEmail" class=" control-label">
+                                                EmailId
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.Employee.EmailId,
+                                                                 new { @class = "form-control toUpper", @placeholder = "EmailId", @id = "txtEmail" })
+                                            @Html.ValidationMessageFor(m => m.Employee.EmailId)
+
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtOfficialMobileNo" class=" control-label">
+                                                Official Mobile
+                                            </label>
+
+
+                                            @Html.TextBoxFor(m => m.Employee.OfficialMobileNo,
+                                                        new { @class = "form-control numberOnly", @placeholder = "Official MobileNo", @id = "txtOfficialMobileNo" })
+                                            @Html.ValidationMessageFor(m => m.Employee.OfficialMobileNo)
+
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtEmail" class=" control-label">
+                                                Official Email
+                                            </label>
+
+
+                                            @Html.TextBoxFor(m => m.Employee.OfficialEmailId,
+                                                                 new { @class = "form-control toUpper", @placeholder = "Official EmailId", @id = "txtOfficialEmail" })
+                                            @Html.ValidationMessageFor(m => m.Employee.OfficialEmailId)
+
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtDateOfJoin" class=" control-label">
+                                                Date Of Join
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.Employee.DateOfJoin,
+                                                     new { @class = "form-control", @placeholder = "Date Of Join", @id = "txtDateOfJoin" })
+                                            @Html.ValidationMessageFor(m => m.Employee.DateOfJoin)
+
+
+
+                                        </div>
+
+                                        <div class="form-group  ">
+
+                                            <label for="txtBloodGroup" class=" control-label">
+                                                BloodGroup
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.Employee.BloodGroup,
+                                                              new { @class = "form-control toUpper", @placeholder = "Blood Group", @id = "txtBloodGroup" })
+                                            @Html.ValidationMessageFor(m => m.Employee.BloodGroup)
+
+
+                                        </div>
+                                        <div class="form-group  ">
+
+                                            <label for="txtCourseCode" class=" control-label">
+                                                Marital Status
+                                            </label>
+                                            <br />
+
+                                            @Html.CheckBoxFor(m => m.MaritalStatus, new { @class = "chkbxSwitch", @id = "chkbxMaritalStatus" })
+
+
+
+                                        </div>
+
+                                    </div>
+                                </section>
+                                <h3>CENTER & QUALIFICATION</h3>
+                                <section>
+
+                                    <div class="col-md-6">
+                                        <div class=" form-group ">
+                                            <label for="ddlCenterCode" class=" control-label">
+                                                Center
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            <br />
+                                            @Html.ListBoxFor(m => m.CenterCodeId
+                                                        , Model.CenterCodeList
+                                                        , new { @class = "form-control select2", @id = "ddlCenterCode", @multiple = "multiple" })
+                                            @Html.ValidationMessageFor(m => m.CenterCodeId)
+
+                                        </div>
+                                        <div class="form-group  ">
+                                            <label for="ddlDepartment" class=" control-label">
+                                                Department
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.DepartmentId
+                                                             , Model.DepartmentList
+                                                             , ""
+                                                             , new { @class = "form-control select2 ", @id = "ddlDepartment" })
+                                                @Html.ValidationMessageFor(m => m.DepartmentId)
+                                                <div class="spinner" style="display:none;">
+                                                    <i class="fa fa-refresh fa-spin spin-small "></i>
+                                                </div>
+
+                                            </div>
+
+
+
+
+                                        </div>
+                                        <div class="form-group" id="divDesignation" data-url="@Url.Action("GetDesignation", "Employee")">
+                                            <label for="ddlDesignation" class=" control-label">
+                                                Designation
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            <br />
+                                            @Html.DropDownListFor(m => m.DesignationId
+                                                             , Model.DesignationList
+                                                             , ""
+                                                             , new { @class = "form-control select2 ", @id = "ddlDesignation" })
+                                            @Html.ValidationMessageFor(m => m.DesignationId)
+                                        </div>
+                                        <div class="form-group  ">
+                                            <label for="ddlQlfnType" class=" control-label">
+                                                Qualification
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            <br />
+                                            @Html.DropDownListFor(m => m.QlfnTypeId
+                                                            , Model.QlfnTypeList
+                                                            , ""
+                                                            , new { @class = "form-control select2 ", @id = "ddlQlfnType" })
+                                            @Html.ValidationMessageFor(m => m.QlfnTypeId)
+                                            <div class="spinner" style="display:none">
+                                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="form-group" id="divCourse" data-url="@Url.Action("GetCourse","Employee")">
+
+                                            <label for="ddlQlfnMain" class=" control-label">
+                                                Course
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            <br />
+                                            @Html.DropDownListFor(m => m.QlfnMainId
+                                                             , Model.QlfnMainList
+                                                             , ""
+                                                             , new { @class = "form-control select2 ", @id = "ddlQlfnMain" })
+                                            @Html.ValidationMessageFor(m => m.QlfnMainId)
+
+                                            <div class="spinner" style="display:none">
+                                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divStream" data-url="@Url.Action("GetStream","Employee")">
+
+                                            <label for="ddlQlfnSubList" class=" control-label">
+                                                Stream
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            <br />
+                                            @Html.DropDownListFor(m => m.QlfnSubId
+                                                             , Model.QlfnSubList
+                                                             , ""
+                                                             , new { @class = "form-control select2 ", @id = "ddlQlfnSub" })
+                                            @Html.ValidationMessageFor(m => m.QlfnSubId)
+                                        </div>
+                                    </div>
+                                </section>
+                                <h3>PHOTO UPLOAD</h3>
+                                <section>
+                                    <div class="col-md-12">
+                                        <div class=" form-group ">
+                                            <label for="txtPhoto" class=" control-label">
+                                                Photo
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            @Html.TextBoxFor(m => m.PhotoUrl,
+                                                             new { @class = "form-control imgUpload", @placeholder = "Please upload Photo", @id = "txtPhoto", @type = "file" })
+
+                                            @Html.ValidationMessageFor(m => m.PhotoUrl)
+
+                                        </div>
+                                        <div class=" form-group ">
+                                            <label for="txtIdProof" class=" control-label">
+                                                Id Proof
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            @Html.TextBoxFor(m => m.IdProofUrl,
+                                                             new { @class = "form-control imgUpload", @placeholder = "Please upload Id Proof", @id = "txtIdProof", @type = "file" })
+                                            @Html.ValidationMessageFor(m => m.IdProofUrl)
+
+                                        </div>
+                                        <div class=" form-group ">
+                                            <label for="ddlCenterCode" class=" control-label">
+                                                Address Proof
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                            @Html.TextBoxFor(m => m.AddressProofUrl,
+                                                             new { @class = "form-control imgUpload", @placeholder = "Please upload Address Proof", @id = "txtAddressProof", @type = "file" })
+                                            @Html.ValidationMessageFor(m => m.AddressProofUrl)
+
+
+                                        </div>
+
+
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/inputMaskScript")
+    @*@Scripts.Render("~/bundles/bootstrapSwitchScript")*@
+    @Scripts.Render("~/bundles/fileUploadScript")
+    @Scripts.Render("~/bundles/jqueryForms")
+    @Scripts.Render("~/bundles/checkboxSwitch")
+    <script src="~/Scriptz/Employee/Add.js"></script>
+}
+
+

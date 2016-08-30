@@ -1,0 +1,314 @@
+﻿@model SMS.Models.ViewModel.CenterCodeVM
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/bootstrapSwitchStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Edit Center
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index", "CenterCode")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmEdit" class="form-horizontal" data-url="@Url.Action("Edit", "CenterCode")" data-redirect-url="@Url.Action("Index", "CenterCode")">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body ">
+                            @Html.HiddenFor(m => m.CenterCode.Id)
+                            <div class="col-md-5">
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtCentreCode" class=" control-label">
+                                            Center Code
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.CenterCode.CentreCode,
+                                                     new { @class = "form-control", @placeholder = "Name", @id = "txtCentreCode" })
+                                        @Html.ValidationMessageFor(m => m.CenterCode.CentreCode)
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtAddress" class=" control-label">
+                                            Center Address
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextAreaFor(m => m.CenterCode.Address,
+                                                     new { @class = "form-control", @placeholder = "Address", @id = "txtAddress", @rows = 3 })
+                                        @Html.ValidationMessageFor(m => m.CenterCode.Address)
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="ddlState" class=" control-label">
+                                            State Name
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.DropDownListFor(m => m.StateId
+                                            , Model.StateList
+                                            , ""
+                                            , new { @class = "form-control select2 courseList", @id = "ddlState" })
+                                        @Html.ValidationMessageFor(m => m.StateId)
+
+                                    </div>
+                                    <div class="pull-left spinner col-sm-3" style="display:none">
+                                        <i class="fa fa-refresh fa-spin spin-small "></i>
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="txtSingleFee" class=" control-label">
+                                            District Name
+                                        </label>
+                                    </div>
+
+                                    <div id="divDistrict" class="col-sm-6 pull-left" data-url="@Url.Action("GetDistrict","CenterCode")">
+                                        @Html.DropDownListFor(m => m.DistrictId
+                                            , Model.DistrictList
+                                            , ""
+                                            , new { @class = "form-control select2 courseList", @id = "ddlDistrict" })
+                                        @Html.ValidationMessageFor(m => m.DistrictId)
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="txtPincode" class=" control-label">
+                                            Pincode
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.CenterCode.Pincode,
+                                                     new { @class = "form-control", @placeholder = "Pincode", @id = "txtPincode" })
+                                        @Html.ValidationMessageFor(m => m.CenterCode.Pincode)
+
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="txtCourseCode" class=" control-label">
+                                            Office PhoneNo
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.CenterCode.PhoneNo,
+                                                     new { @class = "form-control numberOnly", @placeholder = "PhoneNo", @id = "txtCourseCode" })
+                                        @Html.ValidationMessageFor(m => m.CenterCode.PhoneNo)
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="chkbxST" class=" control-label">
+                                            ST Compulsary
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.CheckBoxFor(m => m.STCompulsory, new { @class = "chkbxSwitch", @id = "chkbxST" })
+
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="txtSTRegnNo" class=" control-label">
+                                            ST Registration No
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.STRegNo,
+                                                     new { @class = "form-control", @placeholder = "RegistrationNo", @id = "txtSTRegnNo" })
+                                        @Html.ValidationMessageFor(m => m.STRegNo)
+
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="ddlBranchType" class=" control-label">
+                                            Branch Type
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.DropDownListFor(m => m.BranchID
+                                            , Model.BranchList
+                                            , ""
+                                            , new { @class = "form-control select2 courseList", @id = "ddlBranchType" })
+                                        @Html.ValidationMessageFor(m => m.BranchID)
+
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="ddlFirmType" class=" control-label">
+                                            Firm Type
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.DropDownListFor(m => m.FirmID
+                                            , Model.FirmList
+                                            , ""
+                                            , new { @class = "form-control select2 courseList", @id = "ddlFirmType" })
+                                        @Html.ValidationMessageFor(m => m.FirmID)
+
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="txtSTRegnNo" class=" control-label">
+                                            Allotted Cluster Manager
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.DropDownListFor(m => m.EmployeeID
+                                            , Model.EmployeeList
+                                            , ""
+                                            , new { @class = "form-control select2 courseList", @id = "ddlEmployee" })
+                                      
+
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="chkbxStatus" class=" control-label">
+                                            Status
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.CheckBoxFor(m => m.CenterCode.Status, new { @class = "chkbxSwitch", @id = "chkbxStatus", @checked = true })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="divPartnerDetails">
+                            <div class="box-header">
+                                <h3 class="box-title">Partner Details</h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="tblPartnerDetails" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Name</th>
+                                            <th>ContactNo</th>
+                                            <th>EmailId</th>
+                                            <th>Alt ContactNo</th>
+                                            <th>Alt EmailId</th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.CenterCodePartnerDetail.Count; i++)
+                                        {
+                                            <tr>
+                                                @Html.HiddenFor(m => Model.CenterCodePartnerDetail[i].Id)
+                                                <td class="slno">
+                                                    @Convert.ToInt32(i + 1)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.CenterCodePartnerDetail[i].PartnerName,
+                                                                 new { @class = "form-control PartnerName", @placeholder = "PartnerName" })
+                                                    @Html.ValidationMessageFor(m => m.CenterCodePartnerDetail[i].PartnerName, "", new { @class = "spanPartnerName" })
+
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.CenterCodePartnerDetail[i].ContactNumber,
+                                                              new { @class = "form-control ContactNumber numberOnly", @placeholder = "ContactNumber", @id = "txtContactNumber" })
+                                                    @Html.ValidationMessageFor(m => m.CenterCodePartnerDetail[i].ContactNumber, "", new { @class = "spanContactNumber" })
+
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.CenterCodePartnerDetail[i].EmailId,
+                                                              new { @class = "form-control EmailId", @placeholder = "Email", @id = "txtEmailId" })
+                                                    @Html.ValidationMessageFor(m => m.CenterCodePartnerDetail[i].EmailId, "", new { @class = "spanEmailId" })
+
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.CenterCodePartnerDetail[i].AltContactNumber,
+                                                           new { @class = "form-control AltContactNumber numberOnly", @placeholder = "AltContactNo", @id = "txtAltContactNo" })
+                                                    @Html.ValidationMessageFor(m => m.CenterCodePartnerDetail[i].AltContactNumber, "", new { @class = "spanAltContactNumber" })
+
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.CenterCodePartnerDetail[i].AltEmailId,
+                                                           new { @class = "form-control AltEmailId", @placeholder = "AltContactNo", @id = "txtAltEmailId" })
+                                                    @Html.ValidationMessageFor(m => m.CenterCodePartnerDetail[i].AltEmailId, "", new { @class = "spanAltEmailId" })
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="6">
+                                                <button  id="btnAddRow" class="btn btn-sm btn-info pull-right ">
+                                                    <i class="fa  fa-plus"></i>
+                                                    Add Row
+                                                </button>
+                                            </th>
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div><!-- /.box-body -->
+                            <div class="box-footer">
+
+                            </div>
+                        </div>
+
+                        <div class="box-footer col-md-12">
+                            <button type="submit" id="btnEditSubmit" class="btn btn-info pull-left ">
+                                <i class="fa  fa-save"></i>
+                                Save
+                            </button>
+                            
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- form end -->
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/inputMaskScript")
+    @Scripts.Render("~/bundles/bootstrapSwitchScript")
+    <script src="~/Scriptz/CenterCode/Edit.js"></script>
+    }
+

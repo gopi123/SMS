@@ -1,0 +1,1151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5083C9D1-E182-4F23-9111-1659E4ECD788}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SMS</RootNamespace>
+    <AssemblyName>SMS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\SMS and DB files\SMS_Server\SMS_Server\SMS\SMS\bin\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker">
+      <HintPath>..\..\..\SMS and DB files\SMS_Server\SMS_Server\SMS\SMS\bin\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="MVC Foolproof Validation">
+      <HintPath>..\..\..\SMS and DB files\SMS_Server\SMS_Server\SMS\SMS\bin\MVC Foolproof Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\..\SMS and DB files\SMS_Server\SMS_Server\SMS\SMS\bin\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CenterCodeController.cs" />
+    <Compile Include="Controllers\CertificateController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\CourseDowngradeController.cs" />
+    <Compile Include="Controllers\CourseSubTitleController.cs" />
+    <Compile Include="Controllers\CourseUpgradeController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\DiscountSettingController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MailTestController.cs" />
+    <Compile Include="Controllers\MenuSettingsController.cs" />
+    <Compile Include="Controllers\MultiCourseController.cs" />
+    <Compile Include="Controllers\ProjectReportApprovalController.cs" />
+    <Compile Include="Controllers\ReceiptController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ServiceTaxController.cs" />
+    <Compile Include="Controllers\StudentImageController.cs" />
+    <Compile Include="Controllers\WalkInnController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Branch.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CenterCode.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CenterCodePartnerDetail.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clone_Helper.cs" />
+    <Compile Include="Models\Common.cs" />
+    <Compile Include="Models\Common_Report.cs" />
+    <Compile Include="Models\Country.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Course.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CourseSeriesType.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CourseSubTitle.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CourseType.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomValidation\RequiredArrayAttribute.cs" />
+    <Compile Include="Models\Designation.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DiscountSetting.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\District.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Edit_Get_DiscountSettings_Result.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmailVerification.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Employee.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeCenter.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EnumClass.cs" />
+    <Compile Include="Models\Firm.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetDiscountSettings_Result.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Group_CentreCode_Setting.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KnowHowN.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Menu.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MenuRole.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Metadata.cs" />
+    <Compile Include="Models\MobileVerification.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\modelSMS.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>modelSMS.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\modelSMS.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\modelSMS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>modelSMS.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MultiCourse.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MultiCourseDetail.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PartialClasses.cs" />
+    <Compile Include="Models\QlfnMain.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QlfnSub.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QlfnType.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ServiceTax.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SMSRoleProvider.cs" />
+    <Compile Include="Models\State.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentFeedback.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentLogin.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentProjectApproval.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentReceipt.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentReceiptSerialNo.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentRegistration.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentRegistrationCourse.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentRelation.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentSerialNo.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentWalkInn.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentWalkInnCourse.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SubDistrict.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TransactionDetail.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ViewModel\CenterCodeVM.cs" />
+    <Compile Include="Models\ViewModel\CourseDowngradeVM.cs" />
+    <Compile Include="Models\ViewModel\CourseUpgradeVM.cs" />
+    <Compile Include="Models\ViewModel\DiscountSettingVM.cs" />
+    <Compile Include="Models\ViewModel\GroupVM.cs" />
+    <Compile Include="Models\ViewModel\StudentInfoVM.cs" />
+    <Compile Include="Models\ViewModel\CourseSubTitleVM.cs" />
+    <Compile Include="Models\ViewModel\CourseVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerCertificateStatusVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerDashboardVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerFeedbackVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerIndexVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerLoginVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerPhotoUploadVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerProjectUploadVM.cs" />
+    <Compile Include="Models\ViewModel\CustomerReceiptVM.cs" />
+    <Compile Include="Models\ViewModel\DashboardVM.cs" />
+    <Compile Include="Models\ViewModel\EmployeeVM.cs" />
+    <Compile Include="Models\ViewModel\ForgotPasswordVM.cs" />
+    <Compile Include="Models\ViewModel\IndexVM.cs" />
+    <Compile Include="Models\ViewModel\LeaderApprovalVM.cs" />
+    <Compile Include="Models\ViewModel\LoginVM.cs" />
+    <Compile Include="Models\ViewModel\MailTest_Feedback.cs" />
+    <Compile Include="Models\ViewModel\MenuRoleVM.cs" />
+    <Compile Include="Models\ViewModel\MenuVM.cs" />
+    <Compile Include="Models\ViewModel\MultiCourseVM.cs" />
+    <Compile Include="Models\ViewModel\ReceiptPdfVM.cs" />
+    <Compile Include="Models\ViewModel\ReceiptVM.cs" />
+    <Compile Include="Models\ViewModel\RegistraionVM.cs" />
+    <Compile Include="Models\ViewModel\ReportVM.cs" />
+    <Compile Include="Models\ViewModel\RoleVM.cs" />
+    <Compile Include="Models\ViewModel\StudentImageVM.cs" />
+    <Compile Include="Models\ViewModel\TrainerApprovalVM.cs" />
+    <Compile Include="Models\ViewModel\UserVM.cs" />
+    <Compile Include="Models\ViewModel\WalkInnVM.cs" />
+    <Compile Include="Models\WhyN.cs">
+      <DependentUpon>modelSMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\CollectionReport.aspx.cs">
+      <DependentUpon>CollectionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\CollectionReport.aspx.designer.cs">
+      <DependentUpon>CollectionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\dsReport.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PendingReport.aspx.cs">
+      <DependentUpon>PendingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PendingReport.aspx.designer.cs">
+      <DependentUpon>PendingReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ReferenceReport.aspx.cs">
+      <DependentUpon>ReferenceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\ReferenceReport.aspx.designer.cs">
+      <DependentUpon>ReferenceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\RegistrationReport.aspx.cs">
+      <DependentUpon>RegistrationReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\RegistrationReport.aspx.designer.cs">
+      <DependentUpon>RegistrationReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\WalkInnReport.aspx.cs">
+      <DependentUpon>WalkInnReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\WalkInnReport.aspx.designer.cs">
+      <DependentUpon>WalkInnReport.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Global.asax" />
+    <Content Include="plugins\bootbox\bootbox.js" />
+    <Content Include="plugins\bootstrapSwitch\css\bootstrap-switch.css" />
+    <Content Include="plugins\bootstrapSwitch\css\bootstrap-switch.min.css" />
+    <Content Include="plugins\bootstrapSwitch\js\bootstrap-switch.js" />
+    <Content Include="plugins\bootstrapSwitch\js\bootstrap-switch.min.js" />
+    <Content Include="plugins\bootstrap\css\bootstrap.css" />
+    <Content Include="plugins\bootstrap\css\bootstrap.min.css" />
+    <Content Include="plugins\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="plugins\bootstrap\js\bootstrap.js" />
+    <Content Include="plugins\bootstrap\js\bootstrap.min.js" />
+    <Content Include="plugins\bootstrap\js\npm.js" />
+    <Content Include="plugins\checkboxSwitch\js\bootstrap-checkbox.js" />
+    <Content Include="plugins\checkboxSwitch\js\bootstrap-checkbox.min.js" />
+    <Content Include="plugins\checkboxSwitch\js\i18n\pt.js" />
+    <Content Include="plugins\checkboxSwitch\js\i18n\pt.min.js" />
+    <Content Include="plugins\checkboxSwitch\js\i18n\ru.js" />
+    <Content Include="plugins\checkboxSwitch\js\i18n\ru.min.js" />
+    <Content Include="plugins\checkboxSwitch\js\i18n\tr.js" />
+    <Content Include="plugins\checkboxSwitch\js\i18n\tr.min.js" />
+    <Content Include="plugins\datatables\media\css\dataTables.bootstrap.css" />
+    <Content Include="plugins\datatables\media\css\dataTables.bootstrap.min.css" />
+    <Content Include="plugins\datatables\media\css\dataTables.foundation.css" />
+    <Content Include="plugins\datatables\media\css\dataTables.foundation.min.css" />
+    <Content Include="plugins\datatables\media\css\dataTables.jqueryui.css" />
+    <Content Include="plugins\datatables\media\css\dataTables.jqueryui.min.css" />
+    <Content Include="plugins\datatables\media\css\jquery.dataTables.css" />
+    <Content Include="plugins\datatables\media\css\jquery.dataTables.min.css" />
+    <Content Include="plugins\datatables\media\css\jquery.dataTables_themeroller.css" />
+    <Content Include="plugins\datatables\media\images\favicon.ico" />
+    <Content Include="plugins\datatables\media\images\sort_asc.png" />
+    <Content Include="plugins\datatables\media\images\sort_asc_disabled.png" />
+    <Content Include="plugins\datatables\media\images\sort_both.png" />
+    <Content Include="plugins\datatables\media\images\sort_desc.png" />
+    <Content Include="plugins\datatables\media\images\sort_desc_disabled.png" />
+    <Content Include="plugins\datatables\media\js\dataTables.bootstrap.js" />
+    <Content Include="plugins\datatables\media\js\dataTables.bootstrap.min.js" />
+    <Content Include="plugins\datatables\media\js\dataTables.foundation.js" />
+    <Content Include="plugins\datatables\media\js\dataTables.foundation.min.js" />
+    <Content Include="plugins\datatables\media\js\dataTables.jqueryui.js" />
+    <Content Include="plugins\datatables\media\js\dataTables.jqueryui.min.js" />
+    <Content Include="plugins\datatables\media\js\jquery.dataTables.js" />
+    <Content Include="plugins\datatables\media\js\jquery.dataTables.min.js" />
+    <Content Include="plugins\datatables\media\js\jquery.js" />
+    <Content Include="plugins\datepicker\bootstrap-datepicker.js" />
+    <Content Include="plugins\datepicker\datepicker3.css" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ar.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.az.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.bg.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ca.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.cs.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.cy.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.da.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.de.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.el.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.es.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.et.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.fa.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.fi.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.fr.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.gl.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.he.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.hr.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.hu.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.id.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.is.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.it.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ja.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ka.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.kk.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.kr.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.lt.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.lv.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.mk.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ms.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.nb.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.nl-BE.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.nl.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.no.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.pl.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.pt-BR.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.pt.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ro.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.rs-latin.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.rs.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ru.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.sk.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.sl.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.sq.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.sv.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.sw.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.th.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.tr.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.ua.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.vi.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.zh-CN.js" />
+    <Content Include="plugins\datepicker\locales\bootstrap-datepicker.zh-TW.js" />
+    <Content Include="plugins\dist\css\AdminLTE.css" />
+    <Content Include="plugins\dist\css\AdminLTE.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-black-light.css" />
+    <Content Include="plugins\dist\css\skins\skin-black-light.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-black.css" />
+    <Content Include="plugins\dist\css\skins\skin-black.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-blue-light.css" />
+    <Content Include="plugins\dist\css\skins\skin-blue-light.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-blue.css" />
+    <Content Include="plugins\dist\css\skins\skin-blue.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-green-light.css" />
+    <Content Include="plugins\dist\css\skins\skin-green-light.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-green.css" />
+    <Content Include="plugins\dist\css\skins\skin-green.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-purple-light.css" />
+    <Content Include="plugins\dist\css\skins\skin-purple-light.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-purple.css" />
+    <Content Include="plugins\dist\css\skins\skin-purple.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-red-light.css" />
+    <Content Include="plugins\dist\css\skins\skin-red-light.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-red.css" />
+    <Content Include="plugins\dist\css\skins\skin-red.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-yellow-light.css" />
+    <Content Include="plugins\dist\css\skins\skin-yellow-light.min.css" />
+    <Content Include="plugins\dist\css\skins\skin-yellow.css" />
+    <Content Include="plugins\dist\css\skins\skin-yellow.min.css" />
+    <Content Include="plugins\dist\css\skins\_all-skins.css" />
+    <Content Include="plugins\dist\css\skins\_all-skins.min.css" />
+    <Content Include="plugins\dist\img\avatar.png" />
+    <Content Include="plugins\dist\img\avatar04.png" />
+    <Content Include="plugins\dist\img\avatar2.png" />
+    <Content Include="plugins\dist\img\avatar3.png" />
+    <Content Include="plugins\dist\img\avatar5.png" />
+    <Content Include="plugins\dist\img\boxed-bg.jpg" />
+    <Content Include="plugins\dist\img\boxed-bg.png" />
+    <Content Include="plugins\dist\img\credit\american-express.png" />
+    <Content Include="plugins\dist\img\credit\cirrus.png" />
+    <Content Include="plugins\dist\img\credit\mastercard.png" />
+    <Content Include="plugins\dist\img\credit\mestro.png" />
+    <Content Include="plugins\dist\img\credit\paypal.png" />
+    <Content Include="plugins\dist\img\credit\paypal2.png" />
+    <Content Include="plugins\dist\img\credit\visa.png" />
+    <Content Include="plugins\dist\img\default-50x50.gif" />
+    <Content Include="plugins\dist\img\icons.png" />
+    <Content Include="plugins\dist\img\Ns_Logo.png" />
+    <Content Include="plugins\dist\img\photo1.png" />
+    <Content Include="plugins\dist\img\photo2.png" />
+    <Content Include="plugins\dist\img\photo3.jpg" />
+    <Content Include="plugins\dist\img\photo4.jpg" />
+    <Content Include="plugins\dist\img\user1-128x128.jpg" />
+    <Content Include="plugins\dist\img\user2-160x160.jpg" />
+    <Content Include="plugins\dist\img\user3-128x128.jpg" />
+    <Content Include="plugins\dist\img\user4-128x128.jpg" />
+    <Content Include="plugins\dist\img\user5-128x128.jpg" />
+    <Content Include="plugins\dist\img\user6-128x128.jpg" />
+    <Content Include="plugins\dist\img\user7-128x128.jpg" />
+    <Content Include="plugins\dist\img\user8-128x128.jpg" />
+    <Content Include="plugins\dist\js\app.js" />
+    <Content Include="plugins\dist\js\app.min.js" />
+    <Content Include="plugins\dist\js\demo.js" />
+    <Content Include="plugins\dist\js\pages\dashboard.js" />
+    <Content Include="plugins\dist\js\pages\dashboard2.js" />
+    <Content Include="plugins\fileUpload\css\fileinput.css" />
+    <Content Include="plugins\fileUpload\css\fileinput.min.css" />
+    <Content Include="plugins\fileUpload\img\loading-sm.gif" />
+    <Content Include="plugins\fileUpload\img\loading.gif" />
+    <Content Include="plugins\fileUpload\js\fileinput.js" />
+    <Content Include="plugins\fileUpload\js\fileinput.min.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_ar.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_bg.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_ca.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_cr.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_cz.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_da.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_de.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_el.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_es.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_fa.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_fr.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_hu.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_it.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_ja.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_LANG.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_nl.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_pl.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_pt-BR.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_pt.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_ro.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_ru.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_sk.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_th.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_tr.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_uk.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_zh-TW.js" />
+    <Content Include="plugins\fileUpload\js\fileinput_locale_zh.js" />
+    <Content Include="plugins\fileUpload\js\plugins\canvas-to-blob.js" />
+    <Content Include="plugins\fileUpload\js\plugins\canvas-to-blob.min.js" />
+    <Content Include="plugins\foolproofValidation\mvcfoolproof.unobtrusive.min.js" />
+    <Content Include="plugins\iCheck\all.css" />
+    <Content Include="plugins\iCheck\flat\aero%402x.png" />
+    <Content Include="plugins\iCheck\flat\aero.css" />
+    <Content Include="plugins\iCheck\flat\aero.png" />
+    <Content Include="plugins\iCheck\flat\blue%402x.png" />
+    <Content Include="plugins\iCheck\flat\blue.css" />
+    <Content Include="plugins\iCheck\flat\blue.png" />
+    <Content Include="plugins\iCheck\flat\flat%402x.png" />
+    <Content Include="plugins\iCheck\flat\flat.css" />
+    <Content Include="plugins\iCheck\flat\flat.png" />
+    <Content Include="plugins\iCheck\flat\green%402x.png" />
+    <Content Include="plugins\iCheck\flat\green.css" />
+    <Content Include="plugins\iCheck\flat\green.png" />
+    <Content Include="plugins\iCheck\flat\grey%402x.png" />
+    <Content Include="plugins\iCheck\flat\grey.css" />
+    <Content Include="plugins\iCheck\flat\grey.png" />
+    <Content Include="plugins\iCheck\flat\orange%402x.png" />
+    <Content Include="plugins\iCheck\flat\orange.css" />
+    <Content Include="plugins\iCheck\flat\orange.png" />
+    <Content Include="plugins\iCheck\flat\pink%402x.png" />
+    <Content Include="plugins\iCheck\flat\pink.css" />
+    <Content Include="plugins\iCheck\flat\pink.png" />
+    <Content Include="plugins\iCheck\flat\purple%402x.png" />
+    <Content Include="plugins\iCheck\flat\purple.css" />
+    <Content Include="plugins\iCheck\flat\purple.png" />
+    <Content Include="plugins\iCheck\flat\red%402x.png" />
+    <Content Include="plugins\iCheck\flat\red.css" />
+    <Content Include="plugins\iCheck\flat\red.png" />
+    <Content Include="plugins\iCheck\flat\yellow%402x.png" />
+    <Content Include="plugins\iCheck\flat\yellow.css" />
+    <Content Include="plugins\iCheck\flat\yellow.png" />
+    <Content Include="plugins\iCheck\flat\_all.css" />
+    <Content Include="plugins\iCheck\futurico\futurico%402x.png" />
+    <Content Include="plugins\iCheck\futurico\futurico.css" />
+    <Content Include="plugins\iCheck\futurico\futurico.png" />
+    <Content Include="plugins\iCheck\icheck.js" />
+    <Content Include="plugins\iCheck\icheck.min.js" />
+    <Content Include="plugins\iCheck\line\aero.css" />
+    <Content Include="plugins\iCheck\line\blue.css" />
+    <Content Include="plugins\iCheck\line\green.css" />
+    <Content Include="plugins\iCheck\line\grey.css" />
+    <Content Include="plugins\iCheck\line\line%402x.png" />
+    <Content Include="plugins\iCheck\line\line.css" />
+    <Content Include="plugins\iCheck\line\line.png" />
+    <Content Include="plugins\iCheck\line\orange.css" />
+    <Content Include="plugins\iCheck\line\pink.css" />
+    <Content Include="plugins\iCheck\line\purple.css" />
+    <Content Include="plugins\iCheck\line\red.css" />
+    <Content Include="plugins\iCheck\line\yellow.css" />
+    <Content Include="plugins\iCheck\line\_all.css" />
+    <Content Include="plugins\iCheck\minimal\aero%402x.png" />
+    <Content Include="plugins\iCheck\minimal\aero.css" />
+    <Content Include="plugins\iCheck\minimal\aero.png" />
+    <Content Include="plugins\iCheck\minimal\blue%402x.png" />
+    <Content Include="plugins\iCheck\minimal\blue.css" />
+    <Content Include="plugins\iCheck\minimal\blue.png" />
+    <Content Include="plugins\iCheck\minimal\green%402x.png" />
+    <Content Include="plugins\iCheck\minimal\green.css" />
+    <Content Include="plugins\iCheck\minimal\green.png" />
+    <Content Include="plugins\iCheck\minimal\grey%402x.png" />
+    <Content Include="plugins\iCheck\minimal\grey.css" />
+    <Content Include="plugins\iCheck\minimal\grey.png" />
+    <Content Include="plugins\iCheck\minimal\minimal%402x.png" />
+    <Content Include="plugins\iCheck\minimal\minimal.css" />
+    <Content Include="plugins\iCheck\minimal\minimal.png" />
+    <Content Include="plugins\iCheck\minimal\orange%402x.png" />
+    <Content Include="plugins\iCheck\minimal\orange.css" />
+    <Content Include="plugins\iCheck\minimal\orange.png" />
+    <Content Include="plugins\iCheck\minimal\pink%402x.png" />
+    <Content Include="plugins\iCheck\minimal\pink.css" />
+    <Content Include="plugins\iCheck\minimal\pink.png" />
+    <Content Include="plugins\iCheck\minimal\purple%402x.png" />
+    <Content Include="plugins\iCheck\minimal\purple.css" />
+    <Content Include="plugins\iCheck\minimal\purple.png" />
+    <Content Include="plugins\iCheck\minimal\red%402x.png" />
+    <Content Include="plugins\iCheck\minimal\red.css" />
+    <Content Include="plugins\iCheck\minimal\red.png" />
+    <Content Include="plugins\iCheck\minimal\yellow%402x.png" />
+    <Content Include="plugins\iCheck\minimal\yellow.css" />
+    <Content Include="plugins\iCheck\minimal\yellow.png" />
+    <Content Include="plugins\iCheck\minimal\_all.css" />
+    <Content Include="plugins\iCheck\polaris\polaris%402x.png" />
+    <Content Include="plugins\iCheck\polaris\polaris.css" />
+    <Content Include="plugins\iCheck\polaris\polaris.png" />
+    <Content Include="plugins\iCheck\square\aero%402x.png" />
+    <Content Include="plugins\iCheck\square\aero.css" />
+    <Content Include="plugins\iCheck\square\aero.png" />
+    <Content Include="plugins\iCheck\square\blue%402x.png" />
+    <Content Include="plugins\iCheck\square\blue.css" />
+    <Content Include="plugins\iCheck\square\blue.png" />
+    <Content Include="plugins\iCheck\square\green%402x.png" />
+    <Content Include="plugins\iCheck\square\green.css" />
+    <Content Include="plugins\iCheck\square\green.png" />
+    <Content Include="plugins\iCheck\square\grey%402x.png" />
+    <Content Include="plugins\iCheck\square\grey.css" />
+    <Content Include="plugins\iCheck\square\grey.png" />
+    <Content Include="plugins\iCheck\square\orange%402x.png" />
+    <Content Include="plugins\iCheck\square\orange.css" />
+    <Content Include="plugins\iCheck\square\orange.png" />
+    <Content Include="plugins\iCheck\square\pink%402x.png" />
+    <Content Include="plugins\iCheck\square\pink.css" />
+    <Content Include="plugins\iCheck\square\pink.png" />
+    <Content Include="plugins\iCheck\square\purple%402x.png" />
+    <Content Include="plugins\iCheck\square\purple.css" />
+    <Content Include="plugins\iCheck\square\purple.png" />
+    <Content Include="plugins\iCheck\square\red%402x.png" />
+    <Content Include="plugins\iCheck\square\red.css" />
+    <Content Include="plugins\iCheck\square\red.png" />
+    <Content Include="plugins\iCheck\square\square%402x.png" />
+    <Content Include="plugins\iCheck\square\square.css" />
+    <Content Include="plugins\iCheck\square\square.png" />
+    <Content Include="plugins\iCheck\square\yellow%402x.png" />
+    <Content Include="plugins\iCheck\square\yellow.css" />
+    <Content Include="plugins\iCheck\square\yellow.png" />
+    <Content Include="plugins\iCheck\square\_all.css" />
+    <Content Include="plugins\idle-timer\idle-timer.js" />
+    <Content Include="plugins\input-mask\jquery.inputmask.date.extensions.js" />
+    <Content Include="plugins\input-mask\jquery.inputmask.extensions.js" />
+    <Content Include="plugins\input-mask\jquery.inputmask.js" />
+    <Content Include="plugins\input-mask\jquery.inputmask.numeric.extensions.js" />
+    <Content Include="plugins\input-mask\jquery.inputmask.phone.extensions.js" />
+    <Content Include="plugins\input-mask\jquery.inputmask.regex.extensions.js" />
+    <Content Include="plugins\input-mask\phone-codes\readme.txt" />
+    <Content Include="plugins\IsLoading\jquery.loading.css" />
+    <Content Include="plugins\IsLoading\jquery.loading.js" />
+    <Content Include="plugins\IsLoading\jquery.loading.min.css" />
+    <Content Include="plugins\IsLoading\jquery.loading.min.js" />
+    <Content Include="plugins\jQueryBlockUI\images\busy.gif" />
+    <Content Include="plugins\jQueryBlockUI\jquery.blockUI.js" />
+    <Content Include="plugins\jQueryForms\jquery.form.js" />
+    <Content Include="plugins\jQuerySteps\css\jQuerySteps.css" />
+    <Content Include="plugins\jQuerySteps\jquery.steps.js" />
+    <Content Include="plugins\jQuerySteps\jquery.steps.min.js" />
+    <Content Include="plugins\jQuerySteps\js\jquery.steps.js" />
+    <Content Include="plugins\jQuerySteps\js\jquery.steps.min.js" />
+    <Content Include="plugins\jQueryUI\jquery-ui.js" />
+    <Content Include="plugins\jQueryUI\jquery-ui.min.js" />
+    <Content Include="plugins\jQueryVal\jquery.unobtrusive-ajax.js" />
+    <Content Include="plugins\jQueryVal\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Certificates\CertificateNotProcessed.pdf" />
+    <Content Include="Certificates\StudentIDNotExist.pdf" />
+    <Content Include="Certificates\NSTAJ0116009.pdf" />
+    <Content Include="Certificates\NSTAJ0216021.pdf" />
+    <None Include="plugins\jQueryVal\jquery.validate-vsdoc.js" />
+    <Content Include="plugins\jQueryVal\jquery.validate.js" />
+    <Content Include="plugins\jQueryVal\jquery.validate.min.js" />
+    <Content Include="plugins\jQueryVal\jquery.validate.unobtrusive.js" />
+    <Content Include="plugins\jQueryVal\jquery.validate.unobtrusive.min.js" />
+    <Content Include="plugins\jQuery\jquery-2.1.4.js" />
+    <Content Include="plugins\jQuery\jQuery-2.1.4.min.js" />
+    <Content Include="plugins\modernizr\modernizr-2.6.2.js" />
+    <Content Include="plugins\moment\moment.js" />
+    <Content Include="plugins\RateYo\jquery.rateyo.css" />
+    <Content Include="plugins\RateYo\jquery.rateyo.js" />
+    <Content Include="plugins\select2\i18n\az.js" />
+    <Content Include="plugins\select2\i18n\bg.js" />
+    <Content Include="plugins\select2\i18n\ca.js" />
+    <Content Include="plugins\select2\i18n\cs.js" />
+    <Content Include="plugins\select2\i18n\da.js" />
+    <Content Include="plugins\select2\i18n\de.js" />
+    <Content Include="plugins\select2\i18n\en.js" />
+    <Content Include="plugins\select2\i18n\es.js" />
+    <Content Include="plugins\select2\i18n\et.js" />
+    <Content Include="plugins\select2\i18n\eu.js" />
+    <Content Include="plugins\select2\i18n\fa.js" />
+    <Content Include="plugins\select2\i18n\fi.js" />
+    <Content Include="plugins\select2\i18n\fr.js" />
+    <Content Include="plugins\select2\i18n\gl.js" />
+    <Content Include="plugins\select2\i18n\he.js" />
+    <Content Include="plugins\select2\i18n\hi.js" />
+    <Content Include="plugins\select2\i18n\hr.js" />
+    <Content Include="plugins\select2\i18n\hu.js" />
+    <Content Include="plugins\select2\i18n\id.js" />
+    <Content Include="plugins\select2\i18n\is.js" />
+    <Content Include="plugins\select2\i18n\it.js" />
+    <Content Include="plugins\select2\i18n\ko.js" />
+    <Content Include="plugins\select2\i18n\lt.js" />
+    <Content Include="plugins\select2\i18n\lv.js" />
+    <Content Include="plugins\select2\i18n\mk.js" />
+    <Content Include="plugins\select2\i18n\nb.js" />
+    <Content Include="plugins\select2\i18n\nl.js" />
+    <Content Include="plugins\select2\i18n\pl.js" />
+    <Content Include="plugins\select2\i18n\pt-BR.js" />
+    <Content Include="plugins\select2\i18n\pt.js" />
+    <Content Include="plugins\select2\i18n\ro.js" />
+    <Content Include="plugins\select2\i18n\ru.js" />
+    <Content Include="plugins\select2\i18n\sk.js" />
+    <Content Include="plugins\select2\i18n\sr.js" />
+    <Content Include="plugins\select2\i18n\sv.js" />
+    <Content Include="plugins\select2\i18n\th.js" />
+    <Content Include="plugins\select2\i18n\tr.js" />
+    <Content Include="plugins\select2\i18n\uk.js" />
+    <Content Include="plugins\select2\i18n\vi.js" />
+    <Content Include="plugins\select2\i18n\zh-CN.js" />
+    <Content Include="plugins\select2\i18n\zh-TW.js" />
+    <Content Include="plugins\select2\select2.css" />
+    <Content Include="plugins\select2\select2.full.js" />
+    <Content Include="plugins\select2\select2.full.min.js" />
+    <Content Include="plugins\select2\select2.js" />
+    <Content Include="plugins\select2\select2.min.css" />
+    <Content Include="plugins\select2\select2.min.js" />
+    <Content Include="plugins\strengthMeter\css\strength-meter.css" />
+    <Content Include="plugins\strengthMeter\css\strength-meter.min.css" />
+    <Content Include="plugins\strengthMeter\img\bg_strength_gradient.jpg" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-de.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-fr.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-hu.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-it.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-nl.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-pl.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-pt-BR.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-ru.js" />
+    <Content Include="plugins\strengthMeter\js\locales\strength-meter-zh-CN.js" />
+    <Content Include="plugins\strengthMeter\js\strength-meter.js" />
+    <Content Include="plugins\strengthMeter\js\strength-meter.min.js" />
+    <Content Include="plugins\toastr\toastr.css" />
+    <Content Include="plugins\toastr\toastr.js" />
+    <Content Include="plugins\toastr\toastr.min.css" />
+    <Content Include="plugins\toastr\toastr.min.js" />
+    <Content Include="plugins\treeview\bootstrap-treeview.js" />
+    <Content Include="plugins\typeahead\typeahead.bundle.js" />
+    <Content Include="plugins\typeahead\typeahead.bundle.min.js" />
+    <Content Include="Report\CollectionReport.aspx" />
+    <Content Include="Report\PendingReport.aspx" />
+    <Content Include="Report\ReferenceReport.aspx" />
+    <Content Include="Report\RegistrationReport.aspx" />
+    <Content Include="Report\WalkInnReport.aspx" />
+    <Content Include="Scriptz\CenterCode\Add.js" />
+    <Content Include="Scriptz\CenterCode\Edit.js" />
+    <Content Include="Scriptz\CenterCode\Index.js" />
+    <Content Include="Scriptz\CourseDowngrade\Add.js" />
+    <Content Include="Scriptz\CourseSubTitle\Add.js" />
+    <Content Include="Scriptz\CourseSubTitle\Index.js" />
+    <Content Include="Scriptz\CourseUpgrade\Add.js" />
+    <Content Include="Scriptz\Course\Add.js" />
+    <Content Include="Scriptz\Course\Index.js" />
+    <Content Include="Scriptz\Customer\EBook.js" />
+    <Content Include="Scriptz\Customer\EFeedback.js" />
+    <Content Include="Scriptz\Customer\Login.js" />
+    <Content Include="Scriptz\Customer\Register.js" />
+    <Content Include="Scriptz\DiscountSetting\Add.js" />
+    <Content Include="Scriptz\DiscountSetting\Edit.js" />
+    <Content Include="Scriptz\DiscountSetting\Index.js" />
+    <Content Include="Scriptz\Employee\Add.js" />
+    <Content Include="Scriptz\Employee\Edit.js" />
+    <Content Include="Scriptz\Employee\EmployeeEnable.js" />
+    <Content Include="Scriptz\Employee\Index.js" />
+    <Content Include="Scriptz\Group\Add.js" />
+    <Content Include="Scriptz\Group\Edit.js" />
+    <Content Include="Scriptz\Group\Index.js" />
+    <Content Include="Scriptz\MenuSettings\Add.js" />
+    <Content Include="Scriptz\MenuSettings\Index.js" />
+    <Content Include="Scriptz\MultiCourse\Add.js" />
+    <Content Include="Scriptz\MultiCourse\Edit.js" />
+    <Content Include="Scriptz\MultiCourse\Index.js" />
+    <Content Include="Scriptz\Report\PendingReport.js" />
+    <Content Include="Scriptz\ProjectReportApproval\LeaderApproval.js" />
+    <Content Include="Scriptz\ProjectReportApproval\LeaderApprovalList.js" />
+    <Content Include="Scriptz\ProjectReportApproval\TrainerApproval.js" />
+    <Content Include="Scriptz\ProjectReportApproval\TrainerApprovalList.js" />
+    <Content Include="Scriptz\Receipt\Add.js" />
+    <Content Include="Scriptz\Registration\Add.js" />
+    <Content Include="Scriptz\Registration\Edit.js" />
+    <Content Include="Scriptz\Registration\Index.js" />
+    <Content Include="Scriptz\Report\CollectionReport.js" />
+    <Content Include="Scriptz\Report\ReferenceReport.js" />
+    <Content Include="Scriptz\Report\RegistrationReport.js" />
+    <Content Include="Scriptz\Report\WalkInnReport.js" />
+    <Content Include="Scriptz\ServiceTax\Add.js" />
+    <Content Include="Scriptz\ServiceTax\Index.js" />
+    <Content Include="Scriptz\StudentImage\Add.js" />
+    <Content Include="Scriptz\StudentImage\Index.js" />
+    <Content Include="Scriptz\WalkInn\Add.js" />
+    <Content Include="Scriptz\WalkInn\Edit.js" />
+    <Content Include="Scriptz\WalkInn\Index.js" />
+    <Content Include="Styles\CertificateImage\certificateImage.jpg" />
+    <Content Include="Styles\maintenance.png" />
+    <Content Include="Styles\ReceiptImages\EReceipt-logo.jpg" />
+    <Content Include="Styles\ReceiptImages\NSlogo.jpg" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Styles\SMS_StaffLogin_Logo.jpg" />
+    <Content Include="Styles\SMS_StudentLogin_Logo.jpg" />
+    <Content Include="Template\CertificateMailTemplate.html" />
+    <Content Include="Template\EmailTemplate.html" />
+    <Content Include="Template\EmailUpdateTemplate.html" />
+    <Content Include="Template\Feedback.html" />
+    <Content Include="Template\ForgotPassword.html" />
+    <Content Include="Template\PhotoRejectTemplate.html" />
+    <Content Include="Template\SkippingAmountPaymentTemplate.html" />
+    <Content Include="Template\SkippingMonthPaymentTemplate.html" />
+    <Content Include="Template\StudentLogin_ForgotPassword.html" />
+    <Content Include="Template\StudentLogin_VerificationTemplate.html" />
+    <Content Include="Template\StudentLogin_ForgotUsername.html" />
+    <Content Include="Template\StudentProjectDeniedTemplate.html" />
+    <Content Include="Template\StudentProjectDeniedTemplate_Trainer.html" />
+    <Content Include="Template\StudentRegistrationEmailTemplate.html" />
+    <Content Include="Template\WarningEmail.html" />
+    <Content Include="UploadImages\Employee\AddressProof\Emp1.jpg" />
+    <Content Include="UploadImages\Employee\AddressProof\Emp7.png" />
+    <Content Include="UploadImages\Employee\IdProof\Emp1.jpg" />
+    <Content Include="UploadImages\Employee\IdProof\Emp7.png" />
+    <Content Include="UploadImages\Employee\Photo\Emp1.jpg" />
+    <Content Include="UploadImages\Employee\Photo\Emp121.jpg" />
+    <Content Include="UploadImages\Employee\Photo\Emp7.png" />
+    <Content Include="UploadImages\Employee\Photo\Emp8.jpg" />
+    <Content Include="UploadImages\Student\NoImageSelected.png" />
+    <Content Include="UploadImages\Student\NSTAJ0216020.jpeg" />
+    <Content Include="UploadImages\Student\NSTAJ1215025.jpg" />
+    <Content Include="UploadImages\Student\Stu1.png" />
+    <Content Include="UploadImages\Student\Stu7.png" />
+    <Content Include="UploadImages\Student\Stu8.png" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Template\CertificateTemplate.pdf" />
+    <Content Include="UploadProjects\NSTAJ0216021_70-410SERVERADMINISTRATIONPART1.docx" />
+    <Content Include="UploadProjects\NSTAJ0216021_N+.docx" />
+    <Content Include="UploadProjects\NSTAJ0216021_WINDOWS8.1.docx" />
+    <Content Include="Views\Account\DetailsVerified.cshtml" />
+    <Content Include="Views\Account\EmailNotVerified.cshtml" />
+    <Content Include="Views\Account\EmailSuccessfullVerification.cshtml" />
+    <Content Include="Views\Account\EmailVerified.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\MobileNotVerified.cshtml" />
+    <Content Include="Views\Account\MobileVerification.cshtml" />
+    <Content Include="Views\Account\MobileVerified.cshtml" />
+    <Content Include="Views\Account\PasswordChange.cshtml" />
+    <Content Include="Views\Account\StudentEmailAlreadyVerified.cshtml" />
+    <Content Include="Views\Account\StudentEmailSuccessfullVerification.cshtml" />
+    <Content Include="Views\CenterCode\Add.cshtml" />
+    <Content Include="Views\CenterCode\Edit.cshtml" />
+    <Content Include="Views\CenterCode\Index.cshtml" />
+    <Content Include="Views\CourseSubTitle\Add.cshtml" />
+    <Content Include="Views\CourseSubTitle\Index.cshtml" />
+    <Content Include="Views\CourseSubTitle\_Edit.cshtml" />
+    <Content Include="Views\Course\Add.cshtml" />
+    <Content Include="Views\Course\Index.cshtml" />
+    <Content Include="Views\Course\_Edit.cshtml" />
+    <Content Include="Views\Customer\Ebook.cshtml" />
+    <Content Include="Views\Customer\EfeedBack.cshtml" />
+    <Content Include="Views\Customer\EfeedBackList.cshtml" />
+    <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Customer\Login.cshtml" />
+    <Content Include="Views\Customer\PhotoUpload.cshtml" />
+    <Content Include="Views\Customer\ProjectUpload.cshtml" />
+    <Content Include="Views\Customer\ProjectUploadList.cshtml" />
+    <Content Include="Views\Employee\Add.cshtml" />
+    <Content Include="Views\Employee\Edit.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\MailTest\Feedback.cshtml" />
+    <Content Include="Views\MailTest\GetCourse.cshtml" />
+    <Content Include="Views\MailTest\Index.cshtml" />
+    <Content Include="Views\MailTest\Receipts.cshtml" />
+    <Content Include="Views\MailTest\script.cshtml" />
+    <Content Include="Views\MailTest\SendEmail.cshtml" />
+    <Content Include="Views\MenuSettings\Add.cshtml" />
+    <Content Include="Views\MenuSettings\Index.cshtml" />
+    <Content Include="Views\MenuSettings\_Edit.cshtml" />
+    <Content Include="Views\MenuSettings\_MenuDesignationWise.cshtml" />
+    <Content Include="Views\MultiCourse\Add.cshtml" />
+    <Content Include="Views\MultiCourse\Index.cshtml" />
+    <Content Include="Views\MultiCourse\_Edit.cshtml" />
+    <Content Include="Views\ProjectReportApproval\LeaderApproval.cshtml" />
+    <Content Include="Views\ProjectReportApproval\LeaderApprovalList.cshtml" />
+    <Content Include="Views\ProjectReportApproval\TrainerApproval.cshtml" />
+    <Content Include="Views\ProjectReportApproval\TrainerApprovalList.cshtml" />
+    <Content Include="Views\Receipt\Add.cshtml" />
+    <Content Include="Views\Receipt\Pdf.cshtml" />
+    <Content Include="Views\Receipt\Receipts.cshtml" />
+    <Content Include="Views\Receipt\Receipts_1.cshtml" />
+    <Content Include="Views\Registration\Add.cshtml" />
+    <Content Include="Views\Registration\Edit.cshtml" />
+    <Content Include="Views\Registration\Index.cshtml" />
+    <Content Include="Views\Report\WalkInnReport.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\ServiceTax\Add.cshtml" />
+    <Content Include="Views\ServiceTax\Index.cshtml" />
+    <Content Include="Views\ServiceTax\_Edit.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_CustomerLayout.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Shared\_MenuParent.cshtml" />
+    <Content Include="Views\Shared\_Receipts.cshtml" />
+    <Content Include="Views\StudentImage\Add.cshtml" />
+    <Content Include="Views\StudentImage\Index.cshtml" />
+    <Content Include="Views\WalkInn\Add.cshtml" />
+    <Content Include="Views\WalkInn\Edit.cshtml" />
+    <Content Include="Views\WalkInn\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Report\WalkInnGenerateReport.cshtml" />
+    <Content Include="Views\Report\CollectionReport.cshtml" />
+    <Content Include="Views\Report\CollectionGenerateReport.cshtml" />
+    <Content Include="Views\Report\PendingReport.cshtml" />
+    <Content Include="Views\Report\PendingGenerateReport.cshtml" />
+    <Content Include="Views\MailTest\GenerateReceipt.cshtml" />
+    <Content Include="Views\Shared\Maintenance.cshtml" />
+    <Content Include="Views\Report\RegistrationReport.cshtml" />
+    <Content Include="Views\Report\RegistrationGenerateReport.cshtml" />
+    <Content Include="Views\Report\ReferenceReport.cshtml" />
+    <Content Include="Views\Report\ReferenceGenerateReport.cshtml" />
+    <Content Include="Views\Customer\ReceiptList.cshtml" />
+    <Content Include="Template\TC.pdf" />
+    <Content Include="Views\Customer\CertificateStatus.cshtml" />
+    <Content Include="Views\Certificate\CertificateStatus.cshtml" />
+    <Content Include="Views\Certificate\Index.cshtml" />
+    <Content Include="Views\Shared\_GetStudentInfo.cshtml" />
+    <Content Include="Views\Shared\_CertificateStatus.cshtml" />
+    <Content Include="Views\CourseUpgrade\Index.cshtml" />
+    <Content Include="Views\CourseUpgrade\CourseUpgrade.cshtml" />
+    <Content Include="Views\CourseDowngrade\CourseDowngrade.cshtml" />
+    <Content Include="Views\Certificate\CertificateDontExist.cshtml" />
+    <Content Include="Views\Shared\_CourseCodeSearch.cshtml" />
+    <Content Include="Views\Employee\EmployeeEnable.cshtml" />
+    <Content Include="Views\MailTest\Print.cshtml" />
+    <Content Include="Views\Customer\Register.cshtml" />
+    <Content Include="Views\Customer\ForgotPassword.cshtml" />
+    <Content Include="Views\DiscountSetting\Index.cshtml" />
+    <Content Include="Views\DiscountSetting\_DiscountSettingsView.cshtml" />
+    <Content Include="Views\DiscountSetting\Add.cshtml" />
+    <Content Include="Views\Group\Index.cshtml" />
+    <Content Include="Views\Group\Add.cshtml" />
+    <Content Include="Views\Group\Edit.cshtml" />
+    <Content Include="Views\DiscountSetting\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Receipt\" />
+    <Folder Include="Receipt_Print\" />
+    <Folder Include="Styles\ReceiptTC\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Models\modelSMS.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>modelSMS.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\modelSMS.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>modelSMS.edmx</DependentUpon>
+      <LastGenOutput>modelSMS.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\modelSMS.edmx.diagram">
+      <DependentUpon>modelSMS.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\modelSMS.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>modelSMS.edmx</DependentUpon>
+      <LastGenOutput>modelSMS.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\dsReport.xsc">
+      <DependentUpon>dsReport.xsd</DependentUpon>
+    </Content>
+    <Content Include="plugins\bootstrap\css\bootstrap.css.map" />
+    <Content Include="plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="plugins\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="plugins\datatables\media\images\Sorting icons.psd" />
+    <Content Include="plugins\input-mask\phone-codes\phone-be.json" />
+    <Content Include="plugins\input-mask\phone-codes\phone-codes.json" />
+    <None Include="Properties\PublishProfiles\SMSPublish.pubxml" />
+    <None Include="Report\dsReport.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsReport.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\dsReport.xss">
+      <DependentUpon>dsReport.xsd</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\WalkInnReport.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\CollectionReport.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\PendingReport.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\Receipt.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\RegistrationReport.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\ReferenceReport.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\WalkInnReport1.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\Receipt_Print.rdlc" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>12154</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:8449/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

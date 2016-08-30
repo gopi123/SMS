@@ -1,0 +1,110 @@
+﻿
+
+@{
+    ViewBag.Title = "Feedback";
+}
+
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+          
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">                    
+                    <!-- form start -->
+                    <form id="frmMailTest" class="form-horizontal" data-url="@Url.Action("Feedback", "MailTest")">
+                        <div class="box-body ">
+                            <div class=" form-group ">
+                                <div class=" pull-left col-sm-2">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Enter StudentID
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-4 pull-left">
+                                 
+                                    <input type="text" class="form-control" id="txtStudentID" />
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="box-footer col-md-12">
+                            <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                <i class="fa  fa-save"></i>
+                                Save
+                            </button>
+                          
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+   <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+}
+
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+
+            $(document).on("click", "#btnSubmit", function () {
+                if ($("#txtStudentID").val() == "") {
+                    bootbox.alert("Enter StudentID");
+                    return false;
+                }
+                else {
+                    var studentID = $("#txtStudentID").val();
+                    $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Please wait... </b></h3>' });
+                    var href = $("#frmMailTest").data("url");
+                    $.ajax({
+                        type: "POST",
+                        url: href,
+                        data: { studentID: studentID },
+                        datatype: "json",
+                        success: function (data) {
+                            $.unblockUI();
+                            if (data == "success") {
+                                $("#txtStudentID").val("");
+                                toastr.success("Successfully saved the details.")
+                            }
+                            else {
+                                toastr.error("Error:Something gone wrong")
+                            }
+                        },
+                        error: function (data) {                            
+                            toastr.error("Exception:Something gone wrong");
+                        }
+                    });
+                }
+                
+                return false;
+            });
+         
+           
+        });
+    </script>
+    
+    }

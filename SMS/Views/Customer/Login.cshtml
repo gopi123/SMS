@@ -1,0 +1,350 @@
+﻿@{
+    Layout = null;
+
+}
+@model SMS.Models.ViewModel.CustomerLoginVM
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    @Styles.Render("~/bundles/layoutStyle")
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/Styles/Site.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    @Styles.Render("~/bundles/pageStyle")
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style type="text/css">
+        .datepicker {
+            z-index: 9999 !important;
+        }
+    </style>
+
+
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <img src="@Url.Content("~/Styles/SMS_StudentLogin_Logo.jpg")" class="img-responsive" style="width:100%" />
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in to start your session</p>
+
+            <form id="frmCustLoginSearch" action="@Url.Action("Login")" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(m => m.LoginUserName, new { @class = "form-control", @placeholder = "Username" })
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.LoginUserName)
+                </div>
+
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(m => m.LoginPassword, new { @class = "form-control", @placeholder = "Password", @type = "password" })
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.LoginPassword)
+                </div>
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="text-center">
+                        <p class="field-validation-error">@ViewBag.ErrorMessage</p>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-xs-4">
+
+                    </div><!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                            <i class="fa fa-hand-o-right"></i>
+                            Sign In
+                        </button>
+                    </div><!-- /.col -->
+                </div>
+            </form>
+            <form id="frmMdlRegistration" data-href="@Url.Action("LoginSearch")">
+                <div class="modal fade" id="divModalRegister" data-email-validation="@Url.Action("SendValidationEmail")">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Registration Form</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-body ">
+                                    <div class=" form-group col-md-12 ">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your StudentID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentID
+                                                             , new { @class = "form-control capitalise", @id = "txtStudentID", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.StudentID)
+
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your Date Of Birth(MM/DD/YYYY)
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.DOB
+                                                              , new { @class = "form-control ", @id = "txtDOB", @style = "width:100%", @readonly = "readonly" })
+                                            @Html.ValidationMessageFor(m => m.DOB)
+
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your Email-ID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.EmailID
+                                                                          , new { @class = "form-control capitalise", @id = "txtEmailID", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.EmailID)
+
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your MobileNo
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.MobileNo
+                                                                 , new { @class = "form-control ", @id = "txtMobileNo", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.MobileNo)
+
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 errormessage field-validation-error">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button id="btnMdlClose" type="button" class="btn btn-default pull-left btn-modal " data-dismiss="modal">Close</button>
+                                <button id="btnSendRegistration" type="submit" class="btn btn-success btn-modal ">Continue</button>
+                                <i class="fa fa-refresh fa-spin spin-small spinner" style="display:none"></i>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+            </form>
+            <form id="frmMdlForgotUsername">
+                <div class="modal fade" id="divModalForgotUsername" data-url="@Url.Action("ForgotUserName")">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Forgot UserName ??</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-body ">
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your StudentID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentID
+                                                                          , new { @class = "form-control capitalise", @id = "txtStudentID_Username", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.StudentID)
+                                            <span class="field-validation-error error-message"></span>
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your Email-ID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.EmailID
+                                                                          , new { @class = "form-control capitalise", @id = "txtEmailID_Username", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.EmailID)
+                                            <span class="field-validation-error error-message"></span>
+
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your MobileNo
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.MobileNo
+                                                                 , new { @class = "form-control ", @id = "txtMobileNo_Username", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.MobileNo)
+                                            <span class="field-validation-error error-message"></span>
+
+
+                                        </div>
+                                    </div>
+                                    <span class="field-validation-error submit-error-message"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button id="btnMdlClose" type="button" class="btn btn-default pull-left btn-modal " data-dismiss="modal">Close</button>
+                                <button id="btnForgotUsername" type="submit" class="btn btn-success btn-modal ">Continue</button>
+                                <i class="fa fa-refresh fa-spin spin-small spinner" style="display:none"></i>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+
+
+
+            </form>
+
+            <form id="frmMdlForgotPassword">
+                <div class="modal fade" id="divModalForgotPassword" data-url="@Url.Action("Send_ForgotPasswordLink")">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Forgot Password ??</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-body ">
+
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your StudentID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentID
+                                                                , new { @class = "form-control capitalise", @id = "txtStudentID_Password", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.StudentID)
+                                            <span class="field-validation-error error-message"></span>
+
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your Email-ID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.EmailID
+                                                                          , new { @class = "form-control capitalise", @id = "txtEmailID_Password", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.EmailID)
+                                            <span class="field-validation-error error-message"></span>
+
+                                        </div>
+                                    </div>
+                                    <div class=" form-group col-md-12 hideContent">
+                                        <div class=" pull-left ">
+                                            <label for="ddlCourseType" class=" control-label">
+                                                Enter your MobileNo
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.MobileNo
+                                                                 , new { @class = "form-control ", @id = "txtMobileNo_Password", @style = "width:100%" })
+                                            @Html.ValidationMessageFor(m => m.MobileNo)
+                                            <span class="field-validation-error error-message"></span>
+
+
+                                        </div>
+                                    </div>
+                                    <span class="field-validation-error password-error-message"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button id="btnMdlClose" type="button" class="btn btn-default pull-left btn-modal " data-dismiss="modal">Close</button>
+                                <button id="btnForgotPassword" type="button" class="btn btn-success btn-modal ">Continue</button>
+                                <i class="fa fa-refresh fa-spin spin-small spinner" style="display:none"></i>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+            </form>
+
+
+
+            <div class="social-auth-links text-center">
+                <a id="lbtnUserName" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-user"></i> Forgot UserName</a>
+                <a id="lbtnPassword" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-unlock"></i> Forgot Password</a>
+            </div><!-- /.social-auth-links -->
+            <a href="register.html" id="lbtnRegister" class="text-center">Register a new membership</a>
+
+
+
+
+        </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+    <!-- REQUIRED JS SCRIPTS -->
+    @Scripts.Render("~/bundles/layoutScript")
+    <!-- jqueryVal -->
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    <script src="@Url.Content("~/plugins/jQueryBlockUI/jquery.blockUI.js")"></script>
+    <script src="@Url.Content("~/Scriptz/Customer/Login.js?c=" + DateTime.Now.ToString("ddMMyyyy") + "")"></script>
+
+</body>
+</html>

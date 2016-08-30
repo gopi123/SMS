@@ -1,0 +1,223 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    @Styles.Render("~/bundles/layoutStyle")
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/modernizr")
+
+    @RenderSection("styles", required: false)
+
+</head>
+<body class="hold-transition skin-purple-light sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Main Header -->
+        <header class="main-header">
+
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>SMS</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><img src=@Url.Content("~/plugins/dist/img/Ns_Logo.png") alt="logo" style="vertical-align:top" /></span>
+            </a>
+
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- The user image in the navbar-->
+                                @*<img src=@Url.Content(Session["EmployeePhotoUrl"].ToString()) class="user-image" alt="User Image">*@
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                @if (Session["LoggedUserName"] != null)
+                                {
+                                    <span class="hidden-xs">@Session["LoggedUserName"]</span>
+                                }
+
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    @*<img src=@Url.Content(Session["EmployeePhotoUrl"].ToString()) class="img-circle" alt="User Image">*@
+                                    <p>
+                                        <medium>@Session["EmployeeName"] -  @Session["EmployeeDesignation"]</medium>
+                                        <small>Member since  @Session["EmployeeJoinDate"]</small>
+                                    </p>
+                                </li>
+
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="@Url.Action("Logout","Account")" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                @Html.Action("Menu", "Home");
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+
+        @RenderBody()
+
+
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="pull-right hidden-xs">
+                Anything you want
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
+        </footer>
+
+      
+    </div>
+    <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-logout-url="@Url.Action("Logout","Account")" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Session Expiration Warning</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You've been inactive for a while. For your security, we'll log you out automatically. Click "Stay Online" to continue your session. </p>
+                    <p>Your session will expire in <span style="font-weight:bold" id="sessionSecondsRemaining">120</span> seconds.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="extendSession" type="button" class="btn btn-default btn-success" data-dismiss="modal">Stay Online</button>
+                    <button id="logoutSession" type="button" class="btn btn-default" data-dismiss="modal">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- REQUIRED JS SCRIPTS -->
+    @Scripts.Render("~/bundles/layoutScript")
+    <script src="../plugins/idle-timer/idle-timer.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+    @RenderSection("jsCode", required: false)
+
+    <script type="text/javascript">
+    $(function () {
+       
+
+        var
+            session = {
+                //Logout Settings
+                inactiveTimeout: 180000,     //(ms) The time until we display a warning message 3 mins
+                warningTimeout: 60000,      //(ms) The time until we log them out 1 min
+                minWarning: 5000,           //(ms) If they come back to page (on mobile), The minumum amount, before we just log them out
+                warningStart: null,         //Date time the warning was started
+                warningTimer: null,         //Timer running every second to countdown to logout
+                logout: function () {       //Logout function once warningTimeout has expired
+                    window.location.href = $("#warningModal").data("logout-url");                       
+                    },
+
+                    //Keepalive Settings
+                    keepaliveTimer: null,
+                    keepaliveUrl: "",
+                    keepaliveInterval: 5000,     //(ms) the interval to call said url
+                    keepAlive: function () {
+                        $.ajax({ url: session.keepaliveUrl });
+                    }
+                };
+            $(document).on("idle.idleTimer", function (event, elem, obj) {
+                //Get time when user was last active
+                var
+                    diff = (+new Date()) - obj.lastActive - obj.timeout,
+                    warning = (+new Date()) - diff
+                ;
+
+                //On mobile js is paused, so see if this was triggered while we were sleeping
+                if (diff >= session.warningTimeout || warning <= session.minWarning) {
+                    $("#mdlLoggedOut").modal("show");
+                } else {
+                    //Show dialog, and note the time
+                    $('#sessionSecondsRemaining').html(Math.round((session.warningTimeout - diff) / 1000));
+                    $("#warningModal").modal("show");
+                    session.warningStart = (+new Date()) - diff;
+
+                    //Update counter downer every second
+                    session.warningTimer = setInterval(function () {
+                        var remaining = Math.round((session.warningTimeout / 1000) - (((+new Date()) - session.warningStart) / 1000));
+                        if (remaining >= 0) {
+                            $('#sessionSecondsRemaining').html(remaining);
+                        } else {
+                            clearTimeout(session.warningTimer);
+                            session.logout();
+                        }
+                    }, 1000)
+                }
+            });
+
+            // create a timer to keep server session alive, independent of idle timer
+            //session.keepaliveTimer = setInterval(function () {
+            //    session.keepAlive();
+            //}, session.keepaliveInterval);
+
+            //User clicked ok to extend session
+            $("#extendSession").click(function () {
+                clearTimeout(session.warningTimer);
+            });
+            //User clicked logout
+            $("#logoutSession").click(function () {
+                session.logout();
+            });
+
+            //Set up the timer, if inactive for 10 seconds log them out
+            $(document).idleTimer(session.inactiveTimeout);
+          
+
+        });
+
+
+
+
+
+
+    </script>
+
+</body>
+</html>

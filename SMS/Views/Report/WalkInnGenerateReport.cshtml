@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "WalkInnGenerateReport";
+}
+
+@model SMS.Models.ViewModel.ReportVM
+
+@{
+    ViewBag.Title = "WalkInnReports";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <style>
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            background: none;
+            color: #999999;
+            cursor: default;
+        }
+
+        option:empty {
+            display: none;
+        }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            WalkInn Report
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <a class="btn btn-info" href="@Url.Action("WalkInnReport", "Report")">
+                        <i class="fa  fa-hand-o-left"></i>
+                        Back
+                    </a>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("WalkInnReport", "Report")'>
+                        @Html.AntiForgeryToken()
+                        <div class="box-body">
+                            <div class="col-md-12 pull-left ">
+                                <div class="form-group  ">
+                                    <iframe src='@Url.Content("~/Report/WalkInnReport.aspx")' width="100%" height="500"></iframe>
+                                </div>
+                            </div>               
+                        </div>                      
+                    </form>
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/checkboxSwitch")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    
+}
+
+
+
+
+
+
+
+
+
+

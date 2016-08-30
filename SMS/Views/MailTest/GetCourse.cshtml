@@ -1,0 +1,127 @@
+﻿@model SMS.Models.ViewModel.RegistraionVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add Registration Details
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("Add", "WalkInn")' method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body ">
+
+                            <div class=" form-group col-md-4" data-url="@Url.Action("GetCourseList")" data-details-url="@Url.Action("GetCourseDetails","Registration")" id="divCourseCode">
+                                <div>
+                                    <label for="txtStudentName" class=" control-label">
+                                        CourseCode
+                                    </label>
+                                    <label class="reqdLabel">
+                                        *
+                                    </label>
+                                </div>
+                                <div>
+                                    @Html.ListBoxFor(m => m.MultiCourseId
+                                                                 , Model.MultiCourseList
+                                                                 , new { @class = "form-control select2 ", @id = "ddlMultiCourse", @style = "width:%" })                                  
+                                   
+                                    <input type="text" id="txtMultiCourseId" style="display:none" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/inputMaskScript")
+    @Scripts.Render("~/bundles/checkboxSwitch")
+    @Scripts.Render("~/bundles/fileUploadScript")
+
+    <script type="text/javascript">
+        $(function () {
+            var url = $("#divCourseCode").data("url");
+            $("#ddlMultiCourse").select2({
+                placeholder: "Search Course",
+                minimumInputLength: 1,
+                allowClear: true,
+                ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+                    url: url,
+                    type: "POST",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            term: params.term, // search term
+                            value: $("#txtMultiCourseId").val()
+                        };
+                    },
+                    processResults: function (data, params) {
+                        // parse the results into the format expected by Select2
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data, except to indicate that infinite
+                        // scrolling can be used
+                        //params.page = params.page || 1;
+
+                        return {
+                            results: data
+
+                        };
+                    }
+
+                }
+            });
+
+            $("#ddlMultiCourse").on("select2:select select2:unselect", function (e) {
+
+                var courseId = $(this).val();
+                $("#txtMultiCourseId").val(courseId);
+
+               
+
+            });
+
+        });
+    </script>
+}
+
+
+
+
+
+
+
+

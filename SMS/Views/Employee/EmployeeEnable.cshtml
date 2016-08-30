@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/dataTableStyle")
+
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Deleted Employee Details
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                       
+                    </div>
+                    <!-- form start -->
+                    <form id="frmEmpEnable" class="form-horizontal" data-employeenable-url="@Url.Action("EnableEmployee")">
+
+                        <!-- /.box-body -->
+                        <div class="box-body ">
+                            <table class="table table-bordered table-striped dTable" data-url="@Url.Action("Get_EmployeeDisableList", "Employee")">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name </th>
+                                        <th>CenterCode </th>
+                                        <th>Designation</th>
+                                        <th>EmailId</th>
+                                        <th>MobileNo</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="box-footer col-md-12">
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+
+                    <!-- /.modal -->
+                    <div class="box-footer col-md-12">
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/dataTableScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    <script src="~/Scriptz/Employee/EmployeeEnable.js"></script>
+}

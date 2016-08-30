@@ -1,0 +1,61 @@
+﻿
+
+@model SMS.Models.ViewModel.ReportVM
+
+@{
+    ViewBag.Title = "CollectionReports";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Collection Report
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("CollectionReport")">
+                            <i class="fa  fa-hand-o-left" ></i>
+                            Back
+                        </a>
+                    </div>                   
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body">
+                            <div class="col-md-12 pull-left ">
+                                <div class="form-group " >
+                                    <iframe src='@Url.Content("~/Report/CollectionReport.aspx")' width="100%" height="700"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{   
+    @Scripts.Render("~/bundles/pageScript")
+
+
+}

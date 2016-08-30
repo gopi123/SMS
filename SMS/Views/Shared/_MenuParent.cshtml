@@ -1,0 +1,8 @@
+﻿@model IEnumerable<SMS.Models.Menu> 
+
+    @foreach (var subMenuItem in Model)
+    {
+        <li><a href="@Url.Action(subMenuItem.Action,subMenuItem.Controller)"><i class="fa fa-th-list"></i>@subMenuItem.MenuName </a></li>
+    }
+
+

@@ -1,0 +1,549 @@
+﻿@model SMS.Models.ViewModel.CustomerFeedbackVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/bootstrapSwitchStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")   
+    @Styles.Render("~/bundles/rateyoSytle")
+<link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <style>
+        #chkbxHardCopyReqd {
+            display: none !important;
+        }
+
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            background: none;
+            color: #999999;
+            cursor: default;
+        }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add Project Feedback 
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("EfeedBackList")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" data-url='@Url.Action("EfeedBack")' data-redirect-url="@Url.Action("EfeedBackList")" >
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m=>m.FeedBackId)
+                        @Html.HiddenFor(m=>m.CROName)
+                        @Html.HiddenFor(m=>m.StudentEmailId)
+                        @Html.HiddenFor(m=>m.CenterId)
+                        <div class="box-body ">
+                            <div id="feedbackStepz">
+                                <h3>COURSE DETAILS</h3>
+                                <section>
+                                    <div class="col-md-5">
+
+                                        <div class=" form-group ">
+
+                                            <label for="txtEmployee" class=" control-label">
+                                                Course Name
+                                            </label>
+
+                                            @Html.TextBoxFor(m => m.CourseName,
+                                                     new { @class = "form-control toUpper", @id = "txtCourseName", @disabled = "true" })
+
+                                        </div>
+                                        <div class=" form-group ">
+
+                                            <label for="txtAddress" class=" control-label">
+                                                Course Duration
+                                            </label>
+                                            @Html.TextBoxFor(m => m.CourseName,
+                                                     new { @class = "form-control toUpper", @id = "txtCourseName", @disabled = "true" })
+
+                                        </div>
+                                        <div class="form-group  ">
+                                            <label for="txtDOB" class=" control-label">
+                                                Book Type
+                                            </label>
+                                            <input type="text" value="e-WorkBook" class="form-control" id="txtBookType" disabled="disabled" />
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlInstructor" class=" control-label">
+                                                    Faculty Name
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+
+                                            <div class="col-sm-8"  id="divInstructor" data-url="@Url.Action("GetFacultyPhoto")">
+                                                @Html.DropDownListFor(m => m.InstructorID
+                                                    , Model.InstuctorList
+                                                    , ""
+                                                    , new { @class = "form-control select2 ", @id = "ddlInstructor", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.InstructorID)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlInstructor" class=" control-label">
+                                                    Faculty Photo
+                                                </label>
+                                            </div>
+
+                                            <div class="col-sm-8">
+                                                <img src=@Url.Content(Model.DefaultInstructorPhoto) alt="User Image" width="100" height="100" id="imgInstructorPhoto">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-2"> </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtPincode" class=" control-label">
+                                                    Course Start Date
+                                                </label>
+                                            </div>
+
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(m => m.CourseStartDate,
+                                                              new { @class = "form-control ", @placeholder = "CourseStartDate", @id = "txtCourseStartDate" })
+                                                @Html.ValidationMessageFor(m => m.CourseStartDate)
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtPincode" class=" control-label">
+                                                    Course End Date
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                @Html.TextBoxFor(m => m.CourseEndDate,
+                                                              new { @class = "form-control ", @placeholder = "CourseEndDate", @id = "txtCourseEndDate" })
+                                                @Html.ValidationMessageFor(m => m.CourseEndDate)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Do you need a hard copy material ?(This will be chargeable)
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.CheckBoxFor(m => m.IsHardCopyRequired, new { @class = "chkbxSwitch", @id = "chkbxHardCopyReqd" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divHardCopyCost" style="display:none">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Material Cost
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentFeedback.Course.MaterialCost, new { @class = "form-control ", @id = "txtMaterialCost", @disabled = true })
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </section>
+                                <h3>RATING</h3>
+                                <section>
+                                    <div class="col-md-12">
+                                        <div class="form-group" style="margin-left:30%">
+                                            <div class="pull-left">
+                                                <i style="width: 16px;height:16px;display: inline-block; background: #800000; vertical-align: middle"></i>
+                                                &nbsp;<label>Strongly Disagree</label>&nbsp;&nbsp;
+                                            </div>
+                                            <div class="pull-left">
+                                                <i style="width: 16px;height:16px;display: inline-block; background: #ff3300; vertical-align: middle"></i>
+                                                &nbsp;<label>Disagree</label>&nbsp;&nbsp;
+                                            </div>
+                                            <div class="pull-left">
+                                                <i style="width: 16px;height:16px;display: inline-block; background: #ff6600; vertical-align: middle"></i>
+                                                &nbsp;<label>Average</label>&nbsp;&nbsp;
+                                            </div>
+                                            <div class="pull-left">
+                                                <i style="width: 16px;height:16px;display: inline-block; background: #ffcc00; vertical-align: middle"></i>
+                                                &nbsp;<label>Agreee</label>&nbsp;&nbsp;
+                                            </div>
+                                            <div class="pull-left">
+                                                <i style="width: 16px;height:16px;display: inline-block; background: #ccff33; vertical-align: middle"></i>
+                                                &nbsp;<label>Strongly Agree</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                       
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Course was given in an environment conducive for learning
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.LearningEnvironmentRating, new { @class = "rateYoText "  })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="LearningEnvironmentDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.LearningEnvironmentDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m=>m.LearningEnvironmentDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Computers and equipment were in good working condition
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.EquipmentRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="EquipmentDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.EquipmentDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.EquipmentDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Course and ciricullum matched with my expectation
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo">
+                                                </div>                            
+                                               
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.CiricullumRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="LearningEnvironmentDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.CiricullumDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.CiricullumDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Instructor has started class ontime
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.InstructorClassStartTimeRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="LearningEnvironmentDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.InstructorClassStartTimeDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.InstructorClassStartTimeDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="rateYo" class=" control-label">
+                                                    Instructor was well prepared
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.InstructorPreparationRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="InstructorPreparationDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.InstructorPreparationDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.InstructorPreparationDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="rateYo" class=" control-label">
+                                                    Instructor explained the course in an easy way to understand
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.InstructorExplanationRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="InstructorExplanationDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.InstructorExplanationDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.InstructorExplanationDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="rateYo" class=" control-label">
+                                                    Instructor was helpful to support Lab , Project and Project Lab
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.InstructorProjectSupportRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="InstructorProjectSupportDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.InstructorProjectSupportDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.InstructorProjectSupportDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Care and friendliness of our customer care team
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.CustomerCareRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="CustomerCareDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.CustomerCareDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.CustomerCareDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                   Overall experience
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.OverallExperienceRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="CustomerCareDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.OverallExperienceDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.OverallExperienceDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    I will recommend this course to others
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="rateYo"></div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.StudentFeedback.CourseRecommendationRating, new { @class = "rateYoText" })
+                                                </div>
+                                                <div class="dislikeReasonDiv col-sm-8" style="display:none">
+                                                    <div>
+                                                        <label for="CustomerCareDislikeReason" class="control-label ">
+                                                            Please enter reason
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.CourseRecommendationDislikeReason, new { @class = "form-control toUpper" })
+                                                        @Html.ValidationMessageFor(m => m.CourseRecommendationDislikeReason)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    Are you interested to learn any new product in next 12 months ?
+                                                </label>
+                                            </div>
+                                            <div>                                                
+                                                <div>
+                                                    <label style="width:100px">
+                                                        @Html.RadioButtonFor(m => m.FutureCourseJoinStatus, SMS.Models.EnumClass.FutureCourseJoinStatus.YES, new { @class = "minimal single" })
+                                                        YES
+                                                    </label>
+                                                    <label style="width:100px">
+                                                        @Html.RadioButtonFor(m => m.FutureCourseJoinStatus, SMS.Models.EnumClass.FutureCourseJoinStatus.NO, new { @class = "minimal single" })
+                                                        NO
+                                                    </label>
+                                                    @Html.ValidationMessageFor(m=>m.FutureCourseJoinStatus)
+
+                                                </div>
+                                                <div class="futureCourseDiv col-sm-8" >                                                    
+                                                    <div>
+                                                        <label for="futureCourse" class="control-label ">
+                                                            Please select course
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.DropDownListFor(m => m.PreferredCourseID
+                                                                 , Model.PreferredCourseList
+                                                                 , ""
+                                                                          , new { @class = "form-control select2 ", @id = "ddlPreferredCourse", @style = "width:100%", multiple = "multiple" })
+                                                        @Html.ValidationMessageFor(m => m.PreferredCourseID)
+                                                    </div>
+                                                    <div>
+                                                        <label for="futureCourse" class="control-label ">
+                                                            If the coursename is not mentioned in the above list please enter here
+                                                        </label>
+                                                    </div>
+                                                    <div>
+                                                        @Html.TextBoxFor(m => m.StudentFeedback.PreferredCourseName, new { @class = "form-control toUpper" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+
+                                    
+                                </section>
+                               
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    @*@Scripts.Render("~/bundles/inputMaskScript")*@
+    @Scripts.Render("~/bundles/checkboxSwitch")
+    @Scripts.Render("~/bundles/fileUploadScript")
+    @Scripts.Render("~/bundles/jqueryForms")
+    @Scripts.Render("~/bundles/rateyo")
+
+    <script src="~/Scriptz/Customer/EFeedback.js"></script>
+}
+
+@section jsCode{
+    <script type="text/javascript">
+
+
+    </script>
+
+
+}

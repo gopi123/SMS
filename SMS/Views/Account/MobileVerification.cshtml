@@ -1,0 +1,136 @@
+﻿@{
+    Layout = null;
+
+}
+@model SMS.Models.MobileVerification
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    @Styles.Render("~/bundles/layoutStyle")
+    <!-- Style css -->
+    <link rel="stylesheet" href="~/Styles/Site.css">
+    <!-- Loding css -->
+    <link rel="stylesheet" href="~/plugins/IsLoading/jquery.loading.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/modernizr")
+
+
+
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href=""> <b>PIN VERIFICATION</b></a>
+        </div><!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">Enter 4 digit pinno received in your mobile</p>
+
+            <form action="@Url.Action("MobileVerification")" data-redirect-url="@Url.Action("MobileVerified")">
+                @Html.AntiForgeryToken()    
+                @Html.HiddenFor(m => m.TypeId)            
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(m => m.PinNo, new { @class = "form-control txtPinNo", @placeholder = "Enter PinNo" })
+                    <span class="fa fa-key form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.PinNo)
+                </div>               
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="text-center">
+                        <p class="field-validation-error">@ViewBag.ErrorMessage</p>
+                    </div>
+                }
+
+                <div class="row">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat btnSubmit">Submit</button>
+                </div>
+            </form>        
+        </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+    <!-- REQUIRED JS SCRIPTS -->
+    @Scripts.Render("~/bundles/layoutScript")
+    <!-- jqueryVal -->
+    @Scripts.Render("~/bundles/jqueryval")
+    <!-- iCheck -->
+    <script src="@Url.Content("~/plugins/input-mask/jquery.inputmask.js")"></script>
+    <script src="@Url.Content("~/plugins/input-mask/jquery.inputmask.extensions.js")"></script>
+    <script src="@Url.Content("~/plugins/IsLoading/jquery.loading.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/plugins/Bootbox/bootbox.js")" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $(".txtPinNo").inputmask("9999");
+
+            
+
+            //isLoading function
+            var isLoading = function (loading) {
+                if (loading) {
+                    $('html').loading({
+                        message: "Please wait ...",
+                        theme: 'dark'
+                    });
+                }
+                else {
+                    $('html').loading('stop');
+                }
+            };
+          
+
+            $(document).on("click", ".btnSubmit", function () {
+                var form = $(this).closest('form');               
+                var href = $(form).attr('action');
+                var redirectUrl = $(form).data("redirect-url");
+
+                if (form.valid()) {
+                    isLoading(true);
+                    var formData = $(form).serialize();
+
+                    $.ajax({
+                        type: "POST",
+                        url: href,
+                        data: formData,
+                        datatype: "json",
+                        success: function (data) {
+                            isLoading(false);
+                            if (data.message == "success") {
+                                $(".txtPinNo").val("");
+                                window.location.href = redirectUrl;                                
+                            }
+                            else if (data.message == "error_pinno") {
+                                bootbox.alert("Invalid PinNo")
+                            }
+                            else {
+                                bootbox.alert("Error:Something gone wrong");
+                            }
+                        },
+                        error: function (data) {
+                            isLoading(false);
+                            bootbox.alert("Error:Something gone wrong");
+                        }
+                    });
+                }
+                return false;
+
+            });
+        });
+    </script>
+</body>
+</html>

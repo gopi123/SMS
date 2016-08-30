@@ -1,0 +1,326 @@
+﻿@model SMS.Models.ViewModel.StudentImageVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Student Image Upload
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" method="post" enctype="multipart/form-data" action='@Url.Action("Add")' data-redirect-url="@Url.Action("Index")">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.StudentRegistration.PhotoUrl, new { @id = "hFieldPhotoUrl" })
+                        @Html.HiddenFor(m => m.StudentRegId, new { @id = "hFieldRegId" })
+                        <div class="box-body ">
+                            <div class="col-md-6">
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtName" class=" control-label">
+                                            Student Name
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.StudentRegistration.StudentWalkInn.CandidateName,
+                                                                      new { @class = "form-control ", @id = "txtName", @disabled = "true" })
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtCentreCode" class=" control-label">
+                                            Student Current Image
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.PhotoNewUrl,
+                                                                      new { @class = "form-control imgUpload", @placeholder = "Please upload Photo", @id = "txtPhoto", @type = "file", @disabled = "true" })
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtName" class=" control-label">
+                                            Registration No
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.StudentRegistration.RegistrationNumber,
+                                                                      new { @class = "form-control ", @id = "txtName", @disabled = "true" })
+
+                                    </div>
+                                </div>
+
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtCentreCode" class=" control-label">
+                                            Student New Image
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.PhotoNewUrl,
+                                                             new { @class = "form-control imgUpload", @placeholder = "Please upload Photo", @id = "txtPhotoNew", @type = "file" })
+                                        @Html.ValidationMessageFor(m => m.PhotoNewUrl)
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="box-footer col-md-12">
+                            <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                <i class="fa  fa-save"></i>
+                                Save
+                            </button>
+                            <button id="btnReject" class="btn btn-danger pull-left " style="margin-left: 10px">
+                                <i class=" fa fa-thumbs-down">
+                                </i>
+                                Reject
+                            </button>
+                            <button type="submit" id="btnCancel" class="btn btn-default pull-left" style="margin-left: 10px">
+                                <i class="fa  fa-undo"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+
+                    <!-- form end -->
+
+                    <div class="modal fade" id="mdlPhotoReject" data-url="@Url.Action("PhotoReject")">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Photo Rejection</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="box-body ">
+                                        <div class=" form-group col-md-12">
+                                            <div class=" pull-left ">
+                                                <label for="txtRejectedReason" class=" control-label">
+                                                    Enter Rejected Reason
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextArea("txtRejectedReason", new { @class = "form-control capitalise", @id = "txtRejectedReason" })
+
+                                            </div>
+                                            <div id="divMdlErrorMsg" style="display:none">
+                                                <span class="field-validation-error">Please enter reason</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="btnMdlClose" type="button" class="btn btn-default pull-left btn-modal btnEdit" data-dismiss="modal">Close</button>
+                                    <button id="btnRejectContinue" type="button" class="btn btn-danger btn-modal ">Reject</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/fileUploadScript")
+    @Scripts.Render("~/bundles/jqueryForms")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+}
+
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+
+            //toastr options
+            toastr.options = {
+                "closeButton": true,
+                "positionClass": "toast-bottom-right",
+                "progressBar": true
+            }
+
+            var getCaption = function (imgUrl) {
+                if (imgUrl != "") {
+                    var dataArray = imgUrl.split("/");
+                    var caption = dataArray[dataArray.length - 1];
+                    return caption
+                }
+                else {
+                    return "No File Selected"
+                }
+
+            }
+
+            //fileUpload plugin
+            $("#txtPhoto").fileinput({
+                showUpload: false,
+                initialPreview: [
+                    '<img src="@Url.Content(Model.StudentRegistration.PhotoUrl)" class="file-preview-image" alt="' + getCaption("@Model.StudentRegistration.PhotoUrl") + '" title="' + getCaption("@Model.StudentRegistration.PhotoUrl") + '">'
+                ],
+                overwriteInitial: true,
+                initialCaption: getCaption("@Model.StudentRegistration.PhotoUrl")
+            });
+
+
+
+
+            //fileUpload plugin
+            $("#txtPhotoNew").fileinput({
+                showUpload: false,
+                maxFileSize: "80 KB",
+                allowedFileTypes: ["image"]
+            });
+
+
+            $('#txtPhotoNew').on('fileloaded', function (event, previewId) {
+
+                var currImageName = $("#hFieldPhotoUrl").val().replace(/.*(\/|\\)/, '');
+                var newImageName = $(this).val().replace(/.*(\/|\\)/, '');
+
+                if (currImageName != newImageName) {
+
+                    bootbox.alert("Student current image name and uploaded image name are different.", function () {
+                        $("#txtPhotoNew").fileinput('clear');
+                    });
+
+                }
+            });
+
+
+            $("#btnSubmit").click(function () {
+                var $form = $("#frmAdd");
+                if ($form.valid()) {
+                    $("#frmAdd").ajaxSubmit({
+                        iframe: true,
+                        dataType: "json",
+                        beforeSubmit: function () {
+                            $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Please wait... </b></h3>' });
+
+                        },
+                        success: function (result) {
+                            $.unblockUI();
+                            if (result == "success") {
+                                toastr.success("Successfully uploded the image.")
+                                setTimeout(function () {
+                                    var url = $($form).data("redirect-url");
+                                    window.location.href = url;
+                                }, 2000);
+                            }
+                            else {
+                                toastr.error("Error : Cannot save the details.")
+                            }
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            $.unblockUI();
+                            toastr.error("Error:Something gone wrong")
+                        }
+
+                    });
+                };
+
+                return false;
+
+            });
+
+
+            $("#btnCancel").click(function () {
+                $("#txtPhotoNew").fileinput('clear');
+
+            });
+
+            $("#btnReject").click(function () {
+
+                $("#txtRejectedReason").val("");
+                $("#divMdlErrorMsg").hide();
+                $("#mdlPhotoReject").modal({
+                    backdrop: 'static'
+                });
+
+                return false;
+
+            });
+
+            $("#btnRejectContinue").click(function () {
+
+                var href = $("#mdlPhotoReject").data("url");
+                var reason = $("#txtRejectedReason").val();
+                var regId = $("#hFieldRegId").val();
+                var form = $("#frmAdd");
+
+                if (reason != "") {
+                    $('#mdlPhotoReject').modal('hide');
+                    $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Please wait... </b></h3>' });
+
+                    $.ajax({
+                        type: "POST",
+                        url: href,
+                        data: { rejectedReason: reason, studentRegistrationId: regId },
+                        datatype: "json",
+                        success: function (data) {
+                            if (data == "success") {
+                                $.unblockUI();
+                                toastr.success("Successfully rejected the photo");
+                                setTimeout(function () {
+                                    var redirectUrl = $(form).data("redirect-url");
+                                    window.location.href = redirectUrl;
+                                }, 2000);                               
+                            }
+                            else {
+                                $.unblockUI();
+                                toastr.error("Error:Something gone wrong");
+                            }
+                        },
+                        error: function (data) {
+                            $.unblockUI();
+                            toastr.error("Exception:some thing gone wrong");
+                        }
+                    });
+                }
+                else {
+                    $("#divMdlErrorMsg").show();
+                }
+
+
+            });
+
+
+        });
+    </script>
+}

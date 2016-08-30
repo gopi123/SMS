@@ -1,0 +1,262 @@
+﻿@model SMS.Models.ViewModel.TrainerApprovalVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+           Trainer Approval
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row" style="height:800px">
+            <div class="col-md-12">
+                <div class="box" style="height:700px">
+                    <div class="box-header">
+                        <a class="btn btn-primary" href="@Url.Action("TrainerApprovalList")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <form id="frmAdd" class="form-horizontal" data-url='@Url.Action("TrainerApproval")' data-redirect-url="@Url.Action("TrainerApprovalList")">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m=>m.FeedbackId)
+                        @Html.HiddenFor(m=>m.InstructorName)
+                        <div class="box-body">
+                            <div class="col-md-8">
+                                <div class="col-md-5">
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="StudentID" class=" control-label">
+                                                Student ID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentID, new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="StudentID" class=" control-label">
+                                                Student Name
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-5">
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="CourseName" class=" control-label">
+                                                Course Name
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.CourseName, new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="CourseName" class=" control-label">
+                                                Project Report
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <a class="btn btn-success btn-xs" id="validateEmailLink"  href="@Url.Action("ProjectDownload", new { pjtDwnldUrl = Model.ProjectDownloadUrl })">
+                                                <i class="fa fa-file-pdf-o"></i>
+                                                Project Report 
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="box">
+                                    <div class="box-header with-border primary">
+                                        <h3 class="box-title">Project Report Verification</h3>
+                                    </div> 
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width: 5%"></th>
+                                                    <th style="width:30%">Verification Question</th>
+                                                    <th style="width:25%">Status</th>
+                                                    <th style="width: 40px">Denial Reason</th>
+                                                </tr>
+                                                <tr class="parentRow">
+                                                    <td>1.</td>
+                                                    <td>
+                                                        <b>Collected source code from student project</b>
+                                                    </td>
+                                                    <td>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsSourceCodeCollected, true, new { @class = "minimal sourceCodeCollected" })
+                                                            YES
+                                                        </label>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsSourceCodeCollected, false, new { @class = "minimal sourceCodeCollected" })
+                                                            NO
+                                                        </label>
+                                                        @Html.ValidationMessageFor(m => m.IsSourceCodeCollected)
+                                                    </td>
+                                                    <td>
+                                                        <div class="dislikeReasonDiv" style="display:none">
+                                                            @Html.TextBoxFor(m => m.SourceCodeCollectedDenyReason, new { @class = "form-control toUpper sourceCodeDenyReason", @placeholder = "ENTER REASON" })
+                                                            @Html.ValidationMessageFor(m => m.SourceCodeCollectedDenyReason)
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr class="parentRow">
+                                                    <td>2.</td>
+                                                    <td>  <b> Cross checked project and found working</b> </td>
+                                                    <td>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsCrossChecked, true, new { @class = "minimal crosschecked" })
+                                                            YES
+                                                        </label>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsCrossChecked, false, new { @class = "minimal crosschecked" })
+                                                            NO
+                                                        </label>
+                                                        @Html.ValidationMessageFor(m => m.IsCrossChecked)
+                                                    </td>
+                                                    <td>
+                                                        <div class="dislikeReasonDiv" style="display:none">
+                                                            @Html.TextBoxFor(m => m.CrossCheckedDenyReason, new { @class = "form-control toUpper sourceCodeDenyReason", @placeholder = "ENTER REASON" })
+                                                            @Html.ValidationMessageFor(m => m.CrossCheckedDenyReason)
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="parentRow">
+                                                    <td>3.</td>
+                                                    <td><b>Project is not copied from internet/others</b> </td>
+                                                    <td>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsProjectNotCopied, true, new { @class = "minimal projectCopied" })
+                                                            YES
+                                                        </label>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsProjectNotCopied, false, new { @class = "minimal projectCopied" })
+                                                            NO
+                                                        </label>
+                                                        @Html.ValidationMessageFor(m => m.IsProjectNotCopied)
+                                                    </td>
+                                                    <td>
+                                                        <div class="dislikeReasonDiv" style="display:none">
+                                                            @Html.TextBoxFor(m => m.ProjectIsNotCopiedDenyReason, new { @class = "form-control toUpper sourceCodeDenyReason", @placeholder = "ENTER REASON" })
+                                                            @Html.ValidationMessageFor(m => m.ProjectIsNotCopiedDenyReason)
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="parentRow">
+                                                    <td>4.</td>
+                                                    <td><b>Uploaded the same course project report</b></td>
+                                                    <td>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsUploadedSameCourseProjectReport, true, new { @class = "minimal uploadedProject" })
+                                                            YES
+                                                        </label>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsUploadedSameCourseProjectReport, false, new { @class = "minimal uploadedProject" })
+                                                            NO
+                                                        </label>
+                                                        @Html.ValidationMessageFor(m=>m.IsUploadedSameCourseProjectReport)
+                                                    </td>
+                                                    <td>
+                                                        <div class="dislikeReasonDiv" style="display:none">
+                                                            @Html.TextBoxFor(m => m.UploadedSameCourseProjectReportDenyReason, new { @class = "form-control toUpper sourceCodeDenyReason", @placeholder = "ENTER REASON" })
+                                                            @Html.ValidationMessageFor(m => m.UploadedSameCourseProjectReportDenyReason)
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="parentRow">
+                                                    <td>5.</td>
+                                                    <td><b>Project is different from lab exercise</b></td>
+                                                    <td>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsProjectDifferentFromLabExercise, true, new { @class = "minimal labExerciseProject" })
+                                                            YES
+                                                        </label>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.IsProjectDifferentFromLabExercise, false, new { @class = "minimal labExerciseProject" })
+                                                            NO
+                                                        </label>
+                                                        @Html.ValidationMessageFor(m => m.IsProjectDifferentFromLabExercise)
+                                                    </td>
+                                                    <td>
+                                                        <div class="dislikeReasonDiv" style="display:none">
+                                                            @Html.TextBoxFor(m => m.ProjectDifferentFromLabExerciseDenyReason, new { @class = "form-control toUpper sourceCodeDenyReason", @placeholder = "ENTER REASON" })
+                                                            @Html.ValidationMessageFor(m => m.ProjectDifferentFromLabExerciseDenyReason)
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary" id="btnSubmit">
+                                            <i class="fa  fa-save"></i>
+                                               Save</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+
+
+                <!-- form start -->
+                <!-- form end -->
+            </div>
+            <!-- /.box -->
+        </div>
+
+
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    @*@Scripts.Render("~/bundles/inputMaskScript")*@
+    @Scripts.Render("~/bundles/checkboxSwitch")
+    @Scripts.Render("~/bundles/fileUploadScript")
+
+    <script src="~/Scriptz/ProjectReportApproval/TrainerApproval.js"></script>
+}
+
+

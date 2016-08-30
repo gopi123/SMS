@@ -1,0 +1,65 @@
+﻿@model SMS.Models.ViewModel.MenuRoleVM
+
+<div id="MenuView">
+    <table class="table table-bordered table-striped" id="tblMenuList">
+        <thead>
+            <tr>
+                <th style="width: 5px">#</th>
+                <th style="">MenuName </th>
+                <th style="">Add</th>
+                <th style="">Edit</th>
+                <th style="">Delete</th>
+            </tr>
+        </thead>
+
+        @if (Model.MenuList != null)
+        {
+            for (int i = 0; i < Model.MenuList.Count; i++)
+            {
+                <tr>
+                    @Html.HiddenFor(m => m.MenuList[i].MenuId)
+                    <td>
+                        <input type="checkbox" class="minimal checkAll" />
+                    </td>
+                    <td>@Html.DisplayFor(m => m.MenuList[i].MenuName)</td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.MenuList[i].CanAdd, new { @class = "minimal single" })
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.MenuList[i].CanEdit, new { @class = "minimal single" })
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.MenuList[i].CanDelete, new { @class = "minimal single" })
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" style="text-align:center">
+                    Please select the above criteria
+                </td>
+            </tr>
+        }
+
+        <tfoot>
+            <tr>
+                <th style="width: 5px">#</th>
+                <th style="">MenuName </th>
+                <th style="">Add</th>
+                <th style="">Edit</th>
+                <th style="">Delete</th>
+
+            </tr>
+        </tfoot>
+
+    </table>
+</div>
+    
+
+
+
+
+

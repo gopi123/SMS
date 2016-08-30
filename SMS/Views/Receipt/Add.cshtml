@@ -1,0 +1,606 @@
+﻿@model SMS.Models.ViewModel.ReceiptVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <style type="text/css">
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            background: none;
+            color: #999999;
+            cursor: default;
+        }
+
+        .blockMsg {
+            margin-left: 200px !important;
+        }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add Receipt Details
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index", "Registration")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("Receipt_Add", "Receipt")' method="post"
+                          data-download-url="@Url.Action("PrintPdfRequest", new { pdfName = "param2_placeholder" })"
+                          data-redirect-url="@Url.Action("Add", new { regId = Model.StudentRegistration.Id, Redirect = true })"
+                          data-receipt-generate-url="@Url.Action("Generate_Receipt_Email_SMS", new { studentRegId = Model.StudentRegistration.Id })">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.StudentRegistration.Id, new { @id = "hFieldStudentRegId" })
+                        @Html.HiddenFor(m => m.IsEmailValidated, new { @id = "hFieldEmailValidation" })
+                        <div class="box-body ">
+                            <dv id="ReceiptStepz">
+                                <h3>PERSONAL DATA</h3>
+                                <section>
+                                    <div class="col-md-5">
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Registration Id
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.RegistrationNumber,
+                                                                 new { @class = "form-control ", @placeholder = "RegistrationID", @id = "txtRegistrationID", @readonly = "readonly" })
+                                              
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Name
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.StudentWalkInn.CandidateName,
+                                                                 new { @class = "form-control ", @placeholder = "Name", @id = "txtStudentName", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtEmailId" class=" control-label">
+                                                    Email-Id
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Email,
+                                                                     new { @class = "form-control", @placeholder = "EmailId", @id = "txtEmailId", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Mobile No
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.MobileNo,
+                                                                          new { @class = "form-control", @placeholder = "MobileNo", @id = "txtMobileNo", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    DOB(DD/MM/YYYY)
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.StudentWalkInn.DOB, "{0:dd/MM/yyyy}",
+                                                                       new { @class = "form-control", @placeholder = "DOB", @id = "txtDOB", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtPhoto" class=" control-label">
+                                                    Photo
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.PhotoUrl,
+                                                             new { @class = "form-control imgUpload", @placeholder = "Please upload Photo", @id = "txtPhoto", @type = "file", @disabled = true })
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+
+                                </section>
+                                <h3>COURSE DETAILS </h3>
+                                <section>
+                                    <div class="col-md-5">
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtCourseTitle" class=" control-label">
+                                                    CourseCode
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.CourseCode,
+                                                                 new { @class = "form-control ", @placeholder = "Course Code", @id = "txtCourseCode", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtCourseTitle" class=" control-label">
+                                                    CourseTitle
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.CourseTitle,
+                                                                 new { @class = "form-control ", @placeholder = "Course Title", @id = "txtCourseTitle", @rows = 3, @readonly = "readonly" })
+
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtCourseTitle" class=" control-label">
+                                                    SoftwareUsed
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.SoftwareUsed,
+                                                                 new { @class = "form-control ", @placeholder = "Software Used", @id = "txtSoftwareUsed", @rows = 3, @readonly = "readonly" })
+
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group" id="divFeeMode" data-url="@Url.Action("GetCourseFee")">
+                                            <div>
+                                                <label for="InstallmentType" class=" control-label">
+                                                    Fee Mode
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.FeeMode,
+                                                                       new { @class = "form-control", @placeholder = "FeeMode", @id = "txtFeeMode", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group" id="divInstallmentNo">
+                                            <div>
+                                                <label for="ddlInstallmentNo" class=" control-label">
+                                                    No of Installment
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.NoOfInstallment,
+                                                                 new { @class = "form-control", @placeholder = "InstallmentCount", @id = "txtInstallmentCount", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+
+
+                                        <div class=" form-group" data-url="@Url.Action("GetCourseList", "Registration")" data-details-url="@Url.Action("GetCourseDetails", "Registration")" id="divCourseCode">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Course Fee
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.TotalCourseFee,
+                                                                new { @class = "form-control", @placeholder = "InstallmentCount", @id = "txtTotalCourseFee", @readonly = "readonly" })
+                                            </div>
+
+                                        </div>
+
+                                        <div class=" form-group" data-url="@Url.Action("GetCourseList", "Registration")" data-details-url="@Url.Action("GetCourseDetails", "Registration")" id="divCourseCode">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    ST Amount
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.TotalSTAmount,
+                                                             new { @class = "form-control", @placeholder = "STAmount", @id = "txtSTAmount", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+
+                                        <div class=" form-group" data-url="@Url.Action("GetCourseList", "Registration")" data-details-url="@Url.Action("GetCourseDetails", "Registration")" id="divCourseCode">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Total Amount
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.TotalAmount,
+                                                             new { @class = "form-control", @placeholder = "TotalAmount", @id = "txtTotalAmount", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+
+
+                                    </div>
+
+                                </section>
+                                <h3>PAYMENT DETAILS</h3>
+                                <section>
+
+                                    <div class="col-md-12">
+                                        <div class="pull-right" style="margin-top:12px">
+                                            <button class="btn-sm btn-primary btnEditRegn" data-regn-url="@Url.Action("Edit", "Registration", new { regId = Model.StudentRegistration.Id, redirect = "true" })">
+                                                <i class="fa fa-pencil"></i>
+                                                Edit Registration
+                                            </button>
+                                        </div>
+                                        <div class="box-body no-padding">
+                                            <div class="callout callout-success ">
+                                                <h4 id="titleTotalamt"></h4>
+
+
+                                            </div>
+                                            <div class=" form-group col-md-5 pull-right">
+                                                <div>
+                                                    <label for="ddlPaymentMode" class=" control-label">
+                                                        Mode Of Payment
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    @Html.DropDownListFor(m => m.PaymentModeID
+                                                                 , Model.PaymentModeList
+                                                                 , ""
+                                                                 , new { @class = "form-control select2 ", @id = "ddlPaymentMode", @style = "width:100%" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-5">
+                                                    <div class="form-group chequePymnt" style="display:none">
+                                                        <div>
+                                                            <label for="txtBankName" class=" control-label">
+                                                                Bank Name
+                                                            </label>
+                                                        </div>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => m.BankName,
+                                                                       new { @class = "form-control", @placeholder = "BankName", @id = "txtBankName" })
+                                                            @Html.ValidationMessageFor(m => m.BankName)
+
+                                                        </div>
+                                                    </div>
+                                                    <div class=" form-group chequePymnt" style="display:none">
+                                                        <div>
+                                                            <label for="txtBranchName" class=" control-label">
+                                                                Branch Name
+                                                            </label>
+                                                        </div>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => m.BranchName,
+                                                                       new { @class = "form-control", @placeholder = "Branch Name", @id = "txtBranchName" })
+                                                            @Html.ValidationMessageFor(m => m.BranchName)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-5">
+                                                    <div class=" form-group chequePymnt" style="display:none">
+                                                        <div>
+                                                            <label for="ddlPaymentMode" class=" control-label">
+                                                                Ch./DD No
+                                                            </label>
+                                                        </div>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => m.ChequeNo,
+                                                                       new { @class = "form-control", @placeholder = "Ch./DD No", @id = "txtChequeNo" })
+                                                            @Html.ValidationMessageFor(m => m.ChequeNo)
+                                                        </div>
+                                                    </div>
+                                                    <div class=" form-group chequePymnt" style="display:none">
+                                                        <div>
+                                                            <label for="ddlPaymentMode" class=" control-label">
+                                                                Ch./DD Date
+                                                            </label>
+                                                        </div>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => m.ChequeDate,
+                                                                       new { @class = "form-control", @placeholder = "Ch./DD Date", @id = "txtChequeDate", @readonly = "readonly", @style = "background:white" })
+                                                            @Html.ValidationMessageFor(m => m.ChequeDate)
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+
+                                            <table class="table table-bordered table-hover" id="tblPaymentDetails">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">#</th>
+                                                        <th style="width:75px">ReceiptNo</th>
+                                                        <th style="width:75px">Fee</th>
+                                                        <th style="width:152px">ST Percentage</th>
+                                                        <th style="width:100px">ST Amount</th>
+                                                        <th style="width:125px">Total Amount</th>
+                                                        <th style="width:125px">Due/Paid Date</th>
+                                                        <th style="width:125px">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (Model.StudentRegistration.StudentReceipts.Count > 0)
+                                                    {
+                                                        for (int i = 0; i < Model.StudentReceipt.Count; i++)
+                                                        {
+                                                            <tr>
+                                                                @Html.HiddenFor(m => m.StudentReceipt[i].Id, new { @class = "receiptId", @id = "txtReceiptId_" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceipt[i].Status, new { @class = "status", @id = "txtStatus_" + i })
+                                                                <td>
+                                                                    @Convert.ToInt32(i + 1)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => Model.StudentReceiptNoList[i],
+                                                                      new { @class = "form-control courseFee", @id = "txtCourseFee_" + i, @placeholder = "ReceiptNo", @readonly = "readonly" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].Fee,
+                                                                      new { @class = "form-control courseFee", @id = "txtCourseFee_" + i, @placeholder = "Fee", @readonly = "readonly" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].STPercentage,
+                                                                      new { @class = "form-control stPercentage", @id = "txtSTPercentage_" + i, @placeholder = "ST Percentage", @readonly = "readonly" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].ST,
+                                                                      new { @class = "form-control stAmt", @id = "txtST_" + i, @placeholder = "ST", @readonly = "readonly" })
+                                                                </td>
+
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].Total,
+                                                                              new { @class = "form-control totalAmt paid", @id = "txtTotal_" + i, @placeholder = "Total", @readonly = "readonly" })
+                                                                </td>
+                                                                <td>
+
+                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].DueDate, Model.StudentReceipt[i].DueDate.Value.ToShortDateString(),
+                                                                              new { @class = "form-control duedate", @id = "txtDueDate_" + i, @placeholder = "DueDate", @readonly = "readonly" })
+                                                                </td>
+
+                                                                @if (Model.StudentReceipt[i].Status == true)
+                                                                {
+
+                                                                    <td>
+                                                                        <a class="btn btn-info btn-xs dupReceipt" href="@Url.Action("DuplicatePdfReceipt", new { receiptId = @Model.StudentReceipt[i].Id })">
+                                                                            <i class="fa  fa-file-text"></i>
+                                                                            Duplicate Receipt
+                                                                        </a>
+                                                                        <a class="btn btn-info btn-xs btnPrint"
+                                                                           href="@Url.Content("~/Receipt_Print/"+Model.StudentRegistration.RegistrationNumber+"_"+Model.StudentReceiptNoList[i].ToString())+" .pdf")"
+                                                                           data-download-url="@Url.Action("PrintPdfRequest", new { pdfName = Model.StudentRegistration.RegistrationNumber + "_" + Model.StudentReceiptNoList[i].ToString() + ".pdf" })">
+                                                                            <i class="fa  fa-print"></i>
+                                                                            Print
+                                                                        </a>
+                                                                        <iframe id="@("clsIframe_"+i)" class="clsiframePrint" style="display:none"
+                                                                                src="@Url.Content("~/Receipt_Print/" + Model.StudentRegistration.RegistrationNumber + "_" + Model.StudentReceiptNoList[i].ToString() + ".pdf")"></iframe>
+                                                                    </td>
+
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+                                                                        <a class="btn btn-info btn-xs paynow" href="@Url.Action("ReceiptAdd", "Receipt")" data-id="@Model.StudentReceipt[i].Id">
+                                                                            <i class="fa  fa-sign-in"></i>
+                                                                            Pay Now
+                                                                        </a>
+                                                                        <span class="field-validation-error error-dueDate-over" style="display:none">
+                                                                            DueDate Over.Go to <a href="@Url.Action("Edit", "Registration", new { RegId = Model.StudentRegistration.Id, redirect = true })">Edit Registration</a>
+                                                                        </span>
+                                                                        <span class="field-validation-error error-emailValidation" style="display:none">
+                                                                            Email not validated.Ask customer to validate.To resend link go to <a href="@Url.Action("Edit", "Registration", new { RegId = Model.StudentRegistration.Id, redirect = false })">Edit Registration</a>
+                                                                        </span>
+                                                                    </td>
+
+                                                                }
+
+                                                            </tr>
+                                                        }
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </section>
+                        </div>
+                    </form>
+                    <div class="modal fade" id="divModalReceiptDetails" data-url="@Url.Action("PdfRequest")">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Receipt Confirmation Details</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="box-body ">
+                                        <div class=" form-group col-md-12">
+                                            
+                                            <div class=" pull-left ">
+                                                <label for="ddlCourseType" class=" control-label">
+                                                    Student Name
+                                                </label>
+                                            </div>                                            
+                                            <div>
+                                                <input type="text" class="form-control" id="txtMdlStudentName" readonly="readonly" style="background-color:white">
+                                            </div>
+                                            <div class=" pull-left ">
+                                                <label for="ddlCourseType" class=" control-label">
+                                                    Receipt Amount(Including ST)
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <input type="text" class="form-control" id="txtMdlReceiptAmt" readonly="readonly" style="background-color:white">
+                                            </div>
+                                            <div class=" pull-left ">
+                                                <label for="ddlCourseType" class=" control-label">
+                                                    Receipt Date
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <input type="text" class="form-control" id="txtMdlReceiptDate" readonly="readonly" style="background-color:white">
+                                            </div>
+                                          
+                                            <div class="pull-left divConfirmation" style="margin-top:10px">
+                                                <input type="checkbox" id="chkbxConfirmReceipt" class="minimal single">
+                                                I confirm that above payment details are correct and I agree to
+                                                generate the receipt by clicking <b>Payment Confirmed</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                     <button type="button" class="btn btn-default pull-left btn-modal " data-dismiss="modal">Cancel</button>
+                                     <button id="btn_Receipt_PayNow" type="button" class="btn btn-success btn-modal ">Payment Confirmed</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/inputMaskScript")
+    @Scripts.Render("~/bundles/checkboxSwitch")
+    @Scripts.Render("~/bundles/fileUploadScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    @Scripts.Render("~/bundles/jqueryForms")
+
+    <script src="~/Scriptz/Receipt/Add.js?c=@DateTime.Now.ToString("ddMMyyyy")@DateTime.Now.Second.ToString()"></script>
+}
+
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+
+            var getCaption = function (imgUrl) {
+                if (imgUrl != "") {
+                    var dataArray = imgUrl.split("/");
+                    var caption = dataArray[dataArray.length - 1];
+                    return caption
+                }
+                else {
+                    return "No File Selected"
+                }
+
+            }
+
+            //fileUpload plugin
+            $("#txtPhoto").fileinput({
+                showUpload: false,
+                initialPreview: [
+                    '<img src="@Url.Content(Model.StudentRegistration.PhotoUrl!=null?Model.StudentRegistration.PhotoUrl:"#")" class="file-preview-image" alt="' + getCaption("@Model.StudentRegistration.PhotoUrl") + '" title="' + getCaption("@Model.StudentRegistration.PhotoUrl") + '">'
+                ],
+                overwriteInitial: true,
+                initialCaption: getCaption("@Model.StudentRegistration.PhotoUrl")
+            });
+
+
+            @if (ViewBag.StepChanged){
+
+              @: $("#ReceiptStepz").steps("next");
+                                                              @: $("#ReceiptStepz").steps("next");
+                                                           }
+        });
+    </script>
+}
+
+
+
+
+
+

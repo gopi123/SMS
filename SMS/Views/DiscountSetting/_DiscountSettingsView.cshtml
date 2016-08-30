@@ -1,0 +1,72 @@
+﻿@model SMS.Models.ViewModel.DiscountSettingVM
+
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<div id="DiscountSettings">
+    <table class="table table-bordered " id="tblDiscountList">
+        <thead>
+            <tr>
+
+                <th style="">RoleName </th>
+                <th style="">Foundation</th>
+                <th style="">Diploma</th>
+                <th style="">Professional</th>
+                <th style="">Master Diploma</th>
+            </tr>
+        </thead>
+
+        @if (Model.DiscountSettingsList != null)
+        {
+            if (Model.DiscountSettingsList.Count > 0)
+            {
+                for (int i = 0; i < Model.DiscountSettingsList.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => m.DiscountSettingsList[i].RoleName)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.DiscountSettingsList[i].Foundation, new { @class = "form-control numberOnly fndn" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.DiscountSettingsList[i].Diploma, new { @class = "form-control numberOnly dpma" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.DiscountSettingsList[i].Professional, new {  @class = "form-control numberOnly pfsl" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.DiscountSettingsList[i].MasterDiploma, new {  @class = "form-control numberOnly mrdpma" })
+                        </td>
+                        <td style="display:none">
+                            @Html.TextBoxFor(m => m.DiscountSettingsList[i].RoleId)
+                            @Html.TextBoxFor(m => m.DiscountSettingsList[i].CentreCodeId)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" style="text-align:center">
+                        No Items Found
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" style="text-align:center">
+                    Please select the above criteria
+                </td>
+            </tr>
+        }
+
+
+
+    </table>
+</div>

@@ -1,0 +1,112 @@
+﻿@model SMS.Models.ViewModel.CustomerIndexVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Project Feedback
+        </h4>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index")"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Project Feedback</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Course Details</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Course Name</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.StudentFeedback.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(i + 1)
+                                            </td>
+                                            <td>
+                                                @Model.StudentFeedback[i].Course.Name
+                                            </td>
+                                            @if (!Model.StudentFeedback[i].IsFeedbackGiven == true)
+                                            {
+                                                if (Model.isPhotoUploaded)
+                                                {
+                                                    if (!Model.isPhotoRejected)
+                                                    {
+                                                        <td>
+                                                            <a class="btn btn-primary pull-left btn-xs btnFeedback" href="@Url.Action("EFeedback", new { feedBackID = Model.StudentFeedback[i].Id })"
+                                                               style="margin-right: 5px;">
+                                                                <i class="fa  fa-comment-o"></i> Feedback
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <small class="label label-danger"><i class="fa fa-clock-o"></i> PHOTO REJECTED</small>
+                                                        </td>
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <small class="label label-danger"><i class="fa fa-clock-o"></i> PHOTO NOT GIVEN</small>
+                                                    </td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <small class="label label-success"><i class="fa fa-clock-o"></i> FEEDBACK GIVEN</small>
+                                                </td>
+                                            }
+
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div><!-- /.table-responsive -->
+                    </div><!-- /.box-body -->
+                    <div class="box-footer clearfix" style="height:20px">
+                        
+                    </div><!-- /.box-footer -->
+                </div>
+
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+
+}
+

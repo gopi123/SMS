@@ -1,0 +1,163 @@
+﻿@model SMS.Models.ViewModel.CustomerIndexVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+
+        <h4>
+            Project Report Upload
+        </h4>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index")"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active"> Project Report Upload</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <form id="frmIndex" action="@Url.Action("ProjectUpload")" method="post" enctype="multipart/form-data">
+                <div class="col-md-6">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Course Details</h3>
+                        </div><!-- /.box-header -->
+
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Course Name</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.dtCustomerList.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @(i + 1)
+                                                </td>
+                                                <td>
+                                                    @Model.dtCustomerList[i].Course
+                                                </td>                                                                                                           
+
+                                                @*If this is the last item check if customer has paid the fees*@
+                                                @if (Model.dtCustomerList[i].IsLastCourse_ProjectUpload==true)
+                                                {
+                                                    @*if photo is rejected*@
+                                                    if (Model.dtCustomerList[i].IsPhotoRejected == true)
+                                                    {
+                                                        <td>
+                                                            <small class="label label-danger"><i class="fa fa-clock-o"></i> PHOTO REJECTED</small>
+                                                        </td>
+                                                    }
+
+                                                    @*if feedback is not given warning message is shown*@
+                                                    else if (Model.dtCustomerList[i].IsFeedBackGiven == false)
+                                                    {
+                                                        <td>
+                                                            <small class="label label-danger"><i class="fa fa-clock-o"></i> FEEDBACK NOT GIVEN</small>
+                                                        </td>
+                                                    }
+                                                    @*if customer hasn't completed the fee warning message is shown*@
+                                                    else if (Model.RemainingFee != 0)
+                                                    {
+                                                        <td>
+                                                            <small class="label label-danger"><i class="fa fa-clock-o"></i> FEES NOT COMPLETED</small>
+                                                        </td>
+                                                    }
+                                                    else if (Model.dtCustomerList[i].ProjectUploadRequired == false)
+                                                    {
+                                                        <td>
+                                                            <small class="label label-success"><i class="fa fa-clock-o"></i>  PROJECT UPLOADED</small>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <a class="btn btn-primary pull-left btn-xs btnUpload" href="@Url.Action("ProjectUpload", new { feedBackId = Model.dtCustomerList[i].Id })" style="margin-right: 5px;">
+                                                                <i class="fa  fa-upload"></i> Upload Project
+                                                            </a>
+                                                        </td>
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    @*if photo is rejected*@
+                                                    if (Model.dtCustomerList[i].IsPhotoRejected == true)
+                                                    {
+                                                        <td>
+                                                            <small class="label label-danger"><i class="fa fa-clock-o"></i> PHOTO REJECTED</small>
+                                                        </td>
+                                                    }
+                                                    @*if feedback is not given warning message is shown*@
+                                                    else if (Model.dtCustomerList[i].IsFeedBackGiven == false)
+                                                    {
+                                                        <td>
+                                                            <small class="label label-danger"><i class="fa fa-clock-o"></i> FEEDBACK NOT GIVEN</small>
+                                                        </td>
+                                                    }                                                   
+                                                    
+                                                    else if (Model.dtCustomerList[i].ProjectUploadRequired == false)
+                                                    {
+                                                        <td>
+                                                            <small class="label label-success"><i class="fa fa-clock-o"></i> PROJECT UPLOADED</small>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <a class="btn btn-primary pull-left btn-xs btnUpload" href="@Url.Action("ProjectUpload", new { feedBackId = Model.dtCustomerList[i].Id })" style="margin-right: 5px;">
+                                                                <i class="fa  fa-upload"></i> Upload Project
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                }
+                                                                           
+
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div><!-- /.table-responsive -->
+                        </div><!-- /.box-body -->
+                        <div class="box-footer clearfix" style="height:20px">
+
+                        </div><!-- /.box-footer -->
+                    </div>
+
+                    <!-- /.box -->
+                </div>
+
+            </form>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+
+}
+
+
+
+
+
+

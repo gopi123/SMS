@@ -1,0 +1,94 @@
+﻿@model SMS.Models.ViewModel.CourseSubTitleVM
+
+<form id="frmEdit" class="form-horizontal" data-test="hai">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="box-body ">
+        @Html.HiddenFor(m => m.CourseSubTitle.Id)
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-2">
+                <label for="txtCourseName" class=" control-label">
+                    Course Type
+                </label>
+            </div>
+            <div class="col-sm-6 pull-left">
+                @Html.DropDownListFor(m => m.CourseTypeId
+                                            , Model.CourseTypeName
+                                            , ""
+                                            , new { @class = "form-control select2", @id = "ddlCourseType" })
+                @Html.ValidationMessageFor(m => m.CourseTypeId)
+            </div>
+        </div>
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-2">
+                <label for="inputEmail3" class=" control-label">
+                    Course Series
+                </label>
+            </div>
+            <div class="col-sm-6 pull-left">
+                @Html.DropDownListFor(m => m.CourseSeriesTypeId
+                                            , Model.CourseSeriesTypeName
+                                            , ""
+                                            , new { @class = "form-control select2", @id = "ddlCourseSeriesType" })
+                @Html.ValidationMessageFor(m => m.CourseSeriesTypeId)
+
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-2">
+                <label for="txtSingleFee" class=" control-label">
+                    Course Title
+                </label>
+            </div>
+
+            <div class="col-sm-6 pull-left">
+                @Html.TextBoxFor(m => m.CourseSubTitle.Name,
+                                 new { @class = "form-control", @placeholder = "Title Name", @id = "txtCourseSubTitle" })
+                @Html.ValidationMessageFor(m => m.CourseSubTitle.Name)
+            </div>
+        </div>  
+    </div>
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Scripts should be added to enable validation
+        $('#frmEdit').removeData("validator");
+        $('#frmEdit').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse('#frmEdit');
+        
+        //text-input to uppercase
+        $(".form-control").addClass('capitalise');
+
+
+        //Select2 for dropdownlist
+        $("#ddlCourseType").select2({
+            placeholder: "Select a Course type",
+            allowClear: true,
+            width:250
+        });
+
+        $("#ddlCourseSeriesType").select2({
+            placeholder: "Select a Course Series",
+            allowClear: true,
+            width: 250
+        });
+
+        //show or hide validation on dropdown change
+        $("#ddlCourseType").change(function (evt, params) {
+            if ($(this).val() != "") {
+                $(evt.target).valid();
+            }
+        });
+        $("#ddlCourseSeriesType").change(function (evt, params) {
+            if ($(this).val() != "") {
+                $(evt.target).valid();
+            }
+        });
+
+
+
+    });
+</script>

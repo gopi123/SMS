@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/dataTableStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            View Trainer Approval List
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">                   
+                    <!-- form start -->
+                    <form id="frmPjtRptApproval" data-redirect-url="@Url.Action("TrainerApproval", new { feedbackId = "param1_placeholder" })" class="form-horizontal" data-delete-url="@Url.Action("Delete","Course")">
+                        <!-- /.box-body -->
+                        <div class="box-body ">
+                            <table class="table table-bordered table-striped dTable" data-url="@Url.Action("GetDataTable")">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>UploadedDate </th>
+                                        <th>StudentID</th>
+                                        <th>StudentName</th>
+                                        <th>Course</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="box-footer col-md-12">
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>                    
+                    <!-- /.modal -->
+                    <div class="box-footer col-md-12">
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/dataTableScript")
+    <script src="~/Scriptz/ProjectReportApproval/TrainerApprovalList.js"></script>
+}

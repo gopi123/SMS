@@ -1,0 +1,162 @@
+﻿@model SMS.Models.ViewModel.CustomerDashboardVM
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            DashBoard
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" data-url="@Url.Action("Add", "Course")">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body " >
+
+                            <div class="col-md-5">
+
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="inputEmail3" class=" control-label">
+                                            Student ID
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.RegistrationNumber,
+                                                              new { @class = "form-control", @id = "txtStudentName", @disabled = true })
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtCourseName" class=" control-label">
+                                            Student Name
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.StudentName,
+                                                              new { @class = "form-control", @id = "txtCourseName", @disabled = true })
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="inputEmail3" class=" control-label">
+                                            Address
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextAreaFor(m => m.Address,
+                                                              new { @class = "form-control",@rows=3, @id = "txtAddress", @disabled = true })
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="inputEmail3" class=" control-label">
+                                            Phone No
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.PhoneNo,
+                                                              new { @class = "form-control", @id = "txtAddress", @disabled = true })
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="inputEmail3" class=" control-label">
+                                            Email
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.Email,
+                                                              new { @class = "form-control", @id = "txtAddress", @disabled = true })
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="inputEmail3" class=" control-label">
+                                            Course Details
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextAreaFor(m => m.MultiCourse,
+                                                              new { @class = "form-control",@rows=3, @id = "txtCourseDetails", @disabled = true })
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="inputEmail3" class=" control-label">
+                                            Duration
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.Duration,
+                                                              new { @class = "form-control", @id = "txtDuration", @disabled = true })
+
+                                    </div>
+                                </div>
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="inputEmail3" class=" control-label">
+                                            Amount
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.TotalAmount,
+                                                              new { @class = "form-control", @id = "txtTotalAmount", @disabled = true })
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <div class="col-md-7">
+                                <div class=" form-group ">
+                                    <div class="pull-left">
+                                        <label for="txtPhoto" class=" control-label">
+                                            Photo
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="pull-left">
+                                        <div>                                          
+                                            <img src="@Url.Content(Model.PhotoUrl)" alt="Image" class="margin" height="177" width="138"/>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+        
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+  
+    @Scripts.Render("~/bundles/pageScript")    
+}
+
+

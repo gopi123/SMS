@@ -1,0 +1,215 @@
+﻿@model SMS.Models.ViewModel.LeaderApprovalVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+           Leader Approval
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row" style="height:800px">
+            <div class="col-md-12">
+                <div class="box" style="height:700px">
+                    <div class="box-header">
+                        <a class="btn btn-primary" href="@Url.Action("LeaderApprovalList")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <form id="frmAdd" class="form-horizontal" data-url='@Url.Action("LeaderApproval")' data-redirect-url="@Url.Action("LeaderApprovalList")">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.FeedbackId)
+                        @Html.HiddenFor(m => m.InstructorName)
+                        @Html.HiddenFor(m=>m.InstructorEmail)
+                        <div class="box-body">
+                            <div class="col-md-8">
+                                <div class="col-md-5">
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="StudentID" class=" control-label">
+                                                Student ID
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentRegistrationID, new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="StudentID" class=" control-label">
+                                                Student Name
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentName, new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="StudentID" class=" control-label">
+                                                Instructor Name
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.InstructorName, new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-5">
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="CourseName" class=" control-label">
+                                                Course Name
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.CourseName, new { @class = "form-control", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class=" form-group ">
+                                        <div>
+                                            <label for="CourseName" class=" control-label">
+                                                Project Report
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <a class="btn btn-success btn-xs" id="validateEmailLink"  href="@Url.Action("ProjectDownload", new { pjtDwnldUrl = Model.ProjectDownloadUrl })">
+                                                <i class="fa fa-file-pdf-o"></i>
+                                                Project Report
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="box">
+                                    <div class="box-header with-border primary">
+                                        <h3 class="box-title">Project Report Verification</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width: 5%"></th>
+                                                    <th style="width:30%">Verification Question</th>
+                                                    <th style="width:25%">Status</th>
+                                                    <th style="width: 40px">Denial Reason</th>
+                                                </tr>
+                                                <tr class="parentRow">
+                                                    <td>1.</td>
+                                                    <td>
+                                                        <b>Trainer has shown the running project</b>
+                                                    </td>
+                                                    <td>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.TrainerShownRunningProject, true, new { @class = "minimal runningPjt" })
+                                                            YES
+                                                        </label>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.TrainerShownRunningProject, false, new { @class = "minimal runningPjt" })
+                                                            NO
+                                                        </label>
+                                                        @Html.ValidationMessageFor(m => m.TrainerShownRunningProject)
+                                                    </td>
+                                                    <td>
+                                                        <div class="dislikeReasonDiv" style="display:none">
+                                                            @Html.TextBoxFor(m => m.TrainerShownRunningProjectDenialReason, new { @class = "form-control toUpper runningPjtDenyReason", @placeholder = "ENTER REASON" })
+                                                            @Html.ValidationMessageFor(m => m.TrainerShownRunningProjectDenialReason)
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr class="parentRow">
+                                                    <td>2.</td>
+                                                    <td>  <b> Source Code Collected</b> </td>
+                                                    <td>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.SourceCodeCollectedFromTrainer, true, new { @class = "minimal sourceCodeCollected" })
+                                                            YES
+                                                        </label>
+                                                        <label style="width:100px">
+                                                            @Html.RadioButtonFor(m => m.SourceCodeCollectedFromTrainer, false, new { @class = "minimal sourceCodeCollected" })
+                                                            NO
+                                                        </label>
+                                                        @Html.ValidationMessageFor(m => m.SourceCodeCollectedFromTrainer)
+                                                    </td>
+                                                    <td>
+                                                        <div class="dislikeReasonDiv" style="display:none">
+                                                            @Html.TextBoxFor(m => m.SouceCodeCollectedFromTrainerDenialReason, new { @class = "form-control toUpper sourceCodeCollectedDenyReason", @placeholder = "ENTER REASON" })
+                                                            @Html.ValidationMessageFor(m => m.SouceCodeCollectedFromTrainerDenialReason)
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary" id="btnSubmit">
+                                            <i class="fa  fa-save"></i>
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+                <!-- form start -->
+                <!-- form end -->
+            </div>
+            <!-- /.box -->
+        </div>
+
+
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    @*@Scripts.Render("~/bundles/inputMaskScript")*@
+    @Scripts.Render("~/bundles/checkboxSwitch")
+    @Scripts.Render("~/bundles/fileUploadScript")
+
+    <script src="~/Scriptz/ProjectReportApproval/LeaderApproval.js"></script>
+}
+
+

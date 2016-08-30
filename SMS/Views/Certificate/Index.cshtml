@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    <style type="text/css">
+        .typeahead, .tt-query, .tt-hint {
+            width: 300px;
+            padding: 8px;
+            font-size: 18px;
+            border: 2px solid #ccc;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .typeahead {
+            background-color: #fff;
+        }
+
+            .typeahead: focus {
+                border: 2px solid #0097cf;
+            }
+
+        .tt-query {
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+
+        .tt-hint {
+            color: #999;
+        }
+
+        .tt-dropdown-menu {
+            width: 300px;
+            margin-top: 12px;
+            padding: 8px 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+            -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+        }
+
+        .tt-suggestion {
+            padding: 3px 20px;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+            .tt-suggestion.tt-cursor {
+                color: #fff;
+                background-color: #579;
+            }
+
+            .tt-suggestion p {
+                margin: 0;
+            }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Certificate Status
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+
+                    <div class="box-body ">
+                        <div class="input-group col-md-5">
+                            <input class="form-control" placeholder="Enter StudentID..." id="txtRegNo">
+                            <div class="input-group-btn">
+                                <button class="btn btn-info btn-flat" id="btnGo" data-url="@Url.Action("GetStudentInfo")">Go</button>
+                                 
+                            </div>
+                            <div class="spinner input-group-btn" style="display:none">
+                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                            </div> 
+                        </div>                       
+                                       
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>       
+        <div class="row ">
+            <div class="col-md-12 studentInfo" style="display:none">
+
+            </div>
+
+        </div>
+        <div class="row ">
+            <div class="col-md-12 certificateStatus" style="display:none">
+
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    <script src="~/plugins/typeahead/typeahead.bundle.min.js"></script>
+}
+
+@section jsCode{
+
+    <script type="text/javascript">
+        $(function () {
+            $(document).on("click", "#btnGo", function () {
+                var txtRegNo = $("#txtRegNo").val();
+                $(".studentInfo").slideUp();
+                $(".certificateStatus").slideUp();
+                var href = $(this).data("url");              
+                if (txtRegNo != "") {
+                    $(".spinner").toggle(true);
+                    $.ajax({
+                        type: "GET",
+                        url: href,
+                        data: { regNo: txtRegNo },
+                        datatype: "html",
+                        success: function (data) {
+                            $(".spinner").toggle(false);
+                            $(".studentInfo").html(data);
+                            $(".studentInfo").slideDown();
+                        },
+                        error: function (err) {
+                            $(".spinner").toggle(false);
+                            //$(spinner).toggle(false);
+                            toastr.error("Error:" + this.message)
+                        }
+                    });
+                }
+                else {
+                    bootbox.alert("Please enter StudentID");
+                }
+                return false;
+            });
+
+            $(document).on("click", ".btnStatus", function (e) {
+                e.preventDefault();
+                var href = $(this).attr("href");             
+                $(".certificatespinner").toggle(true);
+                $.ajax({
+                    type: "GET",
+                    url: href,                   
+                    datatype: "html",
+                    success: function (data) {
+                        $(".certificatespinner").toggle(false);
+                        $(".certificateStatus").html(data);
+                        $(".certificateStatus").slideDown();
+                    },
+                    error: function (err) {
+                        $(".certificatespinner").toggle(false);                       
+                        toastr.error("Error:" + this.message)
+                    }
+                });
+               
+            });
+
+
+
+
+           
+            var RegNoSearch = new Bloodhound({
+                datumTokenizer: function (datum) {
+                    return Bloodhound.tokenizers.whitespace(datum.value);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: $("#txtRegNo").data("url"),
+                    filter: function (datas) {
+                        return $.map(datas.results, function (data) {
+                            return {
+                                value: data.RegNo,
+                                id: data.RegId
+                            };
+                        });
+                    },
+                    ajax: {
+                        type: 'POST',
+                        data: {
+                            param: function () {
+                                return $('#txtRegNo').val();
+                            }
+                        },
+                        context: this
+                    }
+                }
+            });
+
+            // Initialize the Bloodhound suggestion engine
+            RegNoSearch.initialize();
+
+            $('#txtRegNo .typeahead').typeahead({
+               
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'states',
+                displayKey: 'value',
+                source: RegNoSearch.ttAdapter()
+            });
+
+
+
+        });
+
+    </script>
+
+}

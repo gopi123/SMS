@@ -1,0 +1,139 @@
+﻿@{
+    Layout = null;
+}
+
+@{
+    Layout = null;
+
+}
+@model SMS.Models.ViewModel.LoginVM
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    @Styles.Render("~/bundles/layoutStyle")
+    <!-- Site -->
+    <link rel="stylesheet" href="~/Styles/Site.css">
+    <!-- Loding css -->
+    <link rel="stylesheet" href="~/plugins/IsLoading/jquery.loading.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/modernizr")
+
+
+
+</head>
+<body class="hold-transition skin-blue  ">
+    <div class="wrapper">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="margin-left:0px">           
+            <!-- Main content -->
+            <section class="content">
+                <div class="error-page" style="width:650px">
+                    <h5 class="headline text-red"></h5>
+                    <div class="error-content" style="margin-top:300px">
+                        <h3><i class="fa fa-warning text-red"></i> Oops! You haven't verified your <b>Email</b> yet.</h3>
+                        <p>
+                            Please verify your email on clicking the below link.
+                            Meanwhile, you may <br /><a href="@Url.Action("Login")">return to login page</a> 
+                        </p>
+                        <form class="search-form">
+                            <div class="input-group">                                
+                                <div class="">                                   
+                                    <a class="btn btn-info btnVerifyEmail" href="@Url.Action("EmailNotVerifiedPost")" data-redirect-url="@Url.Action("Login")">
+                                        <i class="fa fa-envelope"></i>
+                                        Verify Email 
+                                    </a>
+                                </div>
+                            </div><!-- /.input-group -->
+                        </form>
+                    </div>
+                </div><!-- /.error-page -->
+            </section><!-- /.content -->
+        </div><!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.3.0
+            </div>
+            <strong>Copyright &copy; 2014-2015 <a href="http://www.networkzsystems.com">NetworkzSystems</a>.</strong> All rights reserved.
+        </footer>
+
+    </div>
+    <!-- REQUIRED JS SCRIPTS -->
+    @Scripts.Render("~/bundles/layoutScript")
+    <!-- jqueryVal -->
+    @Scripts.Render("~/bundles/jqueryval")
+    <!--Bootbox alert-->
+    <script type="text/javascript" src="/plugins/Bootbox/bootbox.js"></script>
+    <script src="/plugins/IsLoading/jquery.loading.min.js" type="text/javascript"></script>
+   
+    
+    <script type="text/javascript">
+        $(function () {
+
+            //isLoading function
+            var isLoading = function (loading) {
+                if (loading) {
+                    $('html').loading({
+                        message: "Please wait ...",
+                        theme: 'dark'
+                    });
+                }
+                else {
+                    $('html').loading('stop');
+                }
+            };
+
+            $(document).on("click", ".btnVerifyEmail", function () {
+                isLoading(true);
+                var href = $(this).attr('href');
+                var redirectUrl = $(this).data('redirect-url');
+                if (href != "") {
+                    $.ajax({
+                        type: "GET",
+                        url: href,
+                        data: null,
+                        datatype: "json",
+                        success: function (data) {
+                            isLoading(false);
+                            if (data.message == "success") {
+                                bootbox.confirm("An activation link has been sent to your registered mail.<br/>Click <strong>OK</strong> to go back to login page.", function (result) {
+                                    window.location.href = redirectUrl;
+                                });
+                                
+                            }
+                            if (data.message == "error") {
+                                bootbox.alert("Error.Something happened ");
+                            }
+                        },
+                        error: function (data) {
+                            isLoading(false);
+                            bootbox.alert("Exception.Something happened");
+                        }
+                    });
+                }
+                return false;
+            });
+        });
+       
+      
+    </script>
+</body>
+</html>

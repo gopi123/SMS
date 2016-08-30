@@ -1,0 +1,889 @@
+﻿@model SMS.Models.ViewModel.WalkInnVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <style>
+        #chkbxGender, #chkbxGuardian, #chkbxPrevExp, #chkbxDemo, #chkbxJoinStatus {
+            display: none !important;
+        }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add WalkInn Details
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index", "WalkInn")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("Add", "WalkInn")' method="post" data-redirect-url="@Url.Action("Add")">
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("InitialEmail", Model.EmailId)
+                        @Html.Hidden("InitialMobile", Model.MobileNo)
+                        <div class="box-body ">
+                            <div id="WalkInnStepz">
+                                <h3>PERSONAL DATA</h3>
+                                <section>
+                                    <div class="col-md-5">
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Name
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.CandidateName,
+                                                     new { @class = "form-control toUpper", @placeholder = "Name", @id = "txtEmployee" })
+                                                @Html.ValidationMessageFor(m => m.StudentWalkInn.CandidateName)
+                                            </div>
+
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Gender
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.CheckBoxFor(m => m.Gender, new { @class = "chkbxSwitch", @id = "chkbxGender" })
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtDOB" class=" control-label">
+                                                    DOB
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.DOB,
+                                                     new { @class = "form-control", @placeholder = "DOB", @id = "txtDOB" })
+                                                @Html.ValidationMessageFor(m => m.StudentWalkInn.DOB)
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtAddress" class=" control-label">
+                                                    Address
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.StudentWalkInn.Address,
+                                                     new { @class = "form-control", @placeholder = "Address", @id = "txtAddress", @rows = 3 })
+                                                @Html.ValidationMessageFor(m => m.StudentWalkInn.Address)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlState" class=" control-label">
+                                                    State
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.StateId
+                                                , Model.StateList
+                                                , ""
+                                                , new { @class = "form-control select2 ", @id = "ddlState", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.StateId)
+                                            </div>
+                                            <div class="spinner" style="display:none">
+                                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                                            </div>
+                                        </div>
+                                        <div id="divDistrict" class="form-group" data-url="@Url.Action("GetDistrict", "WalkInn")">
+                                            <div>
+                                                <label for="txtSingleFee" class=" control-label">
+                                                    District
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.DistrictId
+                                                , Model.DistrictList
+                                                , ""
+                                                , new { @class = "form-control select2 courseList", @id = "ddlDistrict", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.DistrictId)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="txtPincode" class=" control-label">
+                                                    Pincode
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.Pincode,
+                                                              new { @class = "form-control numberOnly", @placeholder = "Pincode", @id = "txtPincode" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="txtLocation" class=" control-label">
+                                                    Nearest Post Office
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.Location,
+                                                              new { @class = "form-control ", @placeholder = "Location", @id = "txtLocation" })
+                                                @Html.ValidationMessageFor(m => m.StudentWalkInn.Location)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtLandlineNo" class=" control-label">
+                                                    Landline No
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.LandlineNo,
+                                                              new { @class = "form-control numberOnly", @placeholder = "LandlineNo", @id = "txtLandlineNo" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Mobile No
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.MobileNo,
+                                                                       new { @class = "form-control numberOnly mobileValidate", @placeholder = "MobileNo", @id = "txtMobileNo" })
+                                                @Html.ValidationMessageFor(m => m.MobileNo)
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtEmailId" class=" control-label">
+                                                    Email-Id
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.EmailId,
+                                                     new { @class = "form-control", @placeholder = "EmailId", @id = "txtEmailId" })
+                                                @Html.ValidationMessageFor(m => m.EmailId)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlGuardian" class=" control-label">
+                                                    CareGiver
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @*@Html.CheckBoxFor(m => m.GuardianType, new { @class = "chkbxSwitch", @id = "chkbxGuardian" })*@
+                                                @Html.DropDownListFor(m => m.CareGiverID
+                                                , Model.CareGiverList
+                                                , ""
+                                                , new { @class = "form-control select2 courseList", @id = "ddlCareGiver", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.CareGiverID)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="txtGuradianName" class=" control-label">
+                                                    Name
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.GuardianName,
+                                                                 new { @class = "form-control toUpper", @placeholder = "CareGiver Name", @id = "txtGuradianName" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="txtGuradianOccupation" class=" control-label">
+                                                    Occupation
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.GuardianOccupation,
+                                                                          new { @class = "form-control toUpper", @placeholder = "CareGiver Occupation", @id = "txtGuradianOccupation" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="txtGuradianContactNo" class=" control-label">
+                                                    ContactNo
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.GuardianContactNo,
+                                                                 new { @class = "form-control toUpper numberOnly", @placeholder = "CareGiver ContactNo", @id = "txtGuradianContactNo" })
+                                                @Html.ValidationMessageFor(m => m.StudentWalkInn.GuardianContactNo)
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <h3>QUALIFICATION </h3>
+                                <section>
+                                    <div class="col-md-5 pull-left ">
+
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlQlfnType" class=" control-label">
+                                                    Qualification
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.QlfnTypeId
+                                                            , Model.QlfnTypeList
+                                                            , ""
+                                                                     , new { @class = "form-control select2 ", @id = "ddlQlfnType", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.QlfnTypeId)
+                                                <div class="spinner" style="display:none">
+                                                    <i class="fa fa-refresh fa-spin spin-small "></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divCourse" data-url="@Url.Action("GetCourse","WalkInn")">
+                                            <div>
+                                                <label for="ddlQlfnMain" class=" control-label">
+                                                    Course
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.QlfnMainId
+                                                             , Model.QlfnMainList
+                                                             , ""
+                                                             , new { @class = "form-control select2 ", @id = "ddlQlfnMain", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.QlfnMainId)
+
+                                                <div class="spinner" style="display:none">
+                                                    <i class="fa fa-refresh fa-spin spin-small "></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divStream" data-url="@Url.Action("GetStream","WalkInn")">
+                                            <div>
+                                                <label for="ddlQlfnSubList" class=" control-label">
+                                                    Stream
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.QlfnSubId
+                                                             , Model.QlfnSubList
+                                                             , ""
+                                                             , new { @class = "form-control select2 ", @id = "ddlQlfnSub", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.QlfnSubId)
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlCustomerType" class=" control-label">
+                                                    Present status of the customer
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+
+                                                @Html.DropDownListFor(m => m.customerTypeID
+                                                            , Model.customerTypeList
+                                                            , ""
+                                                            , new { @class = "form-control select2 ", @id = "ddlCustomerType", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.customerTypeID)
+                                                <div class="spinner" style="display:none">
+                                                    <i class="fa fa-refresh fa-spin spin-small "></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group student" id="divCurrentYear" style="display:none">
+                                            <div>
+                                                <label for="ddlCurrentYear" class=" control-label">
+                                                    Year
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.StudentCurrentYear
+                                                            , Model.StudentCurrentYearList
+                                                            , ""
+                                                            , new { @class = "form-control select2 ", @id = "ddlCurrentYear", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.StudentCurrentYear)
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group nonemploy" id="divYearCompletion" style="display:none">
+                                            <div>
+                                                <label for="txtYearCompletion" class=" control-label">
+                                                    Year of Completion
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.YearOfCompletion
+                                                                , new { @class = "form-control numberOnly", @id = "txtYearCompletion", @placeholder = "Year of Completion", @readonly = true, @style = "background-color:white" })
+
+                                            </div>
+                                            <div>
+                                                @Html.ValidationMessageFor(m => m.YearOfCompletion)
+                                            </div>
+                                        </div>
+                                        <div class="form-group " id="divCollege" style="display:none">
+                                            <div>
+                                                <label for="txtCollegeAddress" class=" control-label">
+                                                    Institution Name and Address
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.CollegeAddress
+                                                                , new { @class = "form-control ", @id = "txtCollegeAddress", @rows = "3", @placeholder = "College Address" })
+
+                                            </div>
+                                            <div>
+                                                @Html.ValidationMessageFor(m => m.CollegeAddress)
+                                            </div>
+                                        </div>
+                                        <div class="form-group employ" id="divExperience" style="display:none">
+                                            <div>
+                                                <label for="txtExp" class=" control-label">
+                                                    Experience in Years
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.ExpInYears
+                                                                                  , new { @class = "form-control numberOnly", @id = "txtExp", @rows = "3", @placeholder = "Experienc in Years" })
+
+                                            </div>
+                                            <div>
+                                                @Html.ValidationMessageFor(m => m.ExpInYears)
+                                            </div>
+                                        </div>
+                                        <div class="form-group employ" id="divIndustry" style="display:none">
+                                            <div>
+                                                <label for="txtIndustryType" class=" control-label">
+                                                    Type of Industry
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.IndustryType
+                                                                         , new { @class = "form-control ", @id = "txtIndustryType", @rows = "3", @placeholder = " Type of Industry" })
+
+                                            </div>
+                                            <div>
+                                                @Html.ValidationMessageFor(m => m.IndustryType)
+                                            </div>
+                                        </div>
+                                        <div class="form-group employ" id="divCompany" style="display:none">
+                                            <div>
+                                                <label for="txtCompany" class=" control-label">
+                                                    Company Name and Address
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.CompanyAddress
+                                                                , new { @class = "form-control ", @id = "txtCompany", @rows = "3", @placeholder = "Company Address" })
+
+                                            </div>
+                                            <div>
+                                                @Html.ValidationMessageFor(m => m.CompanyAddress)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <h3>REFERENCE</h3>
+                                <section>
+                                    <div class="col-md-12">
+                                        <div class=" form-group ">
+                                            <div class="alert alert-warning alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                                                KINDLY COLLECT ATLEAST 3 REFERENCES
+                                            </div>
+                                            <table id="tblStudentRelation" class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Name</th>
+                                                        <th>Relation</th>
+                                                        <th>EmailId</th>
+                                                        <th>ContactNo</th>
+
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Name</th>
+                                                        <th>Relation</th>
+                                                        <th>EmailId</th>
+                                                        <th>
+                                                            ContactNo
+                                                            <button type="button" id="btnAddRow" class="btn btn-sm btn-info pull-right ">
+                                                                <i class="fa  fa-plus"></i>
+                                                                Add Row
+                                                            </button>
+                                                        </th>
+
+
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </section>
+                                <h3>OTHER DETAILS </h3>
+                                <section>
+                                    <div class="col-md-5">
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="chkbxPrevExp" class=" control-label">
+                                                    Have you undergone any Network Engineering / Security Training Earlier ?
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.CheckBoxFor(m => m.HasPrevExp, new { @class = "chkbxSwitchReverse", @id = "chkbxPrevExp" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group prevExp">
+                                            <div>
+                                                <label for="txtPrvExpPlace" class=" control-label">
+                                                    Please specify the place of training
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.PrevExpPlace,
+                                                           new { @class = "form-control", @placeholder = "Place of training", @id = "txtPrvExpPlace" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group prevExp">
+                                            <div>
+                                                <label for="txtPrvExpYear" class=" control-label">
+                                                    Please specify Year
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.PrevExpYear,
+                                                     new { @class = "form-control", @placeholder = "Year", @id = "txtPrvExpYear" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group prevExp">
+                                            <div>
+                                                <label for="txtPrvExpTrainer" class=" control-label">
+                                                    Please specify the name of trainer
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentWalkInn.PrevExpTrainer,
+                                                     new { @class = "form-control", @placeholder = "Name of the Trainer", @id = "txtPrvExpTrainer" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlKnowHow" class=" control-label">
+                                                    How did you come to know about NS ?
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.ListBoxFor(m => m.KnowHowID
+                                                                    , Model.KnowHowList
+                                                                    , new { @class = "form-control select2 ", @id = "ddlKnowHow", @multiple = "multiple", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.KnowHowID)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlPlacement" class=" control-label">
+                                                    Does the customer need placement assistance ?
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.PlacementID
+                                                                     , Model.PlacementList
+                                                                     , ""
+                                                                     , new { @class = "form-control select2 ", @id = "ddlPlacement", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.PlacementID)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlWhyNS" class=" control-label">
+                                                    Reason for doing a course with NS ?
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.WhyNSID
+                                                                         , Model.WhyNSList
+                                                                         , ""
+                                                                         , new { @class = "form-control select2 ", @id = "ddlWhyNS", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.WhyNSID)
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Concerned number of CRO's
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @foreach (var count in Enum.GetValues(typeof(SMS.Models.EnumClass.CROCount)))
+                                                {
+                                                    <label style="width:75px">
+                                                        @Html.RadioButtonFor(m => m.CROCount, count, new { @id = "", @class = "minimal single" })
+                                                        @count.ToString()
+                                                    </label>
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group" id="divCRO1">
+                                            <div>
+                                                <label for="ddlCRO1" class=" control-label">
+                                                    CRO1 Name and Percentage
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="col-md-6">
+                                                    @Html.DropDownListFor(m => m.CRO1ID
+                                                                            , Model.CRO1EmpList
+                                                                            , ""
+                                                                            , new { @class = "form-control select2 ", @id = "ddlCRO1", @style = "width:100%" })
+                                                    @Html.ValidationMessageFor(m => m.CRO1ID)
+                                                </div>
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(m => m.CRO1Percentage,
+                                                                               new { @class = "form-control numberOnly", @placeholder = "CRO1 Percentage", @id = "txtCRO1Percentage", @readonly = "true", @style = "background:white" })
+                                                    @Html.ValidationMessageFor(m => m.CRO1Percentage)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divCRO2" style="display:none">
+                                            <div>
+                                                <label for="ddlCRO2" class=" control-label">
+                                                    CRO2 Name and Percentage
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div class="col-md-6">
+                                                    @Html.DropDownListFor(m => m.CRO2ID
+                                                                            , Model.CRO2EmpList
+                                                                            , ""
+                                                                            , new { @class = "form-control select2 ", @id = "ddlCRO2", @style = "width:100%" })
+                                                    @Html.ValidationMessageFor(m => m.CRO2ID)
+                                                </div>
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(m => m.CRO2Percentage,
+                                                                          new { @class = "form-control numberOnly", @placeholder = "CRO2 Percentage", @id = "txtCRO2Percentage" })
+                                                    @Html.ValidationMessageFor(m => m.CRO2Percentage)
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlWhyNS" class=" control-label">
+                                                    Equipment Demo given ?
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.CheckBoxFor(m => m.IsEquipmentDemoGiven, new { @class = "chkbxSwitchReverse", @id = "chkbxDemo" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group  demogiven">
+                                            <div>
+                                                <label for="ddlEquipmentDemo" class=" control-label">
+                                                    Demo given by
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.DemoGivenEmpId
+                                                            , Model.DemoGivenEmpList
+                                                            , ""
+                                                            , new { @class = "form-control select2 ", @id = "ddlEquipmentDemo", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.DemoGivenEmpId)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  demogiven">
+                                            <div>
+                                                <label for="txtFeedback" class=" control-label">
+                                                    Customer Feedback about demo
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Feedback
+                                                              , new { @class = "form-control select2 ", @id = "txtFeedback", @placeholder = "Customer feedback" })
+                                                @Html.ValidationMessageFor(m => m.Feedback)
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="ddlCourseList" class=" control-label">
+                                                    Course Recommended
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.ListBoxFor(m => m.CourseID
+                                                                    , Model.CourseList
+                                                                    , new { @class = "form-control select2 ", @id = "ddlCourseList", @multiple = "multiple", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.CourseID)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="ddlCourseList" class=" control-label">
+                                                    Likely to join ?
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.CheckBoxFor(m => m.JoinStatus, new { @class = "chkbxSwitchReverse", @id = "chkbxJoinStatus", })
+                                            </div>
+                                        </div>
+                                        <div class="form-group joinreason">
+                                            <div>
+                                                <label for="txtJoinDate" class=" control-label">
+                                                    Expected joining date
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+
+                                                @Html.TextBoxFor(m => m.JoinDate,
+                                                              new { @class = "form-control", @placeholder = "Expected Joining Date ", @id = "txtJoinDate", @readonly = true, @style = "background-color:white" })
+                                                @Html.ValidationMessageFor(m => m.JoinDate)
+                                            </div>
+                                        </div>
+                                        <div class="form-group joinreason">
+                                            <div>
+                                                <label for="ddlBatchPreferred" class=" control-label">
+                                                    Batch Preferred
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+
+                                            </div>
+                                            <div>
+
+                                                @Html.DropDownListFor(m => m.BatchPrefferedID
+                                                            , Model.BatchPrefferedList
+                                                            , ""
+                                                            , new { @class = "form-control ", @id = "ddlBatchPreferred", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.BatchPrefferedID)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  notjoinreason" style="display:none">
+                                            <div>
+                                                <label for="txtNotJoiningReason" class=" control-label">
+                                                    Not Joining Reason
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.NotJoiningReason
+                                                               , new { @class = "form-control ", @id = "txtNotJoiningReason", @placeholder = "Not joining reason" })
+                                                @Html.ValidationMessageFor(m => m.NotJoiningReason)
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="ddlBatchPreferred" class=" control-label">
+                                                    WalkInn Center
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+
+                                            </div>
+                                            <div>
+
+                                                @Html.DropDownListFor(m => m.CenterID
+                                                            , Model.CenterList
+                                                            , ""
+                                                            , new { @class = "form-control ", @id = "ddlCenter", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.CenterID)
+                                            </div>
+                                        </div>
+                                        <div class="form-group  ">
+                                            <div>
+                                                <label for="txtComments" class=" control-label">
+                                                    Comments
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.StudentWalkInn.Comments
+                                                               , new { @class = "form-control select2 ", @id = "txtComments", @placeholder = "Comments" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </section>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/inputMaskScript")
+    @Scripts.Render("~/bundles/checkboxSwitch")
+
+    <script src="~/Scriptz/WalkInn/Add.js?c= @DateTime.Now.ToString("ddMMyyyy")@DateTime.Now.Second.ToString()"></script>
+}
+
+
+
+
+
+
+
+

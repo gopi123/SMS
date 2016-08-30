@@ -1,0 +1,90 @@
+﻿@model SMS.Models.ServiceTax
+
+@{
+    ViewBag.Title = "Add";
+}
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add Service Tax
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index","ServiceTax")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAddServicetax" class="form-horizontal" data-url="@Url.Action("Add", "ServiceTax")">
+                        <div class="box-body ">
+                            <div class=" form-group ">
+                                <div class=" pull-left col-sm-2">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Service Tax Percentage
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-4 pull-left">
+                                    @Html.TextBoxFor(m => m.Percentage,
+                                                     new { @class = "form-control", @placeholder = "Amount", @id = "txtAmount" })
+                                    @Html.ValidationMessageFor(m => m.Percentage)
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+                                <div class="pull-left col-sm-2">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Date from
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-4 pull-left">
+                                    @Html.TextBoxFor(m => m.FromDate,
+                                                     new { @class = "form-control", @placeholder = "Select Date", @id = "txtSTDate" })
+                                    @Html.ValidationMessageFor(m => m.FromDate)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-footer col-md-12">
+                            <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                <i class="fa  fa-save"></i>
+                                Save
+                            </button>
+                            <button type="submit" id="btnCancel" class="btn btn-default pull-left" style="margin-left: 10px">
+                                <i class="fa  fa-undo"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/inputMaskScript")
+    <script src="~/Scriptz/ServiceTax/Add.js"></script>
+}
+
+

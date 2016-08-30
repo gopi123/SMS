@@ -1,0 +1,29 @@
+﻿@model SMS.Models.ViewModel.DashboardVM
+
+@if (Model != null && Model.MenuParentList.Count > 0)
+{
+                    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="active">
+            <a href="@Url.Action("Index","Home")">
+                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            </a>
+        </li>
+        @foreach (var parentItem in Model.MenuParentList)
+        {
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-th"></i>
+                    <span>@parentItem.MenuParentName</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    @Html.Partial("_MenuParent", Model.MenuList.Where(x => x.ParentID == parentItem.MenuParentID))
+                </ul>
+            </li>
+        }
+
+    </ul>
+}
+      

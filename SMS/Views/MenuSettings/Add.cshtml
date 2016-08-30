@@ -1,0 +1,119 @@
+﻿@model SMS.Models.ViewModel.MenuRoleVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add Menu Settings
+        </h4>
+
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        
+                    </div>
+                    <!-- form start -->
+                    <form id="frmRoles" class="form-horizontal" data-url="@Url.Action("Add", "MenuSettings")">
+                        <div class="box-body ">
+                            <div class="form-group  ">
+                                <div class="pull-left col-sm-2">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Department
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-4 pull-left">
+                                    @Html.DropDownListFor(model => model.RoleId
+                                                                , Model.RoleList
+                                                                , ""
+                                                                , new { @class = "form-control select2", @id = "ddlRoles" })
+                                    @Html.ValidationMessageFor(model => model.RoleId)
+                                </div>
+                                <div class="pull-left spinner col-sm-4 " style="display:none">
+                                    <i class="fa fa-refresh fa-spin spin-small "></i>
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+                                <div id="divDesignation" class="pull-left col-sm-2" data-url="@Url.Action("GetDesignation")">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Designation
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-4 pull-left" >
+                                    @Html.DropDownListFor(model => model.DesignationId
+                                                                , Model.DesignationList
+                                                                , ""
+                                                                , new { @class = "form-control select2", @id = "ddlDesignation" })
+                                    @Html.ValidationMessageFor(model => model.DesignationId)
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- /.box-body -->
+                        <div class="box-body" id="divMenuList" data-url="MenuListDesignationwise">
+                            @Html.Partial("_MenuDesignationWise",Model.MenuList)
+                           
+                        </div>
+
+                        <div class="box-footer col-md-12">
+                            <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                <i class="fa  fa-save"></i>
+                                Save
+                            </button>
+                            <button type="submit" id="btnCancel" class="btn btn-default pull-left" style="margin-left: 10px">
+                                <i class="fa  fa-undo"></i>
+                                Cancel
+                            </button>
+
+
+                        </div>
+                        <!-- /.box-footer -->
+
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scriptz/MenuSettings/Add.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+
+
+
+
+
+        });
+
+    </script>
+}

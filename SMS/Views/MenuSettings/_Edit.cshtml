@@ -1,0 +1,64 @@
+﻿@model SMS.Models.ViewModel.MenuVM
+
+<form id="frmEditRoles" class="form-horizontal" data-url="@Url.Action("Edit","MenuSettings")">
+    <div class="box-body ">
+        @Html.HiddenFor(m=>m.MenuRoleId)
+        <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label for="inputEmail3" class=" control-label">
+                    Menu Name</label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                <label>@Html.DisplayFor(m => m.MenuName)</label>               
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label for="inputEmail3" class=" control-label">
+                    Can Add</label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.CheckBoxFor(m => m.CanAdd, new {@class="editminimal" })               
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label for="inputEmail3" class=" control-label">
+                   Can Edit</label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.CheckBoxFor(m => m.CanEdit,new {@class="editminimal" })               
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label for="inputEmail3" class=" control-label">
+                    Can Delete</label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.CheckBoxFor(m => m.CanDelete,new {@class="editminimal" })               
+            </div>
+        </div>
+         <div class="form-group">
+            <div class="pull-left col-sm-3">
+                <label for="inputEmail3" class=" control-label">
+                    Can View</label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.CheckBoxFor(m => m.CanView,new {@class="editminimal" })               
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="checkbox"].editminimal').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            increaseArea: '20%'
+
+        });
+       
+    })
+</script>

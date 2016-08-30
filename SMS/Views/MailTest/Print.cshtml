@@ -1,0 +1,96 @@
+﻿@model SMS.Models.ViewModel.EmployeeVM
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Mail Test
+        </h4>
+
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box" style="height:100px">
+
+                    <input type="text" id="txtReceiptId" width="200" />
+                    <input class="primary" id="btnPrint" type="button" value="Click Here" data-url="@Url.Action("Print")" data-pdf-url="@Url.Content("~/Receipt_Print")" />
+
+                    <iframe src="" id="iframePrint" style="display:none"></iframe>
+                </div>
+
+
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+}
+
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+            $(document).on("click", "#btnPrint", function () {
+                var href = $(this).data("url");
+                var receiptId = $("#txtReceiptId").val();
+                $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Please wait... </b></h3>' });
+                $.ajax({
+                    type: "POST",
+                    url: href,
+                    data: { receiptId: receiptId },
+                    datatype: "json",
+                    success: function (data) {
+                       
+                        if (data != "error") {
+                            
+                            var iFrame_Print = $('#iframePrint');
+                            iFrame_Print.bind('load', function () { //binds the event
+                                callPrint();
+                            });
+
+                            var srcAttr = $("#btnPrint").data("pdf-url");
+                            srcAttr = srcAttr + "/" + data + '?c=' + Math.random();//force new URL
+
+                            $(iframePrint).attr('src', srcAttr);
+                            
+                        }
+                        else {
+                            $.unblockUI();
+                            toastr.error("Error:Something gone wrong")
+                        }
+                    },
+                    error: function (data) {
+                        $.unblockUI();
+                        toastr.error("Exception:Something gone wrong");
+                    }
+                });
+
+
+                return false;
+
+            });
+
+            function callPrint() {
+             
+                var PDF = document.getElementById('iframePrint');
+                PDF.focus();
+                PDF.contentWindow.print();
+                $.unblockUI();
+            }
+
+        });
+    </script>
+}

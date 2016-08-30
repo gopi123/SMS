@@ -1,0 +1,29 @@
+﻿@model IEnumerable<SMS.Models.ViewModel.RegistraionVM.clsCourseCodeSearch>
+
+
+<table class="table no-margin">
+    <thead>
+        <tr>
+            <th>Course Code</th>
+            <th>Course Combination</th>
+            <th>Single Fee</th>
+            <th>Installment Fee</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null )
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CourseCode</td>
+                    <td>@item.CourseCombination</td>
+                    <td>@item.SingleFee</td>
+                    <td>@item.InstallmentFee</td>
+                </tr>
+            }
+        }
+       
+      
+    </tbody>
+</table>

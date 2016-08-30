@@ -1,0 +1,223 @@
+﻿@model SMS.Models.ViewModel.CustomerPhotoUploadVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Photo Upload
+        </h4>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index")"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Photo Upload</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action="@Url.Action("PhotoUpload")" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.StudentRegId)
+                        <div class="box-body ">
+
+                            <div class="col-md-3">
+                                <div class=" form-group ">
+
+                                    <div>
+                                        <label for="txtCentreCode" class=" control-label">
+                                            Upload your photo here
+                                        </label>
+                                    </div>
+                                    <div style="margin-top:20px">
+                                        @if (Model.IsPhotoVerified == true)
+                                        {
+                                        @Html.TextBoxFor(m => m.PhotoNewUrl,
+                                                             new { @class = "form-control imgUpload", @placeholder = "Please upload Photo", @id = "txtPhotoNew", @type = "file", @disabled = "disabled" })
+
+                                        }
+                                        else
+                                        {
+                                        @Html.TextBoxFor(m => m.PhotoNewUrl,
+                                                             new { @class = "form-control imgUpload", @placeholder = "Please upload Photo", @id = "txtPhotoNew", @type = "file" })
+                                        @Html.ValidationMessageFor(m => m.PhotoNewUrl)
+
+                                        }
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="box-footer col-md-12">
+                            @if (Model.IsPhotoVerified == true)
+                            {
+                                <div class="alert alert-info alert-dismissable col-md-6">
+                                    <h4><i class="icon fa fa-info"></i> Alert!</h4>
+                                    This image has been verified officially.Cannot upload new image.<br />
+                                    To upload new image kindly contact customercare team
+                                </div>
+
+                            }
+                            @if (Model.IsPhotoRejected == true)
+                            {
+                                <div class="alert alert-danger ">
+                                    <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                                    Your photo has been rejected by our official. Kindly upload new photo as early as possible
+                                </div>
+                                <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                    <i class="fa  fa-save"></i>
+                                    Save
+                                </button>
+                                <button type="submit" id="btnCancel" class="btn btn-default pull-left" style="margin-left: 10px">
+                                    <i class="fa  fa-undo"></i>
+                                    Cancel
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                    <i class="fa  fa-save"></i>
+                                    Save
+                                </button>
+                                <button type="submit" id="btnCancel" class="btn btn-default pull-left" style="margin-left: 10px">
+                                    <i class="fa  fa-undo"></i>
+                                    Cancel
+                                </button>
+                            }
+
+
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- form end -->
+                    <!-- /.modal -->
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/fileUploadScript")
+    @Scripts.Render("~/bundles/jqueryForms")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+
+}
+
+
+@section jscode{
+    <script type="text/javascript">
+        $(function () {
+
+
+            var getCaption = function (imgUrl) {
+                if (imgUrl != "") {
+                    var dataArray = imgUrl.split("/");
+                    var caption = dataArray[dataArray.length - 1];
+                    return caption
+                }
+                else {
+                    return "No File Selected"
+                }
+
+            }
+
+            //fileUpload plugin
+            $("#txtPhotoNew").fileinput({
+                showUpload: false,
+                allowedFileTypes: ["image"],
+                initialPreview: [
+                   '<img src="@Url.Content(Model.PhotoUrl)" class="file-preview-image" alt="' + getCaption("@Model.PhotoUrl") + '" title="' + getCaption("@Model.PhotoUrl") + '">'
+                ],
+                overwriteInitial: true,
+                initialCaption: getCaption("@Model.PhotoUrl")
+
+            });
+
+            //toastr options
+            toastr.options = {
+                "closeButton": true,
+                "positionClass": "toast-bottom-right",
+                "progressBar": true
+            }
+
+            //image type checking
+            $('#txtPhotoNew').on('fileloaded', function (event, previewId) {
+                $(event.target).valid();
+            });
+
+            $(document).on("click", "#btnCancel", function () {
+
+                $("#txtPhotoNew").fileinput('clear');
+                return false;
+            });
+
+
+
+            $(document).on("click", "#btnSubmit", function () {
+
+                var form = $("#frmAdd");
+                if (form.valid()) {
+                    $("#frmAdd").ajaxSubmit({
+                        iframe: true,
+                        dataType: "json",
+                        beforeSubmit: function () {
+                            $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Please wait... </b></h3>' });
+
+                        },
+                        success: function (result) {
+                            $.unblockUI();
+                            if (result == "success") {
+                                toastr.success("Successfully saved the details.")
+                            }
+                            else {
+                                toastr.error("Error:Something gone wrong")
+                            }
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            $.unblockUI();
+                            toastr.error("Error:Something gone wrong")
+                        }
+
+                    });
+                }
+
+                return false;
+            });
+
+
+        });
+    </script>
+}

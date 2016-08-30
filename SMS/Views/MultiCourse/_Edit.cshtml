@@ -1,0 +1,176 @@
+﻿@model SMS.Models.ViewModel.MultiCourseVM
+
+
+<form id="frmEdit" class="form-horizontal" data-test="hai">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="box-body ">
+        @Html.HiddenFor(m => m.MultiCourse.Id)
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-3">
+                <label for="ddlCourseType" class=" control-label">
+                    Course Type
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.DropDownListFor(m => m.CourseTypeId
+                                            , Model.CourseTypeList
+                                            , ""
+                                                     , new { @class = "form-control select2 courseList", @id = "ddlCourseType", @disabled = true })
+                @Html.HiddenFor(m=>m.CourseTypeId)
+                @Html.ValidationMessageFor(m => m.CourseTypeId)
+            </div>
+            <div class="pull-left spinner col-sm-4 " style="display:none">
+                <i class="fa fa-refresh fa-spin spin-small "></i>
+            </div>
+        </div>
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-3">
+                <label for="ddlCourseSeries" class=" control-label">
+                    Course Series
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.DropDownListFor(m => m.CourseSeriesId
+                                            , Model.CourseSeriesList
+                                            , ""
+                                            , new { @class = "form-control select2 courseList ", @id = "ddlCourseSeries",@disabled=true })
+                @Html.HiddenFor(m => m.CourseSeriesId)
+                @Html.ValidationMessageFor(m => m.CourseSeriesId)
+            </div>
+            <div class="pull-left spinner col-sm-4 " style="display:none">
+                <i class="fa fa-refresh fa-spin spin-small "></i>
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-3">
+                <label for="txtCourseCode" class=" control-label">
+                    Course Code
+                </label>
+            </div>
+
+            <div class="col-sm-4 pull-left" id="divCourseCode" data-url="@Url.Action("GetCourseCode", "MultiCourse")">
+                @Html.TextBoxFor(m => m.MultiCourse.CourseCode,
+                                new { @class = "form-control modalTextBox", @placeholder = "Course Code", @id = "txtCourseCode", @readonly = true })
+
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-3">
+                <label for="txtPrevCourseCode" class=" control-label">
+                    Prev Course Code
+                </label>
+            </div>
+
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.MultiCourse.OldCourseCode,
+                                          new { @class = "form-control modalTextBox", @placeholder = "Previous Course Code", @id = "txtPrevCourseCode" })
+            </div>
+        </div>
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-3">
+                <label for="ddlCourseTitle" class=" control-label">
+                    Course Title
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left" id="divCourseTitle" data-url="@Url.Action("FillCourseTitle", "MultiCourse")">
+                @Html.DropDownListFor(m => m.CourseSubTitleId
+                                                        , Model.CourseSubTitleList
+                                                        , ""
+                                                        , new { @class = "form-control select2", @id = "ddlCourseTitle" })
+                @Html.ValidationMessageFor(m => m.CourseSubTitleId)
+
+            </div>
+        </div>
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-3">
+                <label for="inputEmail3" class=" control-label">
+                    Multiple Courses
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.ListBoxFor(m => m.MultipleCourseId
+                                      , Model.MultipleCourseList
+                                      , new { @class = "form-control select2", @id = "ddlCourseMultiple", @multiple = "multiple", @disabled = true })
+                @Html.HiddenFor(m => m.MultipleCourseId)
+                
+                @Html.ValidationMessageFor(m => m.MultipleCourseId)
+
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-3">
+                <label for="txtCourseDuration" class=" control-label">
+                    Course Duration
+                </label>
+            </div>
+
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.MultiCourse.Duration,
+                                new { @class = "form-control modalTextBox", @placeholder = "Course Duration", @id = "txtCourseDuration", @readonly = true })
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-3">
+                <label for="txtSingleFee" class=" control-label">
+                    Course Fee
+                </label>
+            </div>
+
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.MultiCourse.SingleFee,
+                                 new { @class = "form-control modalTextBox", @placeholder = "Course Fee", @id = "txtSingleFee", @readonly = true })
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-3">
+                <label for="txtInstallmentFee" class=" control-label">
+                    Installment Fee
+                </label>
+            </div>
+
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.MultiCourse.InstallmentFee,
+                                 new { @class = "form-control modalTextBox", @placeholder = "Installment Fee", @id = "txtInstallmentFee", @readonly = true })
+            </div>
+        </div>
+
+    </div>
+</form>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        //text-input to uppercase
+        $(".form-control").addClass('capitalise');
+
+        //Select2 for dropdownlist
+        $("#ddlCourseType").select2({
+            placeholder: "Select a Course Type",
+            allowClear: true,
+            width:350
+        });
+
+        $("#ddlCourseSeries").select2({
+            placeholder: "Select a Course Series",
+            allowClear: true,
+            width: 350
+        });
+
+        $("#ddlCourseTitle").select2({
+            placeholder: "Select a Course Title",
+            allowClear: true,
+            width: 350
+        });
+
+        $("#ddlCourseMultiple").select2({
+            placeholder: "Select any of the Courses ",
+            allowClear: true,
+            width: 350
+        });
+
+       
+
+    });
+</script>

@@ -1,0 +1,48 @@
+﻿@model SMS.Models.ViewModel.EmployeeVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/bootstrapSwitchStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+ 
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/inputMaskScript")
+    @Scripts.Render("~/bundles/bootstrapSwitchScript")
+    @Scripts.Render("~/bundles/fileUploadScript")
+    @Scripts.Render("~/bundles/jqueryForms")
+    
+}
+
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+
+            var date = new Date();
+            alert(date);
+        });
+    </script>
+}
+
+
+
+
+
+

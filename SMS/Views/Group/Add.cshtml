@@ -1,0 +1,121 @@
+﻿@model SMS.Models.ViewModel.GroupVM
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/bootstrapSwitchStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Add Group
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index", "Group")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal"  data-url="@Url.Action("Add", "Group")" data-get-url="@Url.Action("Add")">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.InitialGroupName)
+                        <div class="box-body ">
+                            <div class="col-md-8">
+                                <div class=" form-group ">
+                                    <div class=" pull-left col-sm-3">
+                                        <label for="txtCentreCode" class=" control-label">
+                                            Group Name
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.TextBoxFor(m => m.GroupName,
+                                                              new { @class = "form-control toUpper", @placeholder = "Enter Group Name", @id = "txtGroupName" })
+                                        @Html.ValidationMessageFor(m => m.GroupName)
+
+                                    </div>
+                                </div>
+                                <div class="form-group  ">
+                                    <div class="pull-left col-sm-3">
+                                        <label for="ddlState" class=" control-label">
+                                            Select Centre
+                                        </label>
+                                    </div>
+
+                                    <div class="col-sm-6 pull-left">
+                                        @Html.ListBoxFor(m => m.CentreCodeId
+                                            , Model.CentreCodeList
+                                            , new { @class = "form-control select2 courseList", @id = "ddlCentreCode" })
+                                        @Html.ValidationMessageFor(m => m.CentreCodeId)
+
+                                    </div>
+                                    <div class="pull-left spinner col-sm-3" style="display:none">
+                                        <i class="fa fa-refresh fa-spin spin-small "></i>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="box-footer col-md-12">
+                            <button type="button" id="btnSubmit" class="btn btn-info pull-left footerbutton">
+                                <i class="fa  fa-save"></i>
+                                Save
+                            </button>
+                            <button type="button" id="btnCancel" class="btn btn-default pull-left footerbutton" style="margin-left: 10px">
+                                <i class="fa  fa-undo"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- form end -->
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    <script src="~/Scriptz/Group/Add.js"></script>
+
+    
+}
+
+@section jsCode{
+<script type="text/javascript">   
+
+    jQuery.validator.addMethod("emptyarray", function (value, element, param) {
+        if (element.value == "") {
+            return false;
+        }
+        return true;
+    });
+    jQuery.validator.unobtrusive.adapters.addBool("emptyarray");
+</script>
+
+}
+
+

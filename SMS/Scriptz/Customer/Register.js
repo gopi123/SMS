@@ -1,0 +1,5 @@
+﻿//Customer ==> Register.js
+
+$(function () {
+   
+})

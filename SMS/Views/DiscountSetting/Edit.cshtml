@@ -1,0 +1,158 @@
+﻿@model SMS.Models.ViewModel.DiscountSettingVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <style type="text/css">
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            background: none;
+            color: #999999;
+            cursor: default;
+        }
+
+        .blockMsg {
+            margin-left: 200px !important;
+        }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Edit Discount Settings
+        </h4>
+        <a class="btn btn-info" href="@Url.Action("Index")">
+            <i class="fa  fa-hand-o-left"></i>
+            Back
+        </a>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="box-header">
+
+            </div>
+            <div class="col-md-12">
+                <div class="box">
+                    <!-- form start -->
+                    <form id="frmEdit" class="form-horizontal" data-get-discountsetting="@Url.Action("GetDiscountSetting_Edit")"
+                          data-edit-discountsetting="@Url.Action("Edit")" data-redirect-url="@Url.Action("Index")">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.GroupName, new { @id = "hFieldGroupName" })
+
+                        <div class="box-body ">
+                            <div id="DiscountSettingsStepz">
+                                <h3>PERSONAL DATA</h3>
+                                <section>
+                                    <div class="col-md-5">
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Select Role
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.ListBoxFor(m => m.RoleId
+                                                         , Model.RoleList
+                                                , new { @class = "form-control select2 ", @id = "ddlRoleList", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.RoleId)
+
+                                            </div>
+
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Select Group
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.ListBoxFor(m => m.GroupName
+                                                         , Model.GroupNameList
+                                                         , new { @class = "form-control select2 ", @id = "ddlGroupList", @style = "width:100%", @disabled = "disabled" })
+                                                @Html.ValidationMessageFor(m => m.GroupName)
+
+
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Select Date
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.DiscountFromDate, new { @class = "form-control fromDate", @id = "txtFromDate", @placeholder = "Select Date", @readonly = "readonly", @style = "background:white" })
+                                                @Html.ValidationMessageFor(m => m.DiscountFromDate)
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+
+                                    </div>
+
+                                </section>
+                                <h3>DISCOUNT INFORMATION </h3>
+                                <section>
+                                    <div id="divDiscountSetting">
+
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+                    </form>
+                    <!-- form end -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+
+    <script src="~/Scriptz/DiscountSetting/Edit.js"></script>
+}
+
+
+
+
+
+
+
+
+
+

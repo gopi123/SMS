@@ -1,0 +1,87 @@
+﻿<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            DashBoard
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        @if (ViewBag.DashboardRequired)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>@ViewBag.WalkInnCount_Monthly</h3>
+                            <p>Current Month</p>
+                            <h3>@ViewBag.WalkInnCount_Yearly</h3>
+                            <p>Financial Year</p>
+                            <div class="icon" style="top:30px">
+                                <i class="fa fa-paw"></i>
+                            </div>
+                        </div>
+                        <a href="#" class="small-box-footer">WalkInn Details</a>
+                    </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3>@ViewBag.RegCount_Monthly</h3>
+                            <p>Current Month</p>
+
+                            <h3>@ViewBag.RegCount_Yearly</h3>
+                            <p>FinancialYear</p>
+                            <div class="icon" style="top:30px">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                        </div>
+                        <a href="#" class="small-box-footer">Registration Details</a>
+                    </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3>@ViewBag.CollectionAmount_Monthly</h3>
+                            <p>Current Month</p>
+
+                            <h3>@ViewBag.CollectionAmount_Yearly</h3>
+                            <p>FinancialYear</p>
+                            <div class="icon" style="top:30px">
+                                <i class="fa fa-dollar"></i>
+                            </div>
+                        </div>
+                        <a href="#" class="small-box-footer">Collection Details</a>
+                    </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>@ViewBag.GS_Monthly</h3>
+                            <p>Current Month</p>
+
+                            <h3>@ViewBag.GS_Yearly</h3>
+                            <p>FinancialYear</p>
+                            <div class="icon" style="top:30px">
+                                <i class="fa fa-trophy"></i>
+                            </div>
+                        </div>
+                        <a href="#" class="small-box-footer">Generated Sales Details</a>
+                    </div>
+                </div><!-- ./col -->
+            </div><!-- /.row -->
+        }
+        
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

@@ -1,0 +1,137 @@
+﻿@model SMS.Models.Course
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>Add Course
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index", "Course")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" data-url="@Url.Action("Add", "Course")">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body ">
+                            <div class=" form-group ">
+                                <div class=" pull-left col-sm-2">
+                                    <label for="txtCourseName" class=" control-label">
+                                        Name
+                                    </label>
+                                </div>
+                                <div class="col-sm-4 pull-left">
+                                    @Html.TextBoxFor(m => m.Name,
+                                                     new { @class = "form-control", @placeholder = "Name", @id = "txtCourseName" })
+                                    @Html.ValidationMessageFor(m => m.Name)
+                                </div>
+                            </div>
+                            <div class=" form-group ">
+                                <div class=" pull-left col-sm-2">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Duration
+                                    </label>
+                                </div>
+                                <div class="col-sm-4 pull-left">
+                                    @Html.TextBoxFor(m => m.Duration,
+                                                     new { @class = "form-control", @placeholder = "Duration in Hrs", @id = "txtDuration" })
+                                    @Html.ValidationMessageFor(m => m.Duration)
+                                </div>
+                            </div>                          
+                            <div class="form-group  ">
+                                <div class="pull-left col-sm-2">
+                                    <label for="txtSingleFee" class=" control-label">
+                                        Fee
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-4 pull-left">
+                                    @Html.TextBoxFor(m => m.SingleFee,
+                                                     new { @class = "form-control", @placeholder = "Fee", @id = "txtSingleFee" })
+                                    @Html.ValidationMessageFor(m => m.SingleFee)
+                                </div>
+                            </div>
+                            <div class="form-group  ">
+                                <div class="pull-left col-sm-2">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Installment Fee
+                                    </label>
+                                </div>
+
+                                <div class="col-sm-4 pull-left">
+                                    @Html.TextBoxFor(m => m.InstallmentFee,
+                                                     new { @class = "form-control", @placeholder = "Installment Fee", @id = "txtInstallmentFee", @readonly = true })
+                                    @Html.ValidationMessageFor(m => m.InstallmentFee)
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer col-md-12">
+                            <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                <i class="fa  fa-save"></i>
+                                Save
+                            </button>
+                            <button type="submit" id="btnCancel" class="btn btn-default pull-left" style="margin-left: 10px">
+                                <i class="fa  fa-undo"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- form end -->
+                    <div class="modal fade" id="divModalEdit" data-url="@Url.Action("Edit", "Course")">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Edit Service Tax</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default pull-left btn-modal btnEdit" data-dismiss="modal">Close</button>
+                                    <button id="btnEditSubmit" type="button" class="btn btn-primary btn-modal btnEdit">Save changes</button>
+                                    <div class="pull-right spinner" style="display:none">
+                                        '<i class="fa fa-refresh fa-spin spin-small "></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")   
+    <script src="~/Scriptz/Course/Add.js"></script>
+}
+
+

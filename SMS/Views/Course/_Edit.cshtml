@@ -1,0 +1,94 @@
+﻿@model SMS.Models.Course
+
+
+<form id="frmEdit" class="form-horizontal" data-test="hai">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="box-body ">
+        @Html.HiddenFor(m => m.Id)
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-2">
+                <label for="txtCourseName" class=" control-label">
+                    Name
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.Name,
+                                 new { @class = "form-control", @placeholder = "Name", @id = "txtCourseName" })
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+        </div>
+        <div class=" form-group ">
+            <div class=" pull-left col-sm-2">
+                <label for="inputEmail3" class=" control-label">
+                    Duration
+                </label>
+            </div>
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.Duration,
+                                 new { @class = "form-control", @placeholder = "Duration in Hrs", @id = "txtDuration" })
+                @Html.ValidationMessageFor(m => m.Duration)
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-2">
+                <label for="txtSingleFee" class=" control-label">
+                    Fee
+                </label>
+            </div>
+
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.SingleFee,
+                                 new { @class = "form-control", @placeholder = "Fee", @id = "txtSingleFee" })
+                @Html.ValidationMessageFor(m => m.SingleFee)
+            </div>
+        </div>
+        <div class="form-group  ">
+            <div class="pull-left col-sm-2">
+                <label for="inputEmail3" class=" control-label">
+                    Installment Fee
+                </label>
+            </div>
+
+            <div class="col-sm-4 pull-left">
+                @Html.TextBoxFor(m => m.InstallmentFee,
+                                 new { @class = "form-control", @placeholder = "Installment Fee", @id = "txtInstallmentFee", @readonly = true })
+                @Html.ValidationMessageFor(m => m.InstallmentFee)
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Scripts should be added to enable validation
+        $('#frmEdit').removeData("validator");
+        $('#frmEdit').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse('#frmEdit');
+
+        
+        //calling validation function of textbox change
+        $('#txtInstallmentFee').change(function (evt, params) {
+            $(evt.target).valid();
+        });
+
+        //text-input to uppercase
+        $(".form-control").addClass('capitalise');
+
+
+        //Calculating installment fee based on single fee
+        $(document).on("keyup", "#txtSingleFee", function () {
+            var singleFee = $(this).val();
+            singleFee = Math.round(singleFee);
+            var installmentAmount = Math.round((singleFee * 10) / 100);
+            var installmentFee = Math.round(singleFee + installmentAmount);
+            $("#txtInstallmentFee").val(installmentFee).change();
+
+        });
+
+
+
+    });
+</script>

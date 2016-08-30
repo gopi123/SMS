@@ -1,0 +1,77 @@
+﻿@model SMS.Models.ViewModel.EmployeeVM
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>Mail Test
+        </h4>
+
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+
+                    <!-- form start -->
+                    @using (Html.BeginForm("MailSend", "MailTest", FormMethod.Post, new { @class = "form-horizontal", @enctype = "multipart/form-data" }))
+                    {
+                    
+                        <div class="box-body ">
+                            <div class="form-group  ">
+                                <div class="pull-left col-md-12">
+                                    <label for="inputEmail3" class=" control-label">
+                                        Status:@ViewBag.Message
+                                    </label>
+                                    <br />
+                                    <br />
+
+                                    @Html.TextBoxFor(m => m.PhotoUrl,
+                                                    new { @id = "txtPhoto", @type = "file" })
+                                    <br />
+                                    <br />
+
+
+
+
+                                    <br />
+                                    <br />
+
+                                    <button type="submit" id="btnSubmit" class="btn btn-info pull-left ">
+                                        <i class="fa  fa-save"></i>
+                                        Save
+                                    </button>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    }
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+@using (Html.BeginForm("MailSend", "MailTest"))
+{ 
+    
+    <input type="submit" value="submit" />
+
+}
+<div>
+    Status:@ViewBag.Message;
+</div>
