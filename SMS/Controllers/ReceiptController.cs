@@ -328,8 +328,8 @@ namespace SMS.Controllers
                 //Receipt for print in generated and saved into receipts_print folder
                 var _isReceiptForPrintGenerated = GenerateReceiptForPrint(studentRegId);
                 //Email sending for student
-                //var isEmailSend = SendMail(studRegID);
-                var isEmailSend = true;
+                var isEmailSend = SendMail(_dbRegn.Id);
+                //var isEmailSend = true;
                 //SMS sending to student and official
                 var isSMSSend = SendSMS(studentRegId);
 
@@ -659,18 +659,27 @@ namespace SMS.Controllers
         public void DuplicatePdfReceipt(int receiptId)
         {
             try
-            {
+            {               
+
+                //var _studentReceipt = _db.StudentReceipts
+                //                    .Where(r => r.Id == receiptId)
+                //                    .FirstOrDefault();
+
+                //var _fileName = _studentReceipt.StudentRegistration.RegistrationNumber + "_" + Common.GetReceiptNo(_studentReceipt.StudentReceiptNo.Value) + ".pdf";
+
+                //Response.ContentType = "Application/pdf";
+                //Response.AppendHeader("Content-Disposition", "attachment; filename=Receipt.pdf");
+                //Response.TransmitFile(Server.MapPath("~/Receipt/" + _fileName));
+                //Response.End();
+
                 Common _cmn = new Common();
-
-                var _studentReceipt = _db.StudentReceipts
-                                    .Where(r => r.Id == receiptId)
-                                    .FirstOrDefault();
-
-                var _fileName = _studentReceipt.StudentRegistration.RegistrationNumber + "_" + Common.GetReceiptNo(_studentReceipt.StudentReceiptNo.Value) + ".pdf";
-
-                Response.ContentType = "Application/pdf";
-                Response.AppendHeader("Content-Disposition", "attachment; filename=Receipt.pdf");
-                Response.TransmitFile(Server.MapPath("~/Receipt/" + _fileName));
+                byte[] _content = _cmn.MergeReceiptPdf(receiptId);
+                Response.Clear();
+                MemoryStream ms = new MemoryStream(_content);
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=Receipt.pdf");
+                Response.Buffer = true;
+                ms.WriteTo(Response.OutputStream);
                 Response.End();
             }
 
@@ -805,19 +814,19 @@ namespace SMS.Controllers
                     }
 
                     //Adding student + guardian mobile no
-                    //string _stuMobNo = _studRegistraion.StudentWalkInn.MobileNo;
+                    string _stuMobNo = _studRegistraion.StudentWalkInn.MobileNo;
                     //string _guardianMobNo = _studRegistraion.StudentWalkInn.GuardianContactNo;
 
                     _lstMobNos.Add(_cro1MobNo);
                     _lstMobNos.Add(_cro2MobNo);
                     _lstMobNos.Add(_feePaidCroMobNo);
-                    //_lstMobNos.Add(_stuMobNo);
+                    _lstMobNos.Add(_stuMobNo);
                     //_lstMobNos.Add(_guardianMobNo);
 
                     string _mobNos = string.Join(",", _lstMobNos.Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList());
 
                     //sending message to student
-                    var _message = "Demo - Rec.No:" + _receiptNo + ", " + _receiptDate + ", " + _studRegNo + ", " + _studName + ", Cro:" + _croName + ", " + _courseCode + ", Paid:Rs." + _currPaid + " including ST, BAL:Rs." +
+                    var _message = "Rec.No:" + _receiptNo + ", " + _receiptDate + ", " + _studRegNo + ", " + _studName + ", Cro:" + _croName + ", " + _courseCode + ", Paid:Rs." + _currPaid + " including ST, BAL:Rs." +
                                     _balanceamount + ", NextDue:" + _nextDueDate;
 
                     string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _mobNos + "&msg=" + _message + "&route=T");
