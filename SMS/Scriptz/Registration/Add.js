@@ -1,5 +1,5 @@
 ﻿//REGISTRATION ==> ADD.JS
-
+//update1:Added else condition if currentindex=2 and form is not valid
 $(function () {
 
     var form = $("#frmAdd");
@@ -34,6 +34,9 @@ $(function () {
                         return false;
                     }
 
+                }
+                else {
+                    return false;
                 }
             }
 
