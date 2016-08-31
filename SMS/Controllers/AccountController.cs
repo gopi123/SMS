@@ -24,19 +24,16 @@ namespace SMS.Controllers
         public ActionResult Login()
         {
             Common _cmn = new Common();
-            //string name = _cmn.ComputePassword("admin123");
-            Session["LoggedUserId"] = 10;
-            Session["LoggedUserName"] = "test";
-            Session["LoggedUserRoleName"] = "test";       
-            return RedirectToAction("Index", "DiscountSetting");
-            //return View("Maintenance");
+            
             return View();
-        }
 
-        public ActionResult SecretLogin()
-        {
-            return View("Login");
-        }
+            //string name = _cmn.ComputePassword("admin123");
+            //Session["LoggedUserId"] = 10;
+            //Session["LoggedUserName"] = "test";
+            //Session["LoggedUserRoleName"] = "test";
+            //return RedirectToAction("Index", "DiscountSetting");
+            //return View("Maintenance");
+        }     
 
 
 
