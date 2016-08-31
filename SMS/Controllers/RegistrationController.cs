@@ -2138,6 +2138,7 @@ namespace SMS.Controllers
             }
             return _dtReceipt;
         }
+
         public DataTable ToDataTable<T>(IList<T> data)// T is any generic type
         {
             PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
@@ -2248,19 +2249,19 @@ namespace SMS.Controllers
                     }
 
                     //Adding student + guardian mobile no
-                    //string _stuMobNo = _studRegistraion.StudentWalkInn.MobileNo;
+                    string _stuMobNo = _studRegistraion.StudentWalkInn.MobileNo;
                     //string _guardianMobNo = _studRegistraion.StudentWalkInn.GuardianContactNo;
 
                     _lstMobNos.Add(_cro1MobNo);
                     _lstMobNos.Add(_cro2MobNo);
                     _lstMobNos.Add(_feePaidCroMobNo);
-                    //_lstMobNos.Add(_stuMobNo);
+                    _lstMobNos.Add(_stuMobNo);
                     //_lstMobNos.Add(_guardianMobNo);
 
                     string _mobNos = string.Join(",", _lstMobNos.Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList());
 
                     //sending message to student
-                    var _message = "Demo - Rec.No:" + _receiptNo + ", " + _receiptDate + ", " + _studRegNo + ", " + _studName + ", Cro:" + _croName + ", " + _courseCode + ", Paid:Rs." + _currPaid + " including ST, BAL:Rs." +
+                    var _message = "Rec.No:" + _receiptNo + ", " + _receiptDate + ", " + _studRegNo + ", " + _studName + ", Cro:" + _croName + ", " + _courseCode + ", Paid:Rs." + _currPaid + " including ST, BAL:Rs." +
                                     _balanceamount + ", NextDue:" + _nextDueDate;
 
                     string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _mobNos + "&msg=" + _message + "&route=T");
