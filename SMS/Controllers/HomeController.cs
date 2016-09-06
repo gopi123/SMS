@@ -142,25 +142,25 @@ namespace SMS.Controllers
                 Session["EmployeeJoinDate"] = GetJoinMonth(_employee.DateOfJoin);
                 Session["EmployeePhotoUrl"] = _employee.PhotoUrl;
 
-                //ViewBag.WalkInnCount_Yearly = GetWalkInnCount("year");
-                //ViewBag.WalkInnCount_Monthly = GetWalkInnCount("month");
-                //ViewBag.RegCount_Yearly = GetRegistrationCount("year");
-                //ViewBag.RegCount_Monthly = GetRegistrationCount("month");
-                //ViewBag.CollectionAmount_Monthly = _cmn.ConvertNumberToComma(GetCollectionCount("month", "COLLECTION"));
-                //ViewBag.CollectionAmount_Yearly = _cmn.ConvertNumberToComma(GetCollectionCount("year", "COLLECTION"));
-                //ViewBag.GS_Monthly = _cmn.ConvertNumberToComma(GetCollectionCount("month", "GS"));
-                //ViewBag.GS_Yearly = _cmn.ConvertNumberToComma(GetCollectionCount("year", "GS"));
-                //ViewBag.DashboardRequired = IsDashboardRequried(_employee);
+                ViewBag.WalkInnCount_Yearly = GetWalkInnCount("year");
+                ViewBag.WalkInnCount_Monthly = GetWalkInnCount("month");
+                ViewBag.RegCount_Yearly = GetRegistrationCount("year");
+                ViewBag.RegCount_Monthly = GetRegistrationCount("month");
+                ViewBag.CollectionAmount_Monthly = _cmn.ConvertNumberToComma(GetCollectionCount("month", "COLLECTION"));
+                ViewBag.CollectionAmount_Yearly = _cmn.ConvertNumberToComma(GetCollectionCount("year", "COLLECTION"));
+                ViewBag.GS_Monthly = _cmn.ConvertNumberToComma(GetCollectionCount("month", "GS"));
+                ViewBag.GS_Yearly = _cmn.ConvertNumberToComma(GetCollectionCount("year", "GS"));
+                ViewBag.DashboardRequired = IsDashboardRequried(_employee);
 
-                ViewBag.WalkInnCount_Yearly = 1;
-                ViewBag.WalkInnCount_Monthly = 1;
-                ViewBag.RegCount_Yearly = 1;
-                ViewBag.RegCount_Monthly = 1;
-                ViewBag.CollectionAmount_Monthly = 1;
-                ViewBag.CollectionAmount_Yearly = 1;
-                ViewBag.GS_Monthly = 1;
-                ViewBag.GS_Yearly = 1;
-                ViewBag.DashboardRequired = false;
+                //ViewBag.WalkInnCount_Yearly = 1;
+                //ViewBag.WalkInnCount_Monthly = 1;
+                //ViewBag.RegCount_Yearly = 1;
+                //ViewBag.RegCount_Monthly = 1;
+                //ViewBag.CollectionAmount_Monthly = 1;
+                //ViewBag.CollectionAmount_Yearly = 1;
+                //ViewBag.GS_Monthly = 1;
+                //ViewBag.GS_Yearly = 1;
+                //ViewBag.DashboardRequired = false;
 
                 return View();
             }
