@@ -95,6 +95,7 @@ namespace SMS.Models.ViewModel
         public int FeeMode { get; set; }        
         public string[] CourseId { get; set; }
         public SelectList CourseList { get; set; }
+        public string DiscountReason { get; set; }
 
         //For Editing purpose
         public string RegistrationNumber { get; set; }
