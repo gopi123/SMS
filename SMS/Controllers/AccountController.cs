@@ -15,11 +15,14 @@ using System.Web.Security;
 
 namespace SMS.Controllers
 {
+   
     public class AccountController : Controller
     {
+        //update 1::(06/09/2016)::Added Session["LoggedEmployeeName"] 
         dbSMSNSEntities _db = new dbSMSNSEntities();
         //
         // GET: /Account/
+
 
         public ActionResult Login()
         {
@@ -61,6 +64,7 @@ namespace SMS.Controllers
                         Session["LoggedUserId"] = _user.EmployeeId;
                         Session["LoggedUserName"] = _user.UserName;
                         Session["LoggedUserRoleName"] = _user.Employee.Designation.Role.RoleName;
+                        Session["LoggedEmployeeName"] = _user.Employee.Name;
 
 
                         if (_user.Employee.IsEmailVerified == false)
