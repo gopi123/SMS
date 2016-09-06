@@ -9,19 +9,19 @@
     @Styles.Render("~/bundles/pageStyle")
     @Styles.Render("~/bundles/jQueryStepsSytle")
     @Styles.Render("~/bundles/fileUploadStyle")
-<link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
-<style type="text/css">
-    .datepicker table tr td.disabled,
-    .datepicker table tr td.disabled:hover {
-        background: none;
-        color: #999999;
-        cursor: default;
-    }
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <style type="text/css">
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            background: none;
+            color: #999999;
+            cursor: default;
+        }
 
-    .blockMsg {
-        margin-left: 200px !important;
-    }
-</style>
+        .blockMsg {
+            margin-left: 200px !important;
+        }
+    </style>
 
 }
 
@@ -48,12 +48,14 @@
                     <form id="frmAdd" class="form-horizontal" action='@Url.Action("Add", "Registration")' method="post" enctype="multipart/form-data"
                           data-redirect-url="@Url.Action("Add", "Receipt", new { regId = "param1_placeholder", redirect = "true" })"
                           data-receipt-generate-url="@Url.Action("Generate_Receipt_Email_SMS")"
-                          data-printpdf-url="@Url.Action("PrintPdfRequest", "Receipt", new { pdfName="param2_placeholder" })">
+                          data-printpdf-url="@Url.Action("PrintPdfRequest", "Receipt", new { pdfName="param2_placeholder" })"
+                          data-warningdiscount-url="@Url.Action("DiscountVerification_Warning")">
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(m => m.WalkInnID, new { @id = "hfieldWalkInnID" })
                         @Html.HiddenFor(m => m.CROName)
                         @Html.HiddenFor(m => m.CentreId)
                         @Html.HiddenFor(m => m.CentreCode, new { @id = "hfieldCentreCode" })
+                        @Html.HiddenFor(m => m.DiscountReason, new { @id = "hfieldDiscountReason" })
                         <div class="box-body ">
                             <div id="WalkInnStepz">
                                 <h3>PERSONAL DATA</h3>
@@ -71,10 +73,10 @@
                                             <div>
                                                 @foreach (var venue in Enum.GetValues(typeof(SMS.Models.EnumClass.RegistrationVenue)))
                                                 {
-                                                <label style="width:100px">
-                                                    @Html.RadioButtonFor(m => m.RegistrationVenue, venue, new { @class = "minimal single" })
-                                                    @venue.ToString().Replace('_', ' ')
-                                                </label>
+                                                    <label style="width:100px">
+                                                        @Html.RadioButtonFor(m => m.RegistrationVenue, venue, new { @class = "minimal single" })
+                                                        @venue.ToString().Replace('_', ' ')
+                                                    </label>
 
 
                                                 }
@@ -159,10 +161,10 @@
                                             <div>
                                                 @foreach (var mode in Enum.GetValues(typeof(SMS.Models.EnumClass.InstallmentType)))
                                                 {
-                                                <label style="width:120px">
-                                                    @Html.RadioButtonFor(m => m.InstallmentType, mode, new { @class = "minimal installment" })
-                                                    @mode.ToString()
-                                                </label>
+                                                    <label style="width:120px">
+                                                        @Html.RadioButtonFor(m => m.InstallmentType, mode, new { @class = "minimal installment" })
+                                                        @mode.ToString()
+                                                    </label>
                                                 }
 
                                             </div>
@@ -400,7 +402,24 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="box-body ">
-                                        <div class=" form-group col-md-12">
+                                        <div class=" form-group col-md-12" id="divDiscountReason">
+                                            <div class=" pull-left ">
+                                                <label class=" control-label">
+                                                    Enter reason for discount
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>                                                
+                                                <textarea class="form-control" id="txtDiscountReason"></textarea>                                             
+                                                <input type="text" id="txtOfficialNo" style="display:none" />
+                                            </div>                                           
+                                        </div>
+                                        <div class="spinner" style="display:none">
+                                            <i class="fa fa-refresh fa-spin spin-small "></i>
+                                        </div>
+                                        <div class=" form-group col-md-12 " id="divPinVerificaiton" style="display:none">
                                             <div class=" pull-left ">
                                                 <label for="ddlCourseType" class=" control-label">
                                                     Enter Pin Number
@@ -551,7 +570,7 @@
     <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
     @Scripts.Render("~/bundles/jqueryForms")
 
-<script src="~/Scriptz/Registration/Add.js?vid=@DateTime.Now.ToString("ddMMyyyy")@DateTime.Now.Second"></script>
+    <script src="~/Scriptz/Registration/Add.js?vid=@DateTime.Now.ToString("ddMMyyyy")@DateTime.Now.Second"></script>
 }
 
 
