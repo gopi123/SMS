@@ -360,8 +360,12 @@ $(function () {
 
     //Discount calculation is performed here
     $("#txtDiscount").change(function () {
-        smsVerificationOnDiscountChange();
+        //smsVerificationOnDiscountChange();
+        $("#divDiscountReason").show();
+        $("#divPinVerificaiton").hide();
+        showWarningDiscount();
         GetFeeDetails();
+
 
     });
 
@@ -631,7 +635,7 @@ $(function () {
             totalST = totalST + parseInt($($tr[i]).find('.stAmt').val());
             var dueDate = $($tr[0]).find('.dueDate').val().split('/');
             var errorIndex = $($tr[i]).index();
-            
+
             //if any one of the total amount is less than 100
             if (currTotalAmt < 100) {
                 validate = false;
@@ -642,7 +646,7 @@ $(function () {
 
             //Checking if the first payment is the current date
             var currDate = new Date();
-            dueDate = new Date(dueDate[2], dueDate[0] - 1, dueDate[1]);            
+            dueDate = new Date(dueDate[2], dueDate[0] - 1, dueDate[1]);
             if (currDate.toDateString() != dueDate.toDateString()) {
                 validate = false;
 
@@ -653,7 +657,7 @@ $(function () {
                         $('.duedate-mismatch').fadeOut(1500);
 
                     }, 3000);
-                });               
+                });
                 return validate;
             }
 
@@ -745,7 +749,7 @@ $(function () {
 
                 bootbox.hideAll()
                 return false;
-               
+
             }
 
         });
@@ -754,7 +758,7 @@ $(function () {
     };
 
 
-    
+
 
     $(document).on("click", "#btn_Registration_PayNow", function () {
         var form = $("#frmAdd");
@@ -807,7 +811,7 @@ $(function () {
             }, 3000);
         }
 
-       
+
 
     });
 
@@ -845,87 +849,180 @@ $(function () {
         });
     }
 
-    //send sms to concerned centermanager for discount amt greater than 60%
-    var smsVerificationOnDiscountChange = function () {
-        var form = $("#frmAdd");
-        if (form.valid()) {
-            var currDiscPercentage = Number($("#txtDiscount").val());
-            var defaultDiscountPercentage = Number($("#txtDefaultDiscountPercentage").val());
-            if (currDiscPercentage > defaultDiscountPercentage) {
-                var box = bootbox.confirm("DiscountPercentage is greater than the allowed discount percentage of <b>" + defaultDiscountPercentage + "</b>.Requires <b>Pin Verification</b> from the concerned <b>Centre Manager</b>.Click <b>OK</b> to proceed.", function (result) {
-                    if (result) {
-                        box.modal('hide');
-                        $.blockUI({ message: null });
+    //send sms to concerned offiial for discount amt
 
-                        var href = $("#divModalPinVerification").data("url");
-                        var walkinnId = $("#hfieldWalkInnID").val();
-                        var studName = $("#txtStudentName").val();
-                        var discPercentage = $("#txtDiscount").val();
-                        var centreCode = $("#hfieldCentreCode").val();
-
-                        $.ajax({
-                            type: "GET",
-                            url: href,
-                            data: { studentName: studName, discountPercentage: discPercentage, centreCode: centreCode },
-                            datatype: "json",
-                            success: function (data) {
-                                if (data == "employee_error") {
-                                    $("#txtDiscount").val(0);
-                                    GetFeeDetails();
-                                    $.unblockUI();
-                                    bootbox.alert("Employee not yet assigned to the <b>" + centreCode + "</b>")
-                                }
-                                else if (data == "error") {
-                                    $("#txtDiscount").val(0);
-                                    GetFeeDetails();
-                                    $.unblockUI();
-                                    bootbox.alert("Error some thing happened")
-                                }
-                                else {
-                                    $("#mdlPinNo").val('');
-                                    $("#divMdlErrorPinNo").hide();
-                                    $("#mdlReturnPinNo").val(data);
-                                    $.unblockUI();
-                                    $("#divModalPinVerification").modal({
-                                        backdrop: 'static'
-                                    });
+    var smsVerificationOnDiscountChange = function (officialMobNo, officialName) {
 
 
-                                }
+        
+        var href = $("#divModalPinVerification").data("url");
+        //var walkinnId = $("#hfieldWalkInnID").val();
+        var officialMobNo = '9995220869';
+        var discReason = $("#txtDiscountReason").val();
+        var studName = $("#txtStudentName").val();
+        var discPercentage = $("#txtDiscount").val();
+        var centreCode = $("#hfieldCentreCode").val();
 
-                            },
-                            error: function (err) {
-                                $("#txtDiscount").val(0);
-                                GetFeeDetails();
-                                toastr.error("Error:" + this.message);
-                            }
-                        });
-                    }
-                    else {
-                        $("#txtDiscount").val(0);
-                        GetFeeDetails();
-                    }
-                });
+        $.ajax({
+            type: "GET",
+            url: href,
+            data: {
+                studentName: studName, discountPercentage: discPercentage, centreCode: centreCode,
+                offMobNo: officialMobNo, discReason: discReason
+            },
+            datatype: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data == "employee_error") {
+                    $("#txtDiscount").val(0);
+                    GetFeeDetails();                   
+                    bootbox.alert("Employee not yet assigned to the <b>" + centreCode + "</b>")
+                }
+                else if (data == "error") {
+                    $("#txtDiscount").val(0);
+                    GetFeeDetails();                   
+                    bootbox.alert("Error some thing happened")
+                }
+                else {
+                    $("#mdlPinNo").val('');
+                    $("#divMdlErrorPinNo").hide();
+                    $("#mdlReturnPinNo").val(data);
+                   
+
+                }
+
+            },
+            error: function (err) {
+                $("#txtDiscount").val(0);
+                GetFeeDetails();
+                toastr.error("Error:" + this.message);
             }
-        }
+        });
     }
 
 
-    $(document).on("click", "#btnContinue", function () {
-        var returnPinNo = $("#mdlReturnPinNo").val();
-        var currentPinNo = $("#mdlPinNo").val();
 
-        if (returnPinNo == currentPinNo) {
-            var currDiscountPercentage = $("#txtDiscount").val();
-            $("#txtDefaultDiscountPercentage").val(currDiscountPercentage);
-            $("#divModalPinVerification").modal('hide');
-            GetFeeDetails();
+    $(document).on("click", "#btnContinue", function () {
+
+        if (!$('#divPinVerificaiton').is(':visible')) {
+
+            if ($("#txtDiscountReason").val() != "") {
+
+                smsVerificationOnDiscountChange();
+                $("#divDiscountReason").hide();
+                $(".spinner").show();
+
+                setTimeout(function () {                  
+                    $(".spinner").hide();
+                    $("#divPinVerificaiton").show();;
+                }, 3000);
+                
+
+            }
+            else {
+                $("#divDiscountReason").append('<span class="disc-reason-error field-validation-error">Please enter discount reason </span>');
+                setTimeout(function () {
+                    setTimeout(function () {
+                        $('.disc-reason-error').fadeOut(1500);
+                    }, 3000);
+                  
+                }, 1500);
+               
+            }
+
         }
         else {
-            $("#divMdlErrorPinNo").show();
+
+            var returnPinNo = $("#mdlReturnPinNo").val();
+            var currentPinNo = $("#mdlPinNo").val();
+
+            if (returnPinNo == currentPinNo) {
+                var currDiscountPercentage = $("#txtDiscount").val();
+                $("#txtDefaultDiscountPercentage").val(currDiscountPercentage);
+                $("#divModalPinVerification").modal('hide');
+                GetFeeDetails();
+            }
+            else {
+                $("#divMdlErrorPinNo").show();
+            }
         }
+       
+
+
+       
 
     })
+
+
+    var showWarningDiscount = function () {
+        var form = $("#frmAdd");
+        if (form.valid()) {
+
+            
+
+            var currDiscPercentage = Number($("#txtDiscount").val());
+            var centreCode = $("#hfieldCentreCode").val();
+            var courseArray = $("#txtSingleCourseIds").val().split(',');
+            var href = $(form).data("warningdiscount-url");
+            var courseCount = courseArray.length;
+            $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Calculating discount... </b></h3>' });
+
+            $.ajax({
+                type: "GET",
+                url: href,
+                data: { discountPercentage: currDiscPercentage, centreCode: centreCode, courseCount: courseCount },
+                datatype: "json",
+                success: function (data) {
+                    $.unblockUI();
+                    if (data == "success") {
+
+                        $("#txtDiscount").val(currDiscPercentage);
+                        GetFeeDetails();
+
+                    }
+                    else if (data == "error") {
+                        $("#txtDiscount").val(0);
+                        GetFeeDetails();
+                        bootbox.alert("Error some thing happened")
+                    }
+                    else {
+
+                        var warningDetails = data.split('_');
+
+                        bootbox.confirm("DiscountPercentage is greater than the allowed discount percentage .Requires <b>Pin Verification</b> from " +
+                            "the concerned <b>" + warningDetails[1] + "(" + warningDetails[0] + ")</b>.Click <b>OK</b> to proceed.", function (result) {
+
+                                if (result) {                                    
+                                    $("#txtOfficialNo").val(warningDetails[2]);
+                                    $("#divModalPinVerification").modal({
+                                        backdrop: 'static'
+                                    });
+                                }
+                                else {                                   
+                                    $("#txtOfficialNo").val("");
+                                    $("#txtDiscount").val(0);
+                                    GetFeeDetails();
+                                }
+
+                            });
+
+
+                    }
+
+                },
+                error: function (err) {
+                    $("#txtDiscount").val(0);
+                    GetFeeDetails();
+                    toastr.error("Error:" + this.message);
+                }
+            });
+        }
+        else {
+            $("#txtDiscount").val(0);
+            GetFeeDetails();
+        }
+
+    }
 
     $(document).on("click", "#btnMdlClose", function () {
         $("#txtDiscount").val(0);
