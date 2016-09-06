@@ -822,52 +822,75 @@ namespace SMS.Controllers
         }
 
         //sends discount verification sms to concerned center manager where student has join
-        public JsonResult DiscountVerification(string studentName, int discountPercentage, string centreCode)
+        public JsonResult DiscountVerification(string studentName, int discountPercentage, string centreCode, string offMobNo, string discReason)
         {
             int _randomNo = 0;
             try
             {
-                Common _cmn = new Common();
-                //get the student centre from walkinn
-                int _studentCenterId = _db.CenterCodes
-                                       .Where(cc => cc.CentreCode == centreCode)
-                                       .Select(cc => cc.Id).FirstOrDefault();
+                Common _cmn=new Common();
+                 //Gets RandomNo
+                _randomNo = _cmn.GenerateRandomNo();
 
-                //get the employee who availed discount for student
-                string _empName = _db.Employees
-                                .AsEnumerable()
-                                .Where(e => e.Id == Int32.Parse(Session["LoggedUserId"].ToString()))
-                                .Select(e => e.Name).FirstOrDefault();
+                //message for employee
+                var _msg = "Centre : " + centreCode.ToUpper().Trim() + "\n" +
+                            "Discount : " + discountPercentage + "\n" +
+                            "Employee : " + Session["LoggedEmployeeName"].ToString().ToUpper() + "\n" +
+                            "Student : " + studentName.ToUpper().Trim() + "\n" +
+                            "Reason : " + discReason.ToUpper().Trim() + "\n" +
+                            "PinNo : " + _randomNo;
 
-                //get the centremanager from centre
-                var _employee = _cmn.GetCentreManager(_studentCenterId);
-
-                //if no employee has been assigned to a particular centre
-                if (_employee == null)
+                //Sends the 4 digitno to the employee mobileNo
+                string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + offMobNo + "&msg=" + _msg + "&route=T");
+                if (!_result.StartsWith("Invalid Username/password") || !_result.StartsWith("Enter valid MobileNo"))
                 {
-                    return Json("employee_error", JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    //gets the centermanager mobileno
-                    var _empMobileNo = _employee.OfficialMobileNo;
+                    return Json(_randomNo, JsonRequestBehavior.AllowGet);
 
-                    //Gets RandomNo
-                    _randomNo = _cmn.GenerateRandomNo();
-
-                    //message for employee
-                    var _msg = "Dear " + _employee.Name.ToUpper() + ", Discount of " + discountPercentage + "% has been set for student " + studentName.ToUpper() + " of " + centreCode + " by " + _empName + "." +
-                              "By sharing this pin " + _randomNo + " I agree to allow the student to register with the above said discount percentage.";
-
-                    //Sends the 4 digitno to the employee mobileNo
-                    string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _empMobileNo + "&msg=" + _msg + "&route=T");
-                    if (!_result.StartsWith("Invalid Username/password") || !_result.StartsWith("Enter valid MobileNo"))
-                    {
-                        return Json(_randomNo, JsonRequestBehavior.AllowGet);
-
-                    }
                 }
                 return Json("error", JsonRequestBehavior.AllowGet);
+
+
+
+                //Common _cmn = new Common();
+                ////get the student centre from walkinn
+                //int _studentCenterId = _db.CenterCodes
+                //                       .Where(cc => cc.CentreCode == centreCode)
+                //                       .Select(cc => cc.Id).FirstOrDefault();
+
+                ////get the employee who availed discount for student
+                //string _empName = _db.Employees
+                //                .AsEnumerable()
+                //                .Where(e => e.Id == Int32.Parse(Session["LoggedUserId"].ToString()))
+                //                .Select(e => e.Name).FirstOrDefault();
+
+                ////get the centremanager from centre
+                //var _employee = _cmn.GetCentreManager(_studentCenterId);
+
+                ////if no employee has been assigned to a particular centre
+                //if (_employee == null)
+                //{
+                //    return Json("employee_error", JsonRequestBehavior.AllowGet);
+                //}
+                //else
+                //{
+                //    //gets the centermanager mobileno
+                //    var _empMobileNo = _employee.OfficialMobileNo;
+
+                //    //Gets RandomNo
+                //    _randomNo = _cmn.GenerateRandomNo();
+
+                //    //message for employee
+                //    var _msg = "Dear " + _employee.Name.ToUpper() + ", Discount of " + discountPercentage + "% has been set for student " + studentName.ToUpper() + " of " + centreCode + " by " + _empName + "." +
+                //              "By sharing this pin " + _randomNo + " I agree to allow the student to register with the above said discount percentage.";
+
+                //    //Sends the 4 digitno to the employee mobileNo
+                //    string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _empMobileNo + "&msg=" + _msg + "&route=T");
+                //    if (!_result.StartsWith("Invalid Username/password") || !_result.StartsWith("Enter valid MobileNo"))
+                //    {
+                //        return Json(_randomNo, JsonRequestBehavior.AllowGet);
+
+                //    }
+                //}
+                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -1830,7 +1853,7 @@ namespace SMS.Controllers
             }
         }
 
-
+        #region receipt section
         //This function sends the receipt,email and sms
         public JsonResult Generate_Receipt_Email_SMS(int studentRegId)
         {
@@ -1860,8 +1883,8 @@ namespace SMS.Controllers
                 var _isMailSend_PaymentSchedule = Chk_PaymentScheduleDetails(studentRegId, null);
                 var _isSMSSend = SendSMS(_student_Name, _student_RegistrationNo, _student_MultiCourseCode, _student_CourseFee, _student_MobNo);
                 var _isOfficalSMSSend = SendSMSOffical(_stu_CroName, _student_RegistrationNo, _student_Name, _stu_Discount, _student_MultiCourseCode, _student_CourseFee, _stu_CentreId);
-                var _isReceiptSMSend=SendReceiptSMS(studentRegId);
-                
+                var _isReceiptSMSend = SendReceiptSMS(studentRegId);
+
                 if (_isReceiptForEmail_Generated)
                 {
                     if (_isReceiptForPrint_Generated)
@@ -2108,7 +2131,7 @@ namespace SMS.Controllers
 
                     var _receiptId = _db.StudentReceipts
                                     .Where(r => r.StudentRegistration.Id == studentRegId && r.Status == true)
-                                    .OrderByDescending(r=>r.Id)
+                                    .OrderByDescending(r => r.Id)
                                     .FirstOrDefault().Id;
 
                     _clsReceipt_Print = _db.StudentReceipts
@@ -2278,8 +2301,152 @@ namespace SMS.Controllers
                 return false;
             }
         }
+        #endregion
 
 
+
+        //sends discount verification sms to concerned center manager where student has join
+        public JsonResult DiscountVerification_Warning(int discountPercentage, string centreCode, int courseCount)
+        {           
+            
+            string _status = string.Empty;
+            try
+            {
+                Common _cmn = new Common();
+                int _roleId_NxtEmployee = 0;
+                int _currentUserId = Convert.ToInt32(Session["LoggedUserId"]);
+                //int _currentUserId = 36;//anupriya
+
+                Employee _currEmployee = _db.Employees
+                                        .Where(e => e.Id == _currentUserId)
+                                        .FirstOrDefault();
+                int _roleId = _currEmployee.Designation.Role.Id;
+                int _discountRoleId = _cmn.GetDiscountSetting_RoleId(_roleId);
+
+                //gets the couserseries type based on coursecount
+                int _courseSeriesId = GetCourseSeriesType(courseCount);
+                //gets the groupname of the corresponding centre
+                string _groupName = _db.Group_CentreCode_Setting
+                                  .Where(g => g.CenterCode.CentreCode == centreCode)
+                                  .FirstOrDefault().GroupName;
+                //gets the discount limit of the current user
+                int _discountLimit = _db.DiscountSettings
+                                   .Where(d => d.Group_CentreCode_GroupName == _groupName && d.DiscountRoleId == _discountRoleId
+                                   && d.CourseSeriesType.Id == _courseSeriesId)
+                                   .FirstOrDefault().Discount.Value;
+                //if discountpercentage is higher than the discountlimit
+                if (discountPercentage > _discountLimit)
+                {
+                    //gets the next roleid who has permission to give the discount
+                    List<DiscountSetting> _discSettings = _db.DiscountSettings
+                                                           .Where(d => d.Group_CentreCode_GroupName == _groupName
+                                                           && d.CourseSeriesType.Id == _courseSeriesId && d.Discount >= discountPercentage)
+                                                           .OrderBy(d => d.Discount)
+                                                           .ToList();
+                    if (_discSettings.Count > 0)
+                    {
+                        _roleId_NxtEmployee = _discSettings.FirstOrDefault().DiscountRoleId.Value;
+                    }
+                    else
+                    {
+                        _roleId_NxtEmployee = (int)EnumClass.DiscountSettingRole.ED;
+                    }
+
+                    //gets the name of the employee
+                    Employee _nxtEmployee = new Employee();
+                    _nxtEmployee = GetEmployee_RoleId_CentreCodeId(_roleId_NxtEmployee, centreCode);
+                    if (_nxtEmployee != null)
+                    {
+                        _status = _nxtEmployee.Name.ToUpper().Trim() + "_" + _nxtEmployee.Designation.DesignationName.ToUpper().Trim()
+                            + "_" + _nxtEmployee.OfficialMobileNo.Trim();
+                    }
+                    else
+                    {
+                        _status = "error";
+                    }
+
+                }
+                else
+                {
+                    _status = "success";
+                }
+
+                return Json(_status, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        //gets the courseseries type based on coursecount
+        public int GetCourseSeriesType(int courseCount)
+        {
+            int _courseTypeId = 0;
+            switch (courseCount)
+            {
+                case (1):
+                    _courseTypeId = (int)EnumClass.CourseCategory.FOUNDATION;
+                    break;
+
+                case (2):
+                    _courseTypeId = (int)EnumClass.CourseCategory.DIPLOMA;
+                    break;
+
+                case (3):
+                    _courseTypeId = (int)EnumClass.CourseCategory.PROFESSIONAL;
+                    break;
+
+                case (4):
+                    _courseTypeId = (int)EnumClass.CourseCategory.MASTERDIPLOMA;
+                    break;
+            }
+            return _courseTypeId;
+        }
+
+        public Employee GetEmployee_RoleId_CentreCodeId(int discRoleId, string centreCode)
+        {
+            Employee _employee = new Employee();
+            try
+            {
+
+                Common _cmn = new Common();
+                CenterCode _centreCode = _db.CenterCodes
+                                       .Where(c => c.CentreCode == centreCode)
+                                       .FirstOrDefault();
+
+                if (discRoleId == (int)EnumClass.DiscountSettingRole.ED)
+                {
+                    _employee = _cmn.GetEmployee_BasedOn_RoleId_CentreCodeId((int)EnumClass.Role.ED, _centreCode.Id)
+                                .FirstOrDefault();
+                }
+                else if (discRoleId == (int)EnumClass.DiscountSettingRole.CENTRE_MANAGER)
+                {
+                    _employee = _cmn.GetEmployee_BasedOn_RoleId_CentreCodeId((int)EnumClass.Role.CENTERMANAGER, _centreCode.Id)
+                                .FirstOrDefault();
+                }
+                else if (discRoleId == (int)EnumClass.DiscountSettingRole.SALES_MANAGER)
+                {
+                    _employee = _cmn.GetEmployee_BasedOn_RoleId_CentreCodeId((int)EnumClass.Role.MANAGER, _centreCode.Id)
+                                .Where(e => e.Designation.Id == (int)EnumClass.Designation.MANAGERSALES)
+                                .FirstOrDefault();
+                }
+                //for cluster manager
+                else
+                {
+                    _employee = _db.Employees
+                              .Where(e => e.Id == _centreCode.Employee.Id)
+                              .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                _employee = null;
+            }
+
+            return _employee;
+        }
 
         protected override void Dispose(bool disposing)
         {
