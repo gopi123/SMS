@@ -888,6 +888,63 @@ namespace SMS.Models
 
             return _roleName;
         }
+
+        //Get DiscountRoleDesignationId based on EmployeeRoleId
+        public int GetDiscountSetting_RoleId(int employeeRoleId)
+        {
+            int _discountRole_Id = 0;
+
+            if (employeeRoleId == (int)EnumClass.Role.ED)
+            {
+                _discountRole_Id = (int)EnumClass.DiscountSettingRole.ED;
+            }
+            else if (employeeRoleId == (int)EnumClass.Role.CENTERMANAGER)
+            {
+                _discountRole_Id = (int)EnumClass.DiscountSettingRole.CENTRE_MANAGER;
+            }
+            else if (employeeRoleId == (int)EnumClass.Role.MANAGER)
+            {
+                _discountRole_Id = (int)EnumClass.DiscountSettingRole.SALES_MANAGER;
+            }
+            else if (employeeRoleId == (int)EnumClass.Role.SALESINDIVIDUAL)
+            {
+                _discountRole_Id = (int)EnumClass.DiscountSettingRole.SALES_INDIVIDUAL;
+            }
+            else
+            {
+                _discountRole_Id = (int)EnumClass.DiscountSettingRole.CLUSTER_MANAGER;
+            }
+
+            return _discountRole_Id;
+
+        }
+
+        //Gets the employee based on roleid
+        public List<Employee> GetEmployee_BasedOn_RoleId_CentreCodeId(int roleId, int centreCodeId)
+        {
+            List<Employee> _emp = new List<Employee>();
+            try
+            {
+                CenterCode _centreCode = _db.CenterCodes
+                                       .Where(c => c.Id == centreCodeId)
+                                       .FirstOrDefault();
+
+                _emp = _db.Employees
+                        .Where(e => e.EmployeeCenters.Any(ec => ec.CenterCode.Id == centreCodeId)
+                                    && e.Designation.Role.Id == roleId                        
+                                    && e.Status==true)
+                        .ToList();
+
+            }
+            catch (Exception ex)
+            {
+                _emp = null;
+            }
+
+            return _emp;
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             _db.Dispose();
