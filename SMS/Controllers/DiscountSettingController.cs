@@ -15,6 +15,7 @@ namespace SMS.Controllers
 {
     public class DiscountSettingController : Controller
     {
+        //upate1 :: (06/09/2016) :: changed roleid to discountroleid.Removed relation of roleid in table
 
         dbSMSNSEntities _db = new dbSMSNSEntities();
 
@@ -281,7 +282,7 @@ namespace SMS.Controllers
                                 {
                                     _discountSetting.Discount = Convert.ToInt32(item.MasterDiploma.ToString());
                                 }
-                                _discountSetting.RoleId = item.RoleId;
+                                _discountSetting.DiscountRoleId = item.RoleId;
                                 _db.DiscountSettings.Add(_discountSetting);
                             }
                         }
@@ -317,7 +318,7 @@ namespace SMS.Controllers
                 var _groupList = GetGroupList();
                 _currGroupName.Add(_discSettingList.FirstOrDefault().Group_CentreCode_GroupName.ToUpper());
                 _currRoleId = _discSettingList
-                            .Select(d => d.Role.Id)
+                            .Select(d => d.DiscountRoleId.Value)
                             .Distinct().ToList();
 
 
@@ -382,7 +383,7 @@ namespace SMS.Controllers
                                 {
                                     _discountSetting.Discount = Convert.ToInt32(item.MasterDiploma.ToString());
                                 }
-                                _discountSetting.RoleId = item.RoleId;
+                                _discountSetting.DiscountRoleId = item.RoleId;
                                 _discountSetting.Group_CentreCode_GroupName = groupName;
                                 _discountSetting.FromDate = mdlDiscountSetting.DiscountFromDate;
                                 _db.DiscountSettings.Add(_discountSetting);
