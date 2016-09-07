@@ -765,63 +765,12 @@ namespace SMS.Controllers
 
 
 
-                    //Gets the designationids of employees to whom sms has to be send
-                    List<int> _desgnList = GetEmpDesignationList(_studRegistraion.StudentWalkInn.CenterCodeId.Value);
-                    //Gets the mobile no of all the employees
-                    List<string> _lstMobNos = _cmn.GetEmployeeDesignationWise(_desgnList)
-                                                    .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo).ToList();
-
-                    _croCount = _studRegistraion.StudentWalkInn.CROCount.Value;
-
-                    //if cro count is one
-                    if (_croCount == (int)EnumClass.CROCount.ONE)
-                    {
-                        //if fee paid cro and walkinn cro are same
-                        if (_latestReceiptDetails.CROID == _studRegistraion.StudentWalkInn.CRO1ID)
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                        }
-                        //adding fee paid cro mobileno        
-                        else
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                            _feePaidCroMobNo = _latestReceiptDetails.Employee.OfficialMobileNo != null ? _latestReceiptDetails.Employee.OfficialMobileNo :
-                                                                                                   _latestReceiptDetails.Employee.MobileNo;
-                        }
-                    }
-                    //if cro count is two
-                    else
-                    {
-                        //adding cro1 and cro2 mobileno
-                        if ((_latestReceiptDetails.CROID == _studRegistraion.StudentWalkInn.CRO1ID) || (_latestReceiptDetails.CROID == _studRegistraion.StudentWalkInn.CRO2ID))
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                            _cro2MobNo = _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee2.MobileNo;
-                        }
-                        //adding cro1+cro2+fee paid cro mobileno 
-                        else
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo :
-                                                                                                       _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                            _cro2MobNo = _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee2.MobileNo;
-                            _feePaidCroMobNo = _latestReceiptDetails.Employee.OfficialMobileNo != null ? _latestReceiptDetails.Employee.OfficialMobileNo :
-                                                                                                   _latestReceiptDetails.Employee.MobileNo;
-                        }
-                    }
-
-                    //Adding student + guardian mobile no
+                    int _centreId = _studRegistraion.StudentWalkInn.CenterCode.Id;
                     string _stuMobNo = _studRegistraion.StudentWalkInn.MobileNo;
-                    //string _guardianMobNo = _studRegistraion.StudentWalkInn.GuardianContactNo;
 
-                    _lstMobNos.Add(_cro1MobNo);
-                    _lstMobNos.Add(_cro2MobNo);
-                    _lstMobNos.Add(_feePaidCroMobNo);
-                    _lstMobNos.Add(_stuMobNo);
-                    //_lstMobNos.Add(_guardianMobNo);
+                    List<string> _lstMobNos = _cmn.GetOfficalSMS((int)EnumClass.SMSCATEGORY.RECEIPTSMS, _centreId, null);
+                    _lstMobNos.Add(_stuMobNo);            
+                 
 
                     string _mobNos = string.Join(",", _lstMobNos.Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList());
 
