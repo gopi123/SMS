@@ -28,7 +28,7 @@ $(function () {
             if (currentIndex == 2) {
                 if (form.valid()) {
                     if (ResetFeeDetails()) {
-                        GetPinNo();
+                        //GetPinNo();
                     }
                     else {
                         return false;
@@ -44,7 +44,8 @@ $(function () {
         },
         onFinishing: function (event, currentIndex) {
             if (form.valid()) {
-                return ValidatePinDetails();
+                //return ValidatePinDetails();
+                return true;
             }
             return form.valid();
         },
@@ -358,16 +359,7 @@ $(function () {
 
     });
 
-    //Discount calculation is performed here
-    $("#txtDiscount").change(function () {
-        //smsVerificationOnDiscountChange();
-        $("#divDiscountReason").show();
-        $("#divPinVerificaiton").hide();
-        showWarningDiscount();
-        GetFeeDetails();
-
-
-    });
+   
 
     //ddlRoundupList change function
     $(document).on("change", "#ddlRoundUpList", function () {
@@ -728,6 +720,8 @@ $(function () {
         return validate;
     };
 
+
+    /////////////////////// Database Insertion Code///////////////////////////////////
     var ajaxInsert = function () {
 
         var currAmount = $("#tblPaymentDetails").find('tbody tr:first').find('.totalAmt').val();
@@ -756,8 +750,6 @@ $(function () {
 
 
     };
-
-
 
 
     $(document).on("click", "#btn_Registration_PayNow", function () {
@@ -849,11 +841,92 @@ $(function () {
         });
     }
 
+    /////////////////////////////Discount calculation/////////////////////////////////////
+
+    //Discount calculation is performed here
+    $("#txtDiscount").change(function () {
+        //smsVerificationOnDiscountChange();
+        $("#divDiscountReason").show();
+        $("#divPinVerificaiton").hide();
+        showWarningDiscount();
+        GetFeeDetails();
+
+
+    });
+
+    //warning message for discount is shown here
+    var showWarningDiscount = function () {
+        var form = $("#frmAdd");
+        if (form.valid()) {
+
+            var currDiscPercentage = Number($("#txtDiscount").val());
+            var centreCode = $("#hfieldCentreCode").val();
+            var courseArray = $("#txtSingleCourseIds").val().split(',');
+            var href = $(form).data("warningdiscount-url");
+            var courseCount = courseArray.length;
+            $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Calculating discount... </b></h3>' });
+
+            $.ajax({
+                type: "GET",
+                url: href,
+                data: { discountPercentage: currDiscPercentage, centreCode: centreCode, courseCount: courseCount },
+                datatype: "json",
+                success: function (data) {
+                    $.unblockUI();
+                    if (data == "success") {
+
+                        $("#txtDiscount").val(currDiscPercentage);
+                        GetFeeDetails();
+
+                    }
+                    else if (data == "error") {
+                        $("#txtDiscount").val(0);
+                        GetFeeDetails();
+                        bootbox.alert("Error some thing happened")
+                    }
+                    else {
+
+                        var warningDetails = data.split('_');
+
+                        bootbox.confirm("DiscountPercentage is greater than the allowed discount percentage .Requires <b>Pin Verification</b> from " +
+                            "the concerned <b>" + warningDetails[1] + "(" + warningDetails[0] + ")</b>.Click <b>OK</b> to proceed.", function (result) {
+
+                                if (result) {
+                                    $("#txtOfficialNo").val(warningDetails[2]);
+                                    $("#txtDiscEmpId").val(warningDetails[3])
+                                    $("#divModalPinVerification").modal({
+                                        backdrop: 'static'
+                                    });
+                                }
+                                else {
+
+                                    $("#txtDiscount").val(0);
+                                    GetFeeDetails();
+                                }
+
+                            });
+
+
+                    }
+
+                },
+                error: function (err) {
+                    $("#txtDiscount").val(0);
+                    GetFeeDetails();
+                    toastr.error("Error:" + this.message);
+                }
+            });
+        }
+        else {
+            $("#txtDiscount").val(0);
+
+            GetFeeDetails();
+        }
+
+    }
+
     //send sms to concerned offiial for discount amt
-
-    var smsVerificationOnDiscountChange = function (officialMobNo, officialName) {
-
-
+    var smsVerificationOnDiscountChange = function () {
         
         var href = $("#divModalPinVerification").data("url");
         //var walkinnId = $("#hfieldWalkInnID").val();
@@ -900,8 +973,6 @@ $(function () {
         });
     }
 
-
-
     $(document).on("click", "#btnContinue", function () {
 
         if (!$('#divPinVerificaiton').is(':visible')) {
@@ -938,8 +1009,13 @@ $(function () {
 
             if (returnPinNo == currentPinNo) {
                 var currDiscountPercentage = $("#txtDiscount").val();
+                var discountReason = $("#txtDiscountReason").val();
+                var discEmpId = $("#txtDiscEmpId").val();
+                $("#hfieldDiscountReason").val(discountReason);
+                $("#hFieldDiscEmpId").val(discEmpId);
                 $("#txtDefaultDiscountPercentage").val(currDiscountPercentage);
                 $("#divModalPinVerification").modal('hide');
+               
                 GetFeeDetails();
             }
             else {
@@ -953,79 +1029,9 @@ $(function () {
 
     })
 
-
-    var showWarningDiscount = function () {
-        var form = $("#frmAdd");
-        if (form.valid()) {
-
-            
-
-            var currDiscPercentage = Number($("#txtDiscount").val());
-            var centreCode = $("#hfieldCentreCode").val();
-            var courseArray = $("#txtSingleCourseIds").val().split(',');
-            var href = $(form).data("warningdiscount-url");
-            var courseCount = courseArray.length;
-            $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Calculating discount... </b></h3>' });
-
-            $.ajax({
-                type: "GET",
-                url: href,
-                data: { discountPercentage: currDiscPercentage, centreCode: centreCode, courseCount: courseCount },
-                datatype: "json",
-                success: function (data) {
-                    $.unblockUI();
-                    if (data == "success") {
-
-                        $("#txtDiscount").val(currDiscPercentage);
-                        GetFeeDetails();
-
-                    }
-                    else if (data == "error") {
-                        $("#txtDiscount").val(0);
-                        GetFeeDetails();
-                        bootbox.alert("Error some thing happened")
-                    }
-                    else {
-
-                        var warningDetails = data.split('_');
-
-                        bootbox.confirm("DiscountPercentage is greater than the allowed discount percentage .Requires <b>Pin Verification</b> from " +
-                            "the concerned <b>" + warningDetails[1] + "(" + warningDetails[0] + ")</b>.Click <b>OK</b> to proceed.", function (result) {
-
-                                if (result) {                                    
-                                    $("#txtOfficialNo").val(warningDetails[2]);
-                                    $("#divModalPinVerification").modal({
-                                        backdrop: 'static'
-                                    });
-                                }
-                                else {                                   
-                                    $("#txtOfficialNo").val("");
-                                    $("#txtDiscount").val(0);
-                                    GetFeeDetails();
-                                }
-
-                            });
-
-
-                    }
-
-                },
-                error: function (err) {
-                    $("#txtDiscount").val(0);
-                    GetFeeDetails();
-                    toastr.error("Error:" + this.message);
-                }
-            });
-        }
-        else {
-            $("#txtDiscount").val(0);
-            GetFeeDetails();
-        }
-
-    }
-
     $(document).on("click", "#btnMdlClose", function () {
         $("#txtDiscount").val(0);
+       
         GetFeeDetails();
 
     })
@@ -1067,10 +1073,7 @@ $(function () {
         return false;
 
     }
-
-
-
-
+    
     $(document).on("click", "#btnSearchCourseCode", showModalCourseCode);
 
     $(document).on("click", "#btnCourseSearch", srchCourseCode);
