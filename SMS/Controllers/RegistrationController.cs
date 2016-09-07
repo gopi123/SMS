@@ -401,7 +401,6 @@ namespace SMS.Controllers
         {
             try
             {
-
                 if (mdlRegistration.InstallmentType == EnumClass.InstallmentType.SINGLE)
                 {
                     ModelState.Remove("InstallmentID");
@@ -469,6 +468,8 @@ namespace SMS.Controllers
                             _studRegn.PhotoUploadedDate = mdlRegistration.PhotoUrl != null ? Common.LocalDateTime() : (DateTime?)null;
                             _studRegn.IsCertificateIssued = false;
                             _studRegn.IsPhotoRejected = false;
+                            _studRegn.DiscountOfficalId = mdlRegistration.DiscountEmployeeId;
+                            _studRegn.DiscountReason = mdlRegistration.DiscountReason;
 
                             //saving student course details
                             foreach (var courseId in mdlRegistration.MultiCourseId)
@@ -827,8 +828,8 @@ namespace SMS.Controllers
             int _randomNo = 0;
             try
             {
-                Common _cmn=new Common();
-                 //Gets RandomNo
+                Common _cmn = new Common();
+                //Gets RandomNo
                 _randomNo = _cmn.GenerateRandomNo();
 
                 //message for employee
@@ -848,49 +849,6 @@ namespace SMS.Controllers
                 }
                 return Json("error", JsonRequestBehavior.AllowGet);
 
-
-
-                //Common _cmn = new Common();
-                ////get the student centre from walkinn
-                //int _studentCenterId = _db.CenterCodes
-                //                       .Where(cc => cc.CentreCode == centreCode)
-                //                       .Select(cc => cc.Id).FirstOrDefault();
-
-                ////get the employee who availed discount for student
-                //string _empName = _db.Employees
-                //                .AsEnumerable()
-                //                .Where(e => e.Id == Int32.Parse(Session["LoggedUserId"].ToString()))
-                //                .Select(e => e.Name).FirstOrDefault();
-
-                ////get the centremanager from centre
-                //var _employee = _cmn.GetCentreManager(_studentCenterId);
-
-                ////if no employee has been assigned to a particular centre
-                //if (_employee == null)
-                //{
-                //    return Json("employee_error", JsonRequestBehavior.AllowGet);
-                //}
-                //else
-                //{
-                //    //gets the centermanager mobileno
-                //    var _empMobileNo = _employee.OfficialMobileNo;
-
-                //    //Gets RandomNo
-                //    _randomNo = _cmn.GenerateRandomNo();
-
-                //    //message for employee
-                //    var _msg = "Dear " + _employee.Name.ToUpper() + ", Discount of " + discountPercentage + "% has been set for student " + studentName.ToUpper() + " of " + centreCode + " by " + _empName + "." +
-                //              "By sharing this pin " + _randomNo + " I agree to allow the student to register with the above said discount percentage.";
-
-                //    //Sends the 4 digitno to the employee mobileNo
-                //    string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _empMobileNo + "&msg=" + _msg + "&route=T");
-                //    if (!_result.StartsWith("Invalid Username/password") || !_result.StartsWith("Enter valid MobileNo"))
-                //    {
-                //        return Json(_randomNo, JsonRequestBehavior.AllowGet);
-
-                //    }
-                //}
-                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -957,30 +915,44 @@ namespace SMS.Controllers
             return result;
         }
 
-        public bool SendSMSOffical(string croName, string studRegID, string studName, int discount, string courseList, int courseFee, int centreID)
+        public bool SendSMSOffical(string croName, string studRegID, string studName, int discount, string courseList, int courseFee, int centreID, int croId, string discReason)
         {
-            bool result = false;
-            Common _cmn = new Common();
-            //Gets the designationids of employees to whom sms has to be send
-            List<int> _desgnList = GetEmpDesignationList(centreID);
-            //Gets the mobile no of all the employees
-            List<string> _lstOfficalMobNos = _cmn.GetEmployeeDesignationWise(_desgnList)
-                                            .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
-                                            .Distinct()
-                                            .ToList();
-            //converts the list string to comma seperated string
-            string _officialMobNos = string.Join(",", _lstOfficalMobNos);
-            //sending message to student
-            var _message = "Congrats " + croName.ToUpper() + " for the registration of " + studRegID + "(" + studName.ToUpper() + ") on " + Common.LocalDateTime().Date.ToString("dd/MM/yyy") + ", CourseCode - " + courseList + " and Fees - Rs" + courseFee + "(excluding ST). "
-                        + "with a discount of " + discount + "%";
 
-            string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _officialMobNos + "&msg=" + _message + "&route=T");
-            if (!_result.StartsWith("Invalid Username/password") || !_result.StartsWith("Enter valid MobileNo"))
+            try
             {
-                result = true;
-                return result;
+                Common _cmn = new Common();
+
+                string _mobNo_discountSMS = string.Join(",", _cmn.GetOfficalSMS((int)EnumClass.SMSCATEGORY.DISCOUNTSMS, centreID, croId)
+                                                           .Distinct().ToList());
+
+                //message for employee
+                string _discountSMS_msg = "StudentID : " + studRegID.ToUpper().Trim() + "\n" +
+                                            "Discount : " + discount + "%" + "\n" +
+                                            "Employee : " + croName.ToUpper() + "\n" +
+                                            "Student : " + studName.ToUpper().Trim() + "\n" +
+                                            "Reason : " + discReason.ToUpper().Trim();
+
+                string _mobNo_regnSMS = string.Join(",", _cmn.GetOfficalSMS((int)EnumClass.SMSCATEGORY.REGISTRATIONSMS, centreID, null)
+                                                         .Distinct().ToList());
+
+                string _regnSMS_msg = "Congrats " + croName.ToUpper() + " for the registration of " + studRegID + "(" +
+                                        studName.ToUpper() + ") on " + Common.LocalDateTime().Date.ToString("dd/MM/yyy") +
+                                        ", CourseCode - " + courseList + " and Fees - Rs" + courseFee + "(excluding ST). "
+                                        + "with a discount of " + discount + "%";
+
+                string _discountSMS_result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _mobNo_discountSMS + "&msg=" + _discountSMS_msg + "&route=T");
+
+                string _regSMS_result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _mobNo_regnSMS + "&msg=" + _regnSMS_msg + "&route=T");
+
+
+                return true;
             }
-            return result;
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+
         }
 
         //Gets the designationids of employees to whom sms has to be send
@@ -1862,6 +1834,9 @@ namespace SMS.Controllers
                 var _dbRegn = _db.StudentRegistrations
                         .Where(r => r.Id == studentRegId).FirstOrDefault();
                 SuccessMessage _successMsg = new SuccessMessage();
+              
+               
+
                 var _student_Name = _dbRegn.StudentWalkInn.CandidateName.ToUpper();
                 var _student_RegistrationNo = _dbRegn.RegistrationNumber;
                 var _student_MultiCourseCode = string.Join(",", _dbRegn.StudentRegistrationCourses
@@ -1876,13 +1851,17 @@ namespace SMS.Controllers
                 var _stu_SoftwareUsed = string.Join(",", _dbRegn.StudentRegistrationCourses
                                                         .SelectMany(src => src.MultiCourse.MultiCourseDetails)
                                                         .Select(mcd => mcd.Course.Name));
+                string discReason = _dbRegn.DiscountReason;
+                int _croId = _dbRegn.StudentWalkInn.Employee1.Id;                
+                     
+
 
                 var _isReceiptForEmail_Generated = GenerateReceipts(studentRegId);
                 var _isReceiptForPrint_Generated = GenerateReceiptForPrint(studentRegId);
                 var _isMailSend = SendMail(studentRegId, _student_RegistrationNo, _student_Name, _student_MultiCourseCode, _student_CourseFee, _stu_EamilId, _stu_SoftwareUsed);
                 var _isMailSend_PaymentSchedule = Chk_PaymentScheduleDetails(studentRegId, null);
                 var _isSMSSend = SendSMS(_student_Name, _student_RegistrationNo, _student_MultiCourseCode, _student_CourseFee, _student_MobNo);
-                var _isOfficalSMSSend = SendSMSOffical(_stu_CroName, _student_RegistrationNo, _student_Name, _stu_Discount, _student_MultiCourseCode, _student_CourseFee, _stu_CentreId);
+                var _isOfficalSMSSend = SendSMSOffical(_stu_CroName, _student_RegistrationNo, _student_Name, _stu_Discount, _student_MultiCourseCode, _student_CourseFee, _stu_CentreId,_croId,discReason);
                 var _isReceiptSMSend = SendReceiptSMS(studentRegId);
 
                 if (_isReceiptForEmail_Generated)
@@ -2221,63 +2200,10 @@ namespace SMS.Controllers
                                            .FirstOrDefault();
                     var _nextDueDate = _nextDueDetails != null ? _nextDueDetails.DueDate.Value.ToString("dd/MM/yyyy") : "FULL PAID";
 
-
-
-                    //Gets the designationids of employees to whom sms has to be send
-                    List<int> _desgnList = GetEmpDesignationList(_studRegistraion.StudentWalkInn.CenterCodeId.Value);
-                    //Gets the mobile no of all the employees
-                    List<string> _lstMobNos = _cmn.GetEmployeeDesignationWise(_desgnList)
-                                                    .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo).ToList();
-
-                    _croCount = _studRegistraion.StudentWalkInn.CROCount.Value;
-
-                    //if cro count is one
-                    if (_croCount == (int)EnumClass.CROCount.ONE)
-                    {
-                        //if fee paid cro and walkinn cro are same
-                        if (_latestReceiptDetails.CROID == _studRegistraion.StudentWalkInn.CRO1ID)
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                        }
-                        //adding fee paid cro mobileno        
-                        else
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                            _feePaidCroMobNo = _latestReceiptDetails.Employee.OfficialMobileNo != null ? _latestReceiptDetails.Employee.OfficialMobileNo :
-                                                                                                   _latestReceiptDetails.Employee.MobileNo;
-                        }
-                    }
-                    //if cro count is two
-                    else
-                    {
-                        //adding cro1 and cro2 mobileno
-                        if ((_latestReceiptDetails.CROID == _studRegistraion.StudentWalkInn.CRO1ID) || (_latestReceiptDetails.CROID == _studRegistraion.StudentWalkInn.CRO2ID))
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                            _cro2MobNo = _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee2.MobileNo;
-                        }
-                        //adding cro1+cro2+fee paid cro mobileno 
-                        else
-                        {
-                            _cro1MobNo = _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee1.OfficialMobileNo :
-                                                                                                       _studRegistraion.StudentWalkInn.Employee1.MobileNo;
-                            _cro2MobNo = _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo != null ? _studRegistraion.StudentWalkInn.Employee2.OfficialMobileNo :
-                                                                                                        _studRegistraion.StudentWalkInn.Employee2.MobileNo;
-                            _feePaidCroMobNo = _latestReceiptDetails.Employee.OfficialMobileNo != null ? _latestReceiptDetails.Employee.OfficialMobileNo :
-                                                                                                   _latestReceiptDetails.Employee.MobileNo;
-                        }
-                    }
-
-                    //Adding student + guardian mobile no
+                    int _centreId = _studRegistraion.StudentWalkInn.CenterCode.Id;
                     string _stuMobNo = _studRegistraion.StudentWalkInn.MobileNo;
-                    //string _guardianMobNo = _studRegistraion.StudentWalkInn.GuardianContactNo;
 
-                    _lstMobNos.Add(_cro1MobNo);
-                    _lstMobNos.Add(_cro2MobNo);
-                    _lstMobNos.Add(_feePaidCroMobNo);
+                    List<string> _lstMobNos = _cmn.GetOfficalSMS((int)EnumClass.SMSCATEGORY.RECEIPTSMS, _centreId, null);
                     _lstMobNos.Add(_stuMobNo);
                     //_lstMobNos.Add(_guardianMobNo);
 
@@ -2307,8 +2233,8 @@ namespace SMS.Controllers
 
         //sends discount verification sms to concerned center manager where student has join
         public JsonResult DiscountVerification_Warning(int discountPercentage, string centreCode, int courseCount)
-        {           
-            
+        {
+
             string _status = string.Empty;
             try
             {
@@ -2358,7 +2284,7 @@ namespace SMS.Controllers
                     if (_nxtEmployee != null)
                     {
                         _status = _nxtEmployee.Name.ToUpper().Trim() + "_" + _nxtEmployee.Designation.DesignationName.ToUpper().Trim()
-                            + "_" + _nxtEmployee.OfficialMobileNo.Trim();
+                            + "_" + _nxtEmployee.OfficialMobileNo.Trim() + "_" + _nxtEmployee.Id;
                     }
                     else
                     {
