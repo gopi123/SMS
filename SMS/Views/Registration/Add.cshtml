@@ -56,6 +56,7 @@
                         @Html.HiddenFor(m => m.CentreId)
                         @Html.HiddenFor(m => m.CentreCode, new { @id = "hfieldCentreCode" })
                         @Html.HiddenFor(m => m.DiscountReason, new { @id = "hfieldDiscountReason" })
+                        @Html.HiddenFor(m => m.DiscountEmployeeId, new { @id = "hFieldDiscEmpId" })
                         <div class="box-body ">
                             <div id="WalkInnStepz">
                                 <h3>PERSONAL DATA</h3>
@@ -414,6 +415,7 @@
                                             <div>                                                
                                                 <textarea class="form-control" id="txtDiscountReason"></textarea>                                             
                                                 <input type="text" id="txtOfficialNo" style="display:none" />
+                                                <input type="text" id="txtDiscEmpId" style="display:none" />
                                             </div>                                           
                                         </div>
                                         <div class="spinner" style="display:none">
