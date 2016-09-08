@@ -931,8 +931,8 @@ namespace SMS.Models
 
                 _emp = _db.Employees
                         .Where(e => e.EmployeeCenters.Any(ec => ec.CenterCode.Id == centreCodeId)
-                                    && e.Designation.Role.Id == roleId                        
-                                    && e.Status==true)
+                                    && e.Designation.Role.Id == roleId
+                                    && e.Status == true)
                         .ToList();
 
             }
@@ -942,6 +942,202 @@ namespace SMS.Models
             }
 
             return _emp;
+        }
+
+        //Returns the mobileno of employees for sending sms
+        public List<string> GetOfficalSMS(int smsCategory, int centreId, int? croId)
+        {
+            List<string> _mobileNoList = new List<string>();
+
+            //Gets the group of corresponding centre
+            string groupName = _db.Group_CentreCode_Setting
+                             .Where(gcs => gcs.CenterCode.Id == centreId)
+                             .FirstOrDefault().GroupName;
+
+            if (smsCategory == (int)EnumClass.SMSCATEGORY.DISCOUNTSMS)
+            {
+                string _concerned_cro_mobno = GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.CUSTOMERRELATIONSOFFICER)
+                                            .Where(e => e.Id == croId)
+                                            .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                            .FirstOrDefault();
+
+                string _concerned_centre_salesmgr_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.MANAGERSALES)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_centre_centremgr_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.CENTREMANAGER)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_centre_ed_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.ED)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                _mobileNoList.Add(_concerned_cro_mobno);
+                _mobileNoList.Add(_concerned_centre_salesmgr_mobno);
+                _mobileNoList.Add(_concerned_centre_centremgr_mobno);
+                _mobileNoList.Add(_concerned_centre_centremgr_mobno);
+            }
+
+            if (smsCategory == (int)EnumClass.SMSCATEGORY.REGISTRATIONSMS)
+            {
+                string _concerned_centre_cro_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.CUSTOMERRELATIONSOFFICER)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_group_salesmgr_mobno = string.Join(",", GetEmployee_Groupwise(groupName, (int)EnumClass.Designation.MANAGERSALES)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_group_centremgr_mobno = string.Join(",", GetEmployee_Groupwise(groupName, (int)EnumClass.Designation.CENTREMANAGER)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_group_ed_mobno = string.Join(",", GetEmployee_Groupwise(groupName, (int)EnumClass.Designation.ED)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+
+                _mobileNoList.Add(_concerned_centre_cro_mobno);
+                _mobileNoList.Add(_concerned_group_salesmgr_mobno);
+                _mobileNoList.Add(_concerned_group_centremgr_mobno);
+                _mobileNoList.Add(_concerned_group_ed_mobno);
+
+            }
+
+            if (smsCategory == (int)EnumClass.SMSCATEGORY.RECEIPTSMS)
+            {
+                string _concerned_centre_cro_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.CUSTOMERRELATIONSOFFICER)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_centre_salesmgr_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.MANAGERSALES)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_centre_centremgr_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.CENTREMANAGER)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                string _concerned_centre_ed_mobno = string.Join(",", GetEmployee_Centrewise(centreId, (int)EnumClass.Designation.ED)
+                                                                        .Select(e => e.OfficialMobileNo != null ? e.OfficialMobileNo : e.MobileNo)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+
+                _mobileNoList.Add(_concerned_centre_cro_mobno);
+                _mobileNoList.Add(_concerned_centre_salesmgr_mobno);
+                _mobileNoList.Add(_concerned_centre_centremgr_mobno);
+                _mobileNoList.Add(_concerned_centre_ed_mobno);
+
+            }
+
+            return _mobileNoList;
+        }
+
+        //Gets the employee list groupwise,designationwise is optional
+        public List<Employee> GetEmployee_Groupwise(string groupName, int? designationId)
+        {
+            List<Employee> _employeeList = new List<Employee>();
+
+            //gets all the centres of concerned group
+            List<int> _centre_groupwise_list = _db.Group_CentreCode_Setting
+                                            .Where(gcs => gcs.GroupName == groupName)
+                                            .Select(gcs => gcs.CenterCode.Id).ToList();
+
+            //gets all the employee of the centre
+            _employeeList = _db.Employees
+                          .Where(e => e.Status == true &&
+                                 e.EmployeeCenters.Any(ec => _centre_groupwise_list.Contains(ec.CenterCode.Id)))
+                          .ToList();
+
+            if (designationId == (int)EnumClass.Designation.CUSTOMERRELATIONSOFFICER)
+            {
+                _employeeList = _employeeList
+                                .Where(e => e.Designation.Id == ((int)EnumClass.Designation.CUSTOMERRELATIONSOFFICER))
+                                .ToList();
+            }
+
+            if (designationId == (int)EnumClass.Designation.MANAGERSALES)
+            {
+                _employeeList = _employeeList
+                               .Where(e => e.Designation.Id == ((int)EnumClass.Designation.MANAGERSALES))
+                               .ToList();
+
+            }
+
+            if (designationId == (int)EnumClass.Designation.CENTREMANAGER)
+            {
+                _employeeList = _employeeList
+                               .Where(e => e.Designation.Id == ((int)EnumClass.Designation.CENTREMANAGER))
+                               .ToList();
+
+            }
+
+            if (designationId == (int)EnumClass.Designation.ED)
+            {
+                _employeeList = _employeeList
+                               .Where(e => e.Designation.Id == ((int)EnumClass.Designation.ED))
+                               .ToList();
+
+            }
+
+            return _employeeList;
+        }
+
+        //Gets the employee list centrewise,designationwise is optional
+        public List<Employee> GetEmployee_Centrewise(int centreId, int? designationId)
+        {
+
+            List<Employee> _employeeList = new List<Employee>();
+            //gets all the employee of the centre
+            _employeeList = _db.Employees
+                          .Where(e => e.Status == true &&
+                                 e.EmployeeCenters.Any(ec => ec.CenterCode.Id == centreId))
+                          .ToList();
+
+            if (designationId == (int)EnumClass.Designation.CUSTOMERRELATIONSOFFICER)
+            {
+                _employeeList = _employeeList
+                                .Where(e => e.Designation.Id == ((int)EnumClass.Designation.CUSTOMERRELATIONSOFFICER))
+                                .ToList();
+            }
+
+            if (designationId == (int)EnumClass.Designation.MANAGERSALES)
+            {
+                _employeeList = _employeeList
+                               .Where(e => e.Designation.Id == ((int)EnumClass.Designation.MANAGERSALES))
+                               .ToList();
+
+            }
+
+            if (designationId == (int)EnumClass.Designation.CENTREMANAGER)
+            {
+                _employeeList = _employeeList
+                               .Where(e => e.Designation.Id == ((int)EnumClass.Designation.CENTREMANAGER))
+                               .ToList();
+
+            }
+
+            if (designationId == (int)EnumClass.Designation.ED)
+            {
+                _employeeList = _employeeList
+                               .Where(e => e.Designation.Id == ((int)EnumClass.Designation.ED))
+                               .ToList();
+
+            }
+
+            return _employeeList;
         }
 
 
