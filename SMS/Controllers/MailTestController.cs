@@ -740,6 +740,14 @@ namespace SMS.Controllers
             }
         }
 
+        public void TestOffSMS(int cat,int centre)
+        {
+            Common _cmn=new Common();
+            int _testcro = 36;
+
+            List<string> MobileNo = _cmn.GetOfficalSMS(cat, centre, _testcro);
+        }
+
         protected override void Dispose(bool disposing)
         {
             _db.Dispose();
