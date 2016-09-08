@@ -834,7 +834,7 @@ namespace SMS.Controllers
 
                 //message for employee
                 var _msg = "Centre : " + centreCode.ToUpper().Trim() + "\n" +
-                            "Discount : " + discountPercentage + "\n" +
+                            "Discount : " + discountPercentage + "%" + "\n" +
                             "Employee : " + Session["LoggedEmployeeName"].ToString().ToUpper() + "\n" +
                             "Student : " + studentName.ToUpper().Trim() + "\n" +
                             "Reason : " + discReason.ToUpper().Trim() + "\n" +
@@ -1834,8 +1834,8 @@ namespace SMS.Controllers
                 var _dbRegn = _db.StudentRegistrations
                         .Where(r => r.Id == studentRegId).FirstOrDefault();
                 SuccessMessage _successMsg = new SuccessMessage();
-              
-               
+
+
 
                 var _student_Name = _dbRegn.StudentWalkInn.CandidateName.ToUpper();
                 var _student_RegistrationNo = _dbRegn.RegistrationNumber;
@@ -1852,8 +1852,8 @@ namespace SMS.Controllers
                                                         .SelectMany(src => src.MultiCourse.MultiCourseDetails)
                                                         .Select(mcd => mcd.Course.Name));
                 string discReason = _dbRegn.DiscountReason;
-                int _croId = _dbRegn.StudentWalkInn.Employee1.Id;                
-                     
+                int _croId = _dbRegn.StudentWalkInn.Employee1.Id;
+
 
 
                 var _isReceiptForEmail_Generated = GenerateReceipts(studentRegId);
@@ -1861,7 +1861,7 @@ namespace SMS.Controllers
                 var _isMailSend = SendMail(studentRegId, _student_RegistrationNo, _student_Name, _student_MultiCourseCode, _student_CourseFee, _stu_EamilId, _stu_SoftwareUsed);
                 var _isMailSend_PaymentSchedule = Chk_PaymentScheduleDetails(studentRegId, null);
                 var _isSMSSend = SendSMS(_student_Name, _student_RegistrationNo, _student_MultiCourseCode, _student_CourseFee, _student_MobNo);
-                var _isOfficalSMSSend = SendSMSOffical(_stu_CroName, _student_RegistrationNo, _student_Name, _stu_Discount, _student_MultiCourseCode, _student_CourseFee, _stu_CentreId,_croId,discReason);
+                var _isOfficalSMSSend = SendSMSOffical(_stu_CroName, _student_RegistrationNo, _student_Name, _stu_Discount, _student_MultiCourseCode, _student_CourseFee, _stu_CentreId, _croId, discReason);
                 var _isReceiptSMSend = SendReceiptSMS(studentRegId);
 
                 if (_isReceiptForEmail_Generated)
