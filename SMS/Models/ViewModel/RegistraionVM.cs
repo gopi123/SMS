@@ -96,6 +96,7 @@ namespace SMS.Models.ViewModel
         public string[] CourseId { get; set; }
         public SelectList CourseList { get; set; }
         public string DiscountReason { get; set; }
+        public int? DiscountEmployeeId { get; set; }
 
         //For Editing purpose
         public string RegistrationNumber { get; set; }
