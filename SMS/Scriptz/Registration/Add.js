@@ -28,7 +28,7 @@ $(function () {
             if (currentIndex == 2) {
                 if (form.valid()) {
                     if (ResetFeeDetails()) {
-                        //GetPinNo();
+                        GetPinNo();
                     }
                     else {
                         return false;
@@ -44,8 +44,7 @@ $(function () {
         },
         onFinishing: function (event, currentIndex) {
             if (form.valid()) {
-                //return ValidatePinDetails();
-                return true;
+                return ValidatePinDetails();                
             }
             return form.valid();
         },
