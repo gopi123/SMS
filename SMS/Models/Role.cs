@@ -17,7 +17,6 @@ namespace SMS.Models
         public Role()
         {
             this.Designations = new HashSet<Designation>();
-            this.DiscountSettings = new HashSet<DiscountSetting>();
         }
     
         public int Id { get; set; }
@@ -26,6 +25,5 @@ namespace SMS.Models
         public Nullable<int> Rank { get; set; }
     
         public virtual ICollection<Designation> Designations { get; set; }
-        public virtual ICollection<DiscountSetting> DiscountSettings { get; set; }
     }
 }

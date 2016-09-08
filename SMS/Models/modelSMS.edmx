@@ -97,7 +97,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RoleId" Type="int" />
+          <Property Name="DiscountRoleId" Type="int" />
           <Property Name="Group_CentreCode_GroupName" Type="nvarchar" MaxLength="50" />
           <Property Name="Discount" Type="int" />
           <Property Name="CourseSeriesTypeId" Type="int" />
@@ -425,6 +425,8 @@
           <Property Name="IsPhotoRejected" Type="bit" />
           <Property Name="PhotoRejectedReason" Type="nvarchar" MaxLength="500" />
           <Property Name="PhotoRejectedDate" Type="datetime" />
+          <Property Name="DiscountReason" Type="nvarchar" MaxLength="100" />
+          <Property Name="DiscountOfficalId" Type="int" />
         </EntityType>
         <EntityType Name="StudentRegistrationCourse">
           <Key>
@@ -684,30 +686,6 @@
             </Principal>
             <Dependent Role="DiscountSetting">
               <PropertyRef Name="CourseSeriesTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DiscountSetting_DiscountSetting">
-          <End Role="DiscountSetting" Type="Self.DiscountSetting" Multiplicity="1" />
-          <End Role="DiscountSetting1" Type="Self.DiscountSetting" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="DiscountSetting">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DiscountSetting1">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DiscountSetting_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
-          <End Role="DiscountSetting" Type="Self.DiscountSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DiscountSetting">
-              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1011,6 +989,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentRegistration_DiscountEmployee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="StudentRegistration" Type="Self.StudentRegistration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentRegistration">
+              <PropertyRef Name="DiscountOfficalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_StudentRegistration_StudentWalkInn">
           <End Role="StudentWalkInn" Type="Self.StudentWalkInn" Multiplicity="0..1" />
           <End Role="StudentRegistration" Type="Self.StudentRegistration" Multiplicity="*" />
@@ -1306,14 +1296,6 @@
             <End Role="CourseSeriesType" EntitySet="CourseSeriesType" />
             <End Role="DiscountSetting" EntitySet="DiscountSetting" />
           </AssociationSet>
-          <AssociationSet Name="FK_DiscountSetting_DiscountSetting" Association="Self.FK_DiscountSetting_DiscountSetting">
-            <End Role="DiscountSetting" EntitySet="DiscountSetting" />
-            <End Role="DiscountSetting1" EntitySet="DiscountSetting" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DiscountSetting_Role" Association="Self.FK_DiscountSetting_Role">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="DiscountSetting" EntitySet="DiscountSetting" />
-          </AssociationSet>
           <AssociationSet Name="FK_Employee_Designation" Association="Self.FK_Employee_Designation">
             <End Role="Designation" EntitySet="Designation" />
             <End Role="Employee" EntitySet="Employee" />
@@ -1413,6 +1395,10 @@
           <AssociationSet Name="FK_StudentReceipt_StudentRegistration" Association="Self.FK_StudentReceipt_StudentRegistration">
             <End Role="StudentRegistration" EntitySet="StudentRegistration" />
             <End Role="StudentReceipt" EntitySet="StudentReceipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentRegistration_DiscountEmployee" Association="Self.FK_StudentRegistration_DiscountEmployee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="StudentRegistration" EntitySet="StudentRegistration" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentRegistration_StudentWalkInn" Association="Self.FK_StudentRegistration_StudentWalkInn">
             <End Role="StudentWalkInn" EntitySet="StudentWalkInn" />
@@ -1664,6 +1650,7 @@
           <NavigationProperty Name="StudentWalkInns2" Relationship="Self.FK_StudentWalkInn_Employee2" FromRole="Employee" ToRole="StudentWalkInn" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Users_Employee" FromRole="Employee" ToRole="Users" />
           <NavigationProperty Name="StudentReceipts" Relationship="dbSMSNSModel.FK_StudentReceipt_Employee" FromRole="Employee" ToRole="StudentReceipt" />
+          <NavigationProperty Name="StudentRegistrations" Relationship="dbSMSNSModel.FK_StudentRegistration_DiscountEmployee" FromRole="Employee" ToRole="StudentRegistration" />
         </EntityType>
         <EntityType Name="EmployeeCenter">
           <Key>
@@ -1794,7 +1781,6 @@
           <Property Name="ParentID" Type="Int32" />
           <Property Name="Rank" Type="Int32" />
           <NavigationProperty Name="Designations" Relationship="Self.FK_Designation_Role" FromRole="Role" ToRole="Designation" />
-          <NavigationProperty Name="DiscountSettings" Relationship="dbSMSNSModel.FK_DiscountSetting_Role" FromRole="Role" ToRole="DiscountSetting" />
         </EntityType>
         <EntityType Name="ServiceTax">
           <Key>
@@ -2849,18 +2835,18 @@
             <End Role="CenterCode" EntitySet="CenterCodes" />
             <End Role="Group_CentreCode_Setting" EntitySet="Group_CentreCode_Setting" />
           </AssociationSet>
+          <FunctionImport Name="Edit_Get_DiscountSettings" ReturnType="Collection(dbSMSNSModel.Edit_Get_DiscountSettings_Result)">
+          <Parameter Name="groupName" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="DiscountSettings" EntityType="dbSMSNSModel.DiscountSetting" />
           <AssociationSet Name="FK_DiscountSetting_CourseSeriesType" Association="dbSMSNSModel.FK_DiscountSetting_CourseSeriesType">
             <End Role="CourseSeriesType" EntitySet="CourseSeriesTypes" />
             <End Role="DiscountSetting" EntitySet="DiscountSettings" />
           </AssociationSet>
-          <AssociationSet Name="FK_DiscountSetting_Role" Association="dbSMSNSModel.FK_DiscountSetting_Role">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="DiscountSetting" EntitySet="DiscountSettings" />
+          <AssociationSet Name="FK_StudentRegistration_DiscountEmployee" Association="dbSMSNSModel.FK_StudentRegistration_DiscountEmployee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="StudentRegistration" EntitySet="StudentRegistrations" />
           </AssociationSet>
-          <FunctionImport Name="Edit_Get_DiscountSettings" ReturnType="Collection(dbSMSNSModel.Edit_Get_DiscountSettings_Result)">
-            <Parameter Name="groupName" Mode="In" Type="String" />
-          </FunctionImport>
           </EntityContainer>
         <EntityType Name="StudentLogin">
           <Key>
@@ -2908,6 +2894,9 @@
           <NavigationProperty Name="StudentWalkInn" Relationship="dbSMSNSModel.FK_StudentRegistration_StudentWalkInn" FromRole="StudentRegistration" ToRole="StudentWalkInn" />
           <NavigationProperty Name="StudentRegistrationCourses" Relationship="dbSMSNSModel.FK_StudentRegistrationCourse_StudentRegistration" FromRole="StudentRegistration" ToRole="StudentRegistrationCourse" />
           <NavigationProperty Name="StudentReceipts" Relationship="dbSMSNSModel.FK_StudentReceipt_StudentRegistration" FromRole="StudentRegistration" ToRole="StudentReceipt" />
+          <Property Name="DiscountReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountOfficalId" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="dbSMSNSModel.FK_StudentRegistration_DiscountEmployee" FromRole="StudentRegistration" ToRole="Employee" />
         </EntityType>
         <Association Name="FK_StudentFeedback_StudentRegistration">
           <End Type="dbSMSNSModel.StudentRegistration" Role="StudentRegistration" Multiplicity="0..1" />
@@ -3035,18 +3024,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="Edit_Get_DiscountSettings_Result">
+          <Property Type="Int32" Name="RoleId" Nullable="true" />
+          <Property Type="Int32" Name="Foundation" Nullable="true" />
+          <Property Type="Int32" Name="Diploma" Nullable="true" />
+          <Property Type="Int32" Name="MasterDiploma" Nullable="true" />
+          <Property Type="Int32" Name="Professional" Nullable="true" />
+        </ComplexType>
         <EntityType Name="DiscountSetting">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleId" Type="Int32" />
+          <Property Name="DiscountRoleId" Type="Int32" />
           <Property Name="Group_CentreCode_GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Discount" Type="Int32" />
           <Property Name="CourseSeriesTypeId" Type="Int32" />
           <Property Name="FromDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CourseSeriesType" Relationship="dbSMSNSModel.FK_DiscountSetting_CourseSeriesType" FromRole="DiscountSetting" ToRole="CourseSeriesType" />
-          <NavigationProperty Name="Role" Relationship="dbSMSNSModel.FK_DiscountSetting_Role" FromRole="DiscountSetting" ToRole="Role" />
         </EntityType>
         <Association Name="FK_DiscountSetting_CourseSeriesType">
           <End Type="dbSMSNSModel.CourseSeriesType" Role="CourseSeriesType" Multiplicity="0..1" />
@@ -3060,25 +3055,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DiscountSetting_Role">
-          <End Type="dbSMSNSModel.Role" Role="Role" Multiplicity="0..1" />
-          <End Type="dbSMSNSModel.DiscountSetting" Role="DiscountSetting" Multiplicity="*" />
+        <Association Name="FK_StudentRegistration_DiscountEmployee">
+          <End Type="dbSMSNSModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="dbSMSNSModel.StudentRegistration" Role="StudentRegistration" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Role">
+            <Principal Role="Employee">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="DiscountSetting">
-              <PropertyRef Name="RoleId" />
+            <Dependent Role="StudentRegistration">
+              <PropertyRef Name="DiscountOfficalId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="Edit_Get_DiscountSettings_Result">
-          <Property Type="Int32" Name="RoleId" Nullable="true" />
-          <Property Type="Int32" Name="Foundation" Nullable="true" />
-          <Property Type="Int32" Name="Diploma" Nullable="true" />
-          <Property Type="Int32" Name="MasterDiploma" Nullable="true" />
-          <Property Type="Int32" Name="Professional" Nullable="true" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3604,6 +3592,8 @@
           <EntitySetMapping Name="StudentRegistrations">
             <EntityTypeMapping TypeName="dbSMSNSModel.StudentRegistration">
               <MappingFragment StoreEntitySet="StudentRegistration">
+                <ScalarProperty Name="DiscountOfficalId" ColumnName="DiscountOfficalId" />
+                <ScalarProperty Name="DiscountReason" ColumnName="DiscountReason" />
                 <ScalarProperty Name="PhotoRejectedDate" ColumnName="PhotoRejectedDate" />
                 <ScalarProperty Name="PhotoRejectedReason" ColumnName="PhotoRejectedReason" />
                 <ScalarProperty Name="IsPhotoRejected" ColumnName="IsPhotoRejected" />
@@ -3664,18 +3654,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DiscountSettings">
-            <EntityTypeMapping TypeName="dbSMSNSModel.DiscountSetting">
-              <MappingFragment StoreEntitySet="DiscountSetting">
-                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-                <ScalarProperty Name="CourseSeriesTypeId" ColumnName="CourseSeriesTypeId" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="Group_CentreCode_GroupName" ColumnName="Group_CentreCode_GroupName" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Edit_Get_DiscountSettings" FunctionName="dbSMSNSModel.Store.Edit_Get_DiscountSettings">
             <ResultMapping>
               <ComplexTypeMapping TypeName="dbSMSNSModel.Edit_Get_DiscountSettings_Result">
@@ -3687,6 +3665,18 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="DiscountSettings">
+            <EntityTypeMapping TypeName="dbSMSNSModel.DiscountSetting">
+              <MappingFragment StoreEntitySet="DiscountSetting">
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="CourseSeriesTypeId" ColumnName="CourseSeriesTypeId" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Group_CentreCode_GroupName" ColumnName="Group_CentreCode_GroupName" />
+                <ScalarProperty Name="DiscountRoleId" ColumnName="DiscountRoleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

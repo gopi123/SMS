@@ -26,6 +26,7 @@ namespace SMS.Models
             this.StudentWalkInns2 = new HashSet<StudentWalkInn>();
             this.Users = new HashSet<User>();
             this.StudentReceipts = new HashSet<StudentReceipt>();
+            this.StudentRegistrations = new HashSet<StudentRegistration>();
         }
     
         public int Id { get; set; }
@@ -69,5 +70,6 @@ namespace SMS.Models
         public virtual ICollection<StudentWalkInn> StudentWalkInns2 { get; set; }
         public virtual ICollection<User> Users { get; set; }
         public virtual ICollection<StudentReceipt> StudentReceipts { get; set; }
+        public virtual ICollection<StudentRegistration> StudentRegistrations { get; set; }
     }
 }

@@ -47,11 +47,14 @@ namespace SMS.Models
         public Nullable<bool> IsPhotoRejected { get; set; }
         public string PhotoRejectedReason { get; set; }
         public Nullable<System.DateTime> PhotoRejectedDate { get; set; }
+        public string DiscountReason { get; set; }
+        public Nullable<int> DiscountOfficalId { get; set; }
     
         public virtual ICollection<StudentFeedback> StudentFeedbacks { get; set; }
         public virtual ICollection<StudentLogin> StudentLogins { get; set; }
         public virtual StudentWalkInn StudentWalkInn { get; set; }
         public virtual ICollection<StudentRegistrationCourse> StudentRegistrationCourses { get; set; }
         public virtual ICollection<StudentReceipt> StudentReceipts { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

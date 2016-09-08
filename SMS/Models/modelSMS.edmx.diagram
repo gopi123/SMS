@@ -99,9 +99,9 @@
         <AssociationConnector Association="dbSMSNSModel.FK_StudentReceipt_StudentRegistration" />
         <EntityTypeShape EntityType="dbSMSNSModel.Group_CentreCode_Setting" Width="1.5" PointX="12" PointY="36.25" />
         <AssociationConnector Association="dbSMSNSModel.FK_Group_CenterCode" />
-        <EntityTypeShape EntityType="dbSMSNSModel.DiscountSetting" Width="1.5" PointX="26" PointY="18.625" />
+        <EntityTypeShape EntityType="dbSMSNSModel.DiscountSetting" Width="1.5" PointX="21" PointY="13.375" />
         <AssociationConnector Association="dbSMSNSModel.FK_DiscountSetting_CourseSeriesType" />
-        <AssociationConnector Association="dbSMSNSModel.FK_DiscountSetting_Role" />
+        <AssociationConnector Association="dbSMSNSModel.FK_StudentRegistration_DiscountEmployee" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,13 +15,12 @@ namespace SMS.Models
     public partial class DiscountSetting
     {
         public int Id { get; set; }
-        public Nullable<int> RoleId { get; set; }
+        public Nullable<int> DiscountRoleId { get; set; }
         public string Group_CentreCode_GroupName { get; set; }
         public Nullable<int> Discount { get; set; }
         public Nullable<int> CourseSeriesTypeId { get; set; }
         public Nullable<System.DateTime> FromDate { get; set; }
     
         public virtual CourseSeriesType CourseSeriesType { get; set; }
-        public virtual Role Role { get; set; }
     }
 }
