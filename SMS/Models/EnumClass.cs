@@ -266,6 +266,13 @@ namespace SMS.Models
             SALES_INDIVIDUAL=5
         }
 
+        public enum SMSCATEGORY
+        {
+            DISCOUNTSMS=1,
+            REGISTRATIONSMS=2,
+            RECEIPTSMS=3
+        }
+
 
 
     }
