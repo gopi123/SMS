@@ -43,13 +43,13 @@ $(function () {
                                     '<a class="btn btn-xs btn-info editData pull-left"  data-group-name=' + row.GroupName + ' >' +
                                     '<i class="fa fa-pencil"></i> Edit</a>' +
                                 '</div>' +
-                                '<div></div>'+
+                                '<div></div>' +
                                 '<div class="">' +
                                     '<a class="btn btn-xs btn-danger deleteData pull-left" data-group-name=' + row.GroupName + ' data-name="' + row.Name + '" >' +
                                     '<i class="fa fa-close"></i> Delete</a>' +
-                                '</div>' 
-                              
-                            '</div>'
+                                '</div>'
+
+                    '</div>'
                 }
             }
 
@@ -70,11 +70,11 @@ $(function () {
         "progressBar": true
     }
 
-    $(document).on("click", ".editData", function () {       
+    $(document).on("click", ".editData", function () {
         var groupName = $(this).data('group-name');
         var url = $("#frmIndex").data("edit-url");
         url = url.replace('param_placeholder', groupName);
-        window.location.href = url;       
+        window.location.href = url;
     });
 
 
@@ -91,12 +91,15 @@ $(function () {
             success: function (data) {
                 $.unblockUI();
 
-                if (data == "success") {                    
+                if (data == "success") {
                     toastr.success("Successfully deleted the details.")
                     setTimeout(function () {
                         var url = $(form).data("url");
                         window.location.href = url;
                     }, 2000);
+                }
+                else if (data == "already_exists") {
+                    bootbox.alert("Cannot delete <b>" + groupName + "</b>.It is being used in discount settings.")
                 }
                 else {
                     toastr.error("Error:Something gone wrong")
