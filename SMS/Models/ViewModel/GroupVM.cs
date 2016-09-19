@@ -20,6 +20,7 @@ namespace SMS.Models.ViewModel
 
         [Required(ErrorMessage="Please enter GroupName")]
         [Remote("CheckGroupName", "Group", ErrorMessage = "Sorry group name already exists", AdditionalFields = "InitialGroupName")]
+        [RegularExpression(@"[^\s]+", ErrorMessage = "Invalid Group Name.Spaces are not allowed for Group Name")]
         public string GroupName { get; set; }
 
         [RequiredArrayAttribute(ErrorMessage="Please select atleast one Centre Code")]
