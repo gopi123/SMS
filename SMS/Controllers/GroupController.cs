@@ -172,7 +172,7 @@ namespace SMS.Controllers
                                             Name = gc.CenterCode.CentreCode
                                         }).ToList();
 
-                List<PopulateSelectList> _filteredCentreCodeList = _centreCodeList.Concat(_existingCentreCodeList).ToList();
+                List<PopulateSelectList> _filteredCentreCodeList = _centreCodeList.Count > 0 ? _centreCodeList.Concat(_existingCentreCodeList).ToList() : _existingCentreCodeList.ToList();
 
 
                 GroupVM _clsGroupVM = new GroupVM();
@@ -259,20 +259,34 @@ namespace SMS.Controllers
                 using (TransactionScope _ts = new TransactionScope())
                 {
                     List<Group_CentreCode_Setting> _lstGroupCentreCode = new List<Group_CentreCode_Setting>();
-                    _lstGroupCentreCode = _db.Group_CentreCode_Setting
+                    List<DiscountSetting> _lstDiscSetting = new List<DiscountSetting>();
+
+                    _lstDiscSetting = _db.DiscountSettings
+                                    .Where(d => d.Group_CentreCode_GroupName.ToLower().Trim() == groupName.ToLower().Trim())
+                                    .ToList();
+                    //if the groupname is not present in discountsettings
+                    //then deletion is allowed
+                    if (_lstDiscSetting.Count == 0)
+                    {
+                        _lstGroupCentreCode = _db.Group_CentreCode_Setting
                                         .Where(gcs => gcs.GroupName == groupName)
                                         .ToList();
 
-                    //Adding newly added item
-                    foreach (var _item in _lstGroupCentreCode)
-                    {
-                        _db.Entry(_item).State = EntityState.Deleted;
+                        //Adding newly added item
+                        foreach (var _item in _lstGroupCentreCode)
+                        {
+                            _db.Entry(_item).State = EntityState.Deleted;
+                        }
+                        int i = _db.SaveChanges();
+                        if (i > 0)
+                        {
+                            _ts.Complete();
+                            return Json("success", JsonRequestBehavior.AllowGet);
+                        }
                     }
-                    int i = _db.SaveChanges();
-                    if (i > 0)
+                    else
                     {
-                        _ts.Complete();
-                        return Json("success", JsonRequestBehavior.AllowGet);
+                        return Json("already_exists", JsonRequestBehavior.AllowGet);
                     }
                 }
                 return Json("error", JsonRequestBehavior.AllowGet);
