@@ -2374,6 +2374,40 @@ namespace SMS.Controllers
             return _employee;
         }
 
+        //send duplicate email to registred student
+        public JsonResult DuplicateRegnEmail(int RegId)
+        {
+            try
+            {
+                StudentRegistration _dbRegn = _db.StudentRegistrations
+                                            .Where(r => r.Id == RegId)
+                                            .FirstOrDefault();
+                var _multiCourseCode = string.Join(",", _dbRegn.StudentRegistrationCourses
+                                                .Select(src => src.MultiCourse.CourseCode));
+
+                var _courseName = string.Join(",", _dbRegn.StudentRegistrationCourses
+                                                                    .SelectMany(src => src.MultiCourse.MultiCourseDetails
+                                                                    .Select(mcd => mcd.Course.Name)));
+
+                bool isMailSend = SendMail(_dbRegn.Id, _dbRegn.RegistrationNumber, _dbRegn.StudentWalkInn.CandidateName, _multiCourseCode, _dbRegn.TotalCourseFee.Value
+                                        , _dbRegn.StudentWalkInn.EmailId, _courseName);
+
+                if (isMailSend)
+                {
+                    return Json("success", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("error", JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             _db.Dispose();
