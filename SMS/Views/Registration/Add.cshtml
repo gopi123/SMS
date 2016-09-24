@@ -273,7 +273,7 @@
                                             </div>
                                             <div>
                                                 @Html.TextBoxFor(m => m.Discount,
-                                                new { @class = "form-control numberOnly", @placeholder = "Discount", @id = "txtDiscount", @title = "Default discount percentage is 50%.For further discount requires CM pin verification." })
+                                                new { @class = "form-control numberOnly", @placeholder = "Discount", @id = "txtDiscount" })
                                                 <div style="display:none">
                                                     @Html.TextBoxFor(m => m.DefaultDiscountPercentage, new { @id = "txtDefaultDiscountPercentage" })
                                                 </div>
@@ -413,7 +413,7 @@
                                                 </label>
                                             </div>
                                             <div>                                                
-                                                <textarea class="form-control" id="txtDiscountReason"></textarea>                                             
+                                                <textarea class="form-control toUpper" id="txtDiscountReason" placeholder="Enter 60 characters only"></textarea>                                             
                                                 <input type="text" id="txtOfficialNo" style="display:none" />
                                                 <input type="text" id="txtDiscEmpId" style="display:none" />
                                             </div>                                           
