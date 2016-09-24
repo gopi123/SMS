@@ -234,6 +234,19 @@ namespace SMS.Controllers
                 var _finYearList = GetFinancialYearList();
                 var _centreList = GetCentreList();
 
+                //Adding next financial year 
+                string _currFinYear = _finYearList.First().Id;
+                int _currFin_startYr = Convert.ToInt32(_currFinYear.Split('-').First());
+                int _currFin_endYr = Convert.ToInt32(_currFinYear.Split('-').Last());
+
+                PopulateSelectList _nxtFinYear = new PopulateSelectList
+                {
+                    Id = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1),
+                    Name = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1)
+                };
+
+                _finYearList.Insert(0, _nxtFinYear);
+
 
                 string[] _currFinancialYear = _cmn.FinancialYearList().ToList()
                                                 .OrderByDescending(x => x.ToString())
@@ -590,20 +603,7 @@ namespace SMS.Controllers
                                     {
                                         Id = x.ToString(),
                                         Name = x.ToString()
-                                    }).ToList();
-
-                //Adding next financial year 
-                string _currFinYear = _finYearList.First().Id;
-                int _currFin_startYr = Convert.ToInt32(_currFinYear.Split('-').First());
-                int _currFin_endYr = Convert.ToInt32(_currFinYear.Split('-').Last());
-
-                PopulateSelectList _nxtFinYear = new PopulateSelectList
-                {
-                    Id = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1),
-                    Name = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1)
-                };
-
-                _finYearList.Insert(0, _nxtFinYear);
+                                    }).ToList();                
 
 
                 return _finYearList;
