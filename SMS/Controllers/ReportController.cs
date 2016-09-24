@@ -233,13 +233,15 @@ namespace SMS.Controllers
 
                 var _finYearList = GetFinancialYearList();
                 var _centreList = GetCentreList();
+
+
                 string[] _currFinancialYear = _cmn.FinancialYearList().ToList()
                                                 .OrderByDescending(x => x.ToString())
                                                 .First().Split('-');
                 DateTime _startDate = new DateTime(Convert.ToInt32(_currFinancialYear[0]), 4, 1);
                 DateTime _endDate = new DateTime(Convert.ToInt32(_currFinancialYear[1]), 3, 31);
 
-                
+
                 var _employeeList = GetEmployeeList_Pending((int)EnumClass.SelectAll.ALL, EnumClass.WalkinnStatus.REGISTERED.ToString(), _startDate, _endDate);
 
                 //Adding all if list count is greater than 1
@@ -260,7 +262,7 @@ namespace SMS.Controllers
                 var _indexVM = new ReportVM
                 {
                     FinYearList = new SelectList(_finYearList, "Id", "Name"),
-                    FinYearId = _finYearList.First().Id,
+                    FinYearId = _finYearList[1].Id,
                     CentreList = new SelectList(_centreList, "Id", "Name"),
                     CentreId = _centreList.Count > 1 ? (int)EnumClass.SelectAll.ALL : Convert.ToInt32(_centreList.First().Id),
                     EmpList = new SelectList(_employeeList, "Id", "Name"),
@@ -376,8 +378,8 @@ namespace SMS.Controllers
                 EmpId = _employeeList.Count > 1 ? (int)EnumClass.SelectAll.ALL : Convert.ToInt32(_employeeList.First().Id),
                 FromDate = _fromDate.Date,
                 ToDate = _toDate.Date,
-                CourseCategoryList=new SelectList(_courseCategoryList,"Id","Name"),
-                CourseCategoryId=_courseCategoryList.Count>1?(int)EnumClass.SelectAll.ALL:Convert.ToInt32(_courseCategoryList.First().Id),
+                CourseCategoryList = new SelectList(_courseCategoryList, "Id", "Name"),
+                CourseCategoryId = _courseCategoryList.Count > 1 ? (int)EnumClass.SelectAll.ALL : Convert.ToInt32(_courseCategoryList.First().Id),
                 CourseList = new SelectList(_courseList, "Id", "Name"),
                 CourseId = _courseList.Count > 1 ? (int)EnumClass.SelectAll.ALL : Convert.ToInt32(_courseList.First().Id)
             };
@@ -430,7 +432,7 @@ namespace SMS.Controllers
             {
                 _courseCategory = null;
             }
-             
+
             return _courseCategory;
         }
 
@@ -451,7 +453,7 @@ namespace SMS.Controllers
                                 Id = c.Id.ToString(),
                                 Name = c.Name
                             }).ToList();
-                
+
             }
             catch (Exception ex)
             {
@@ -462,7 +464,7 @@ namespace SMS.Controllers
 
         public JsonResult GetCourse_On_CategoryChange_Registration(int categoryId)
         {
-            
+
             try
             {
                 var _lstCourse = GetCourse_Categorywise(categoryId);
@@ -478,14 +480,14 @@ namespace SMS.Controllers
             catch (Exception ex)
             {
                 return Json(null, JsonRequestBehavior.AllowGet);
-            }           
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult RegistrationReport(ReportVM rptVM)
         {
-            Session["CentreId"] = rptVM.CentreId;           
+            Session["CentreId"] = rptVM.CentreId;
             Session["EmpId"] = rptVM.EmpId;
             Session["FromDate"] = rptVM.FromDate;
             Session["ToDate"] = rptVM.ToDate;
@@ -518,7 +520,7 @@ namespace SMS.Controllers
                 DateTime _startDate = new DateTime(Convert.ToInt32(_currFinancialYear[0]), 4, 1);
                 DateTime _endDate = new DateTime(Convert.ToInt32(_currFinancialYear[1]), 3, 31);
 
-                var _employeeList = GetEmployeeList((int)EnumClass.SelectAll.ALL, EnumClass.SelectAll.ALL.ToString(), _startDate, _endDate);               
+                var _employeeList = GetEmployeeList((int)EnumClass.SelectAll.ALL, EnumClass.SelectAll.ALL.ToString(), _startDate, _endDate);
 
                 //Adding all if list count is greater than 1
                 if (_centreList.Count > 1)
@@ -544,7 +546,7 @@ namespace SMS.Controllers
                     EmpList = new SelectList(_employeeList, "Id", "Name"),
                     EmpId = _employeeList.Count > 1 ? (int)EnumClass.SelectAll.ALL : Convert.ToInt32(_employeeList.First().Id),
                     FromDate = _fromDate.Date,
-                    ToDate = _toDate.Date,                  
+                    ToDate = _toDate.Date,
                 };
 
                 return View(_indexVM);
@@ -559,7 +561,7 @@ namespace SMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ReferenceReport(ReportVM rptVM)
         {
-            Session["CentreId"] = rptVM.CentreId;           
+            Session["CentreId"] = rptVM.CentreId;
             Session["EmpId"] = rptVM.EmpId;
             Session["FromDate"] = rptVM.FromDate;
             Session["ToDate"] = rptVM.ToDate;
@@ -589,7 +591,20 @@ namespace SMS.Controllers
                                         Id = x.ToString(),
                                         Name = x.ToString()
                                     }).ToList();
-                //_finYearList.Insert(_finYearList.Count, new PopulateSelectList { Id = "-1", Name = "All" });
+
+                //Adding next financial year 
+                string _currFinYear = _finYearList.First().Id;
+                int _currFin_startYr = Convert.ToInt32(_currFinYear.Split('-').First());
+                int _currFin_endYr = Convert.ToInt32(_currFinYear.Split('-').Last());
+
+                PopulateSelectList _nxtFinYear = new PopulateSelectList
+                {
+                    Id = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1),
+                    Name = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1)
+                };
+
+                _finYearList.Insert(0, _nxtFinYear);
+
 
                 return _finYearList;
             }
