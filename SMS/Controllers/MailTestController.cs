@@ -18,6 +18,7 @@ using Microsoft.Reporting.WebForms;
 using System.Data;
 using System.ComponentModel;
 using System.Globalization;
+using DotNetIntegrationKit;
 
 
 namespace SMS.Controllers
@@ -748,6 +749,123 @@ namespace SMS.Controllers
             List<string> MobileNo = _cmn.GetOfficalSMS(cat, centre, _testcro);
         }
 
+        //public string NetBanking()
+        //{
+        //    string str = string.Empty;
+        //    string TXT_requesttype = "T";
+        //    try
+        //    {
+        //        RequestURL objRequestURL = new RequestURL();
+        //        String response = objRequestURL.SendRequest
+        //                                      (
+        //                                        "T"
+        //                                      , "T45649"
+        //                                      , "16072014185132"
+        //                                      ,
+        //                                      , "1.00"
+        //                                      , "INR"
+                                             
+        //                                      , "http://www.networkzsystems.com/sms/mailtest/netbankingresponse"
+                                             
+                                             
+        //                                      , "test_1.0_0.0"
+        //                                      , "18-09-2016"
+                                              
+                                              
+        //                                      , "470"
+                                              
+                                              
+                                              
+        //                                      , "1848660477BEFDXF"
+        //                                      , "8023485116PXTNYT"
+        //                                      );
+
+        //        String strResponse = response.ToUpper();
+
+        //        if (strResponse.StartsWith("ERROR"))
+        //        {
+        //            str = response;
+        //        }
+        //        else
+        //        {
+        //            if (TXT_requesttype.ToUpper() == "T")
+        //            {
+
+        //                Response.Write("<form name='s1_2' id='s1_2' action='" + response + "' method='post'> ");
+
+        //                Response.Write("<script type='text/javascript' language='javascript' >document.getElementById('s1_2').submit();");
+
+        //                Response.Write("</script>");
+        //                Response.Write("<script language='javascript' >");
+        //                Response.Write("</script>");
+        //                Response.Write("</form> ");
+
+        //            }
+
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        str = ex.Message;
+        //    }
+
+        //    return str;
+        //}
+
+        public class PopulateSelectList
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
+        public void GetFinancialYearList()
+        {
+            List<PopulateSelectList> _finYearList = new List<PopulateSelectList>();
+            try
+            {
+                Common _cmn = new Common();
+
+                _finYearList = _cmn.FinancialYearList().ToList()
+                                    .OrderByDescending(x => x.ToString())
+                                    .Select(x => new PopulateSelectList
+                                    {
+                                        Id = x.ToString(),
+                                        Name = x.ToString()
+                                    }).ToList();
+
+                var _currFinYear = _finYearList.First().Id;
+                var _currFin_startYr = Convert.ToInt32(_currFinYear.Split('-').First());
+                var _currFin_endYr = Convert.ToInt32(_currFinYear.Split('-').Last());
+
+                var _nxtFinYear = new PopulateSelectList
+                {
+                    Id = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1),
+                    Name = (_currFin_startYr + 1) + "-" + (_currFin_endYr + 1)
+                };
+
+                _finYearList.Insert(0, _nxtFinYear);
+
+                
+
+
+
+                //Adding next financial year 
+
+
+                //_finYearList.Insert(_finYearList.Count, new PopulateSelectList { Id = "-1", Name = "All" });
+
+                //return _finYearList;
+            }
+            catch (Exception ex)
+            {
+                //return _finYearList = null;
+            }
+        }
+
+        public void RegEmailTest()
+        {
+
+        }
         protected override void Dispose(bool disposing)
         {
             _db.Dispose();
