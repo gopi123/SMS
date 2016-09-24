@@ -11,18 +11,18 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">        
+    <section class="content-header">
         <div class="col-md-12">
             <h4>
                 View Registration Details
             </h4>
-        </div>       
+        </div>
     </section>
     <!-- Main content -->
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="box">    
+                <div class="box">
                     <div class="box-header">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -36,7 +36,7 @@
                                     @(Html.DropDownList("ddlFinYearList", Model.FinancialYearList, new { @style = "width:100%" }))
                                 </div>
                             </div>
-                        </div>        
+                        </div>
                         <div class="col-md-3">
                             <div>
                                 <label for="ddlInstallmentNo" class=" control-label">
@@ -44,16 +44,18 @@
                                 </label>
                             </div>
                             <div>
-                                @Html.DropDownListFor(m => m.MonthName, Model.MonthList, new { @style = "width:100%", @id = "ddlMonth" })                                
+                                @Html.DropDownListFor(m => m.MonthName, Model.MonthList, new { @style = "width:100%", @id = "ddlMonth" })
                             </div>
 
-                        </div>               
-                    </div>               
+                        </div>
+                    </div>
                     <!-- form start -->
-                    <form id="frmIndex" data-url="@Url.Action("Index", "Registration")" class="form-horizontal" 
-                          data-redirect-url="@Url.Action("Edit", "Registration", new { RegId = "param1_placeholder",redirect=false })" data-receipt-url="@Url.Action("Add","Receipt", new { RegId = "param1_placeholder",redirect=false })">
+                    <form id="frmIndex" data-url="@Url.Action("Index", "Registration")" class="form-horizontal"
+                          data-redirect-url="@Url.Action("Edit", "Registration", new { RegId = "param1_placeholder",redirect=false })"
+                          data-receipt-url="@Url.Action("Add","Receipt", new { RegId = "param1_placeholder",redirect=false })"
+                          data-dupemail-url="@Url.Action("DuplicateRegnEmail")">
                         <!-- /.box-body -->
-                        <div class="box-body" >
+                        <div class="box-body">
                             <table class="table table-bordered table-striped dTable" style="margin-top:0px;overflow:auto" data-url="@Url.Action("GetDataTable", "Registration")">
                                 <thead>
                                     <tr>
@@ -62,7 +64,7 @@
                                         <th>Sales Person </th>
                                         <th>Student Name</th>
                                         <th>Mobile</th>
-                                        <th >S/W Used</th>
+                                        <th>S/W Used</th>
                                         <th>Discount</th>
                                         <th>CourseFee</th>
                                         <th>Next DueDetails</th>
@@ -78,7 +80,7 @@
                         </div>
                         <!-- /.box-footer -->
                     </form>
-                    
+
                     <!-- /.modal -->
                     <div class="box-footer col-md-12">
                     </div>
@@ -96,5 +98,6 @@
 @section scripts{
     @Scripts.Render("~/bundles/pageScript")
     @Scripts.Render("~/bundles/dataTableScript")
-    <script src="~/Scriptz/Registration/Index.js"></script>
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    <script src="~/Scriptz/Registration/Index.js?vid=@DateTime.Now.ToString("ddMMyyyy")@DateTime.Now.Second"></script>
 }
