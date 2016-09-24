@@ -768,6 +768,7 @@ namespace SMS.Controllers
                                 copy.AddPage(copy.GetImportedPage(reader, 1));
                             }
                         }
+                        document.Close();
                     }
                 }
                 return true;
