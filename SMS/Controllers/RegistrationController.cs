@@ -2310,24 +2310,23 @@ namespace SMS.Controllers
         public int GetCourseSeriesType(int courseCount)
         {
             int _courseTypeId = 0;
-            switch (courseCount)
+            if (courseCount == 1)
             {
-                case (1):
-                    _courseTypeId = (int)EnumClass.CourseCategory.FOUNDATION;
-                    break;
-
-                case (2):
-                    _courseTypeId = (int)EnumClass.CourseCategory.DIPLOMA;
-                    break;
-
-                case (3):
-                    _courseTypeId = (int)EnumClass.CourseCategory.PROFESSIONAL;
-                    break;
-
-                case (4):
-                    _courseTypeId = (int)EnumClass.CourseCategory.MASTERDIPLOMA;
-                    break;
+                _courseTypeId = (int)EnumClass.CourseCategory.FOUNDATION;
             }
+            else if (courseCount == 2)
+            {
+                _courseTypeId = (int)EnumClass.CourseCategory.DIPLOMA;
+            }
+            else if (courseCount == 3)
+            {
+                _courseTypeId = (int)EnumClass.CourseCategory.PROFESSIONAL;
+            }
+            else
+            {
+                _courseTypeId = (int)EnumClass.CourseCategory.MASTERDIPLOMA;
+            }
+            
             return _courseTypeId;
         }
 
