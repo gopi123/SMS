@@ -979,7 +979,7 @@ namespace SMS.Models
                 _mobileNoList.Add(_concerned_cro_mobno);
                 _mobileNoList.Add(_concerned_centre_salesmgr_mobno);
                 _mobileNoList.Add(_concerned_centre_centremgr_mobno);
-                _mobileNoList.Add(_concerned_centre_centremgr_mobno);
+                _mobileNoList.Add(_concerned_centre_ed_mobno);
             }
 
             if (smsCategory == (int)EnumClass.SMSCATEGORY.REGISTRATIONSMS)
@@ -1042,7 +1042,7 @@ namespace SMS.Models
 
             }
 
-            return _mobileNoList;
+            return _mobileNoList.Where(m => m != null).ToList();
         }
 
         //Gets the employee list groupwise,designationwise is optional
