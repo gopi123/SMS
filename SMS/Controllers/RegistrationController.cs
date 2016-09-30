@@ -1675,7 +1675,9 @@ namespace SMS.Controllers
                                   _dbRegn.StudentWalkInn.Employee1.Name + "," + _dbRegn.StudentWalkInn.Employee2.Name;
                     var _cro1EmailId = _dbRegn.StudentWalkInn.Employee1.OfficialEmailId;
                     var _cro2EmailId = _dbRegn.StudentWalkInn.CROCount == 2 ? _dbRegn.StudentWalkInn.Employee2.OfficialEmailId : null;
-                    var _salesManagerEmailId = _cmn.GetManager(_dbRegn.StudentWalkInn.CenterCode.Id).OfficialEmailId;
+                    var _salesManagerEmailId = _cmn.GetManager(_dbRegn.StudentWalkInn.CenterCode.Id) != null ?
+                        _cmn.GetManager(_dbRegn.StudentWalkInn.CenterCode.Id).OfficialEmailId : "";
+
                     var _centreManagerEmailId = _cmn.GetCentreManager(_dbRegn.StudentWalkInn.CenterCode.Id).OfficialEmailId;
                     var _edEamilId = "ed@networkzsystems.com";
 
@@ -1685,6 +1687,7 @@ namespace SMS.Controllers
                     _lstEmailId.Add(_centreManagerEmailId);
                     _lstEmailId.Add(_edEamilId);
 
+                    
 
                     using (StreamReader reader = new StreamReader(Server.MapPath("~/Template/SkippingAmountPaymentTemplate.html")))
                     {
