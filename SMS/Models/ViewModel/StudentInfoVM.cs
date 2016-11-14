@@ -17,5 +17,6 @@ namespace SMS.Models.ViewModel
         public int PendingPaymentCount { get; set; }
         public int PendingFeedbackCount { get; set; }
         public int CourseCount { get; set; }
+        public int PaidPaymentCount { get; set; }
     }
 }
