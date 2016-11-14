@@ -45,12 +45,7 @@ namespace SMS.Controllers
             }
         }
         //
-        // GET: /CourseDowngrade/
-
-        public ActionResult Index()
-        {
-            return View();
-        }
+        // GET: /CourseDowngrade/     
 
         public ActionResult CourseDowngrade(int regId)
         {
@@ -248,7 +243,7 @@ namespace SMS.Controllers
                             _dbRegistration.StudentRegistrationCourses.Add(_studCourse);
                         }
 
-                        //removing courses where feedback is not submitted
+                        //removing the course selected
                         foreach (var _existingFeedBack in _dbRegistration.StudentFeedbacks
                                                          .Where(f => f.CourseId == mdlCourseDowngrade.CourseDowngradeId)
                                                          .ToList())
