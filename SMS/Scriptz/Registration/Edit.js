@@ -329,12 +329,18 @@ $(function () {
             //Gets the new st amt
             var newSTAmt = parseInt(newTotalAmt - courseFee);
 
+            
+            var courseInterchangeFee = parseInt(("#txtCourseInterchangeFee").val());
+            var courseInterchangeST = parseInt(("#txtCourseInterchangeST").val());
+
+            //Adding courseinterchange fee 
+            newTotalAmt = newTotalAmt + courseInterchangeFee + courseInterchangeST;
 
 
             $("#txtFee").val(courseFee);
             $("#txtSTAmt").val(newSTAmt);
             $("#txtTotalFee").val(newTotalAmt);
-            $("#txtTotalAmt").val(currTotalAmt);
+            $("#txtTotalAmt").val(currTotalAmt);//hidden field
 
             return false;
         }
@@ -365,6 +371,12 @@ $(function () {
             var currCourseFee = paidCourseFee + unpaidCourseFee;
             var currSTAmt = paidST + unpaidST;
             var currTotalAmount = paidTotalAmount + unpaidTotalAmount;
+
+            var courseInterchangeFee = parseInt(("#txtCourseInterchangeFee").val());
+            var courseInterchangeST = parseInt(("#txtCourseInterchangeST").val());
+
+            //Adding courseinterchange fee 
+            currTotalAmount = currTotalAmount + courseInterchangeFee + courseInterchangeST;
 
             $("#txtFee").val(currCourseFee);
             $("#txtSTAmt").val(currSTAmt);
