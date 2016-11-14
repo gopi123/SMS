@@ -1,0 +1,99 @@
+﻿@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Course Interchange
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-body ">
+                        <div class="input-group col-md-5">
+                            <input class="form-control" placeholder="Enter StudentID..." id="txtRegNo">
+                            <div class="input-group-btn">
+                                <button class="btn btn-info btn-flat" id="btnGo" data-url="@Url.Action("GetStudentInfo")">Go</button>
+
+                            </div>
+                            <div class="spinner input-group-btn" style="display:none">
+                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-12 studentInfo" style="display:none">
+
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+}
+
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+            $(document).on("click", "#btnGo", function () {
+                var txtRegNo = $("#txtRegNo").val();
+                $(".studentInfo").slideUp();
+                var href = $(this).data("url");
+                if (txtRegNo != "") {
+                    $(".spinner").toggle(true);
+                    $.ajax({
+                        type: "GET",
+                        url: href,
+                        data: { regNo: txtRegNo },
+                        datatype: "html",
+                        success: function (data) {
+                            $(".spinner").toggle(false);
+                            $(".studentInfo").html(data);
+                            $(".studentInfo").slideDown();
+                        },
+                        error: function (err) {
+                            $(".spinner").toggle(false);
+                            //$(spinner).toggle(false);
+                            toastr.error("Error:" + this.message)
+                        }
+                    });
+                }
+                else {
+                    bootbox.alert("Please enter StudentID");
+                }
+                return false;
+            });
+
+
+            $(document).on("click", ".btnStatus", function () {
+                var paidCount = $(this).data('paid-count');
+                if (paidCount == 10) {
+                    bootbox.alert("Cannot perform Course Interchange as the student has completed 10 installments");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            })
+
+        });
+    </script>
+
+}
