@@ -929,7 +929,7 @@ $(function () {
         
         var href = $("#divModalPinVerification").data("url");
         //var walkinnId = $("#hfieldWalkInnID").val();
-        var officialMobNo = '9995220869';
+        var officialMobNo = $("#txtOfficialNo").val();
         var discReason = $("#txtDiscountReason").val();
         var studName = $("#txtStudentName").val();
         var discPercentage = $("#txtDiscount").val();
