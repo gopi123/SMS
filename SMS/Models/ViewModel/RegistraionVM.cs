@@ -189,14 +189,12 @@ namespace SMS.Models.ViewModel
         [Required(ErrorMessage = "Please select no of installment", AllowEmptyStrings = false)]
         public int InstallmentID { get; set; }
         public SelectList InstallmentList { get; set; }
-
         public int RoundUpId { get; set; }
         public SelectList RoundUpList { get; set; }
-
         public StudentRegistration StudentRegistration { get; set; }
-
+        public int CourseInterchangeFee { get; set; }
+        public int CourseInterchangeSTAmount { get; set; }
         public List<StudentReceipt> StudentReceipt { get; set; }
-
         public List<string> StudentReceiptNoList 
         {
             get
@@ -217,7 +215,6 @@ namespace SMS.Models.ViewModel
             }
         
         }
-
         public class clsCourseCodeSearch
         {
             public string CourseCode { get; set; }
