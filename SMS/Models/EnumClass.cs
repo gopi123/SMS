@@ -273,6 +273,22 @@ namespace SMS.Models
             RECEIPTSMS=3
         }
 
+        public enum COURSEINTERCHANGEFEE
+        {
+            TOTAL_COURSEINTERCHANGE_FEE=1000
+        }
+
+        public enum STUDENT_BACKUP_TYPE
+        {
+            COURSE_INTERCHANGE=1,
+            COURSE_FULL_EDIT=2
+        }
+
+        public enum STUDENT_COURSE_MODIFICATION_BY
+        {
+            STUDENT=1,
+            EMPLOYEE=2
+        }
 
 
     }
