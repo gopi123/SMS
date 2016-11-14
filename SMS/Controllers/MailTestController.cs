@@ -741,77 +741,142 @@ namespace SMS.Controllers
             }
         }
 
-        public void TestOffSMS(int cat,int centre)
+        public void TestOffSMS(int cat, int centre)
         {
-            Common _cmn=new Common();
+            Common _cmn = new Common();
             int _testcro = 36;
 
             List<string> MobileNo = _cmn.GetOfficalSMS(cat, centre, _testcro);
         }
 
-        //public string NetBanking()
-        //{
-        //    string str = string.Empty;
-        //    string TXT_requesttype = "T";
-        //    try
-        //    {
-        //        RequestURL objRequestURL = new RequestURL();
-        //        String response = objRequestURL.SendRequest
-        //                                      (
-        //                                        "T"
-        //                                      , "T45649"
-        //                                      , "16072014185132"
-        //                                      ,
-        //                                      , "1.00"
-        //                                      , "INR"
-                                             
-        //                                      , "http://www.networkzsystems.com/sms/mailtest/netbankingresponse"
-                                             
-                                             
-        //                                      , "test_1.0_0.0"
-        //                                      , "18-09-2016"
-                                              
-                                              
-        //                                      , "470"
-                                              
-                                              
-                                              
-        //                                      , "1848660477BEFDXF"
-        //                                      , "8023485116PXTNYT"
-        //                                      );
+        public string NetBankingWithEmptyITC()
+        {
+            string str = string.Empty;
+            string TXT_requesttype = "T";
+            try
+            {
+                RequestURL objRequestURL = new RequestURL();
+                String response = objRequestURL.SendRequest
+                                              (
+                                                "T"
+                                              , "T45649"
+                                              , "16072014185132"
+                                              , ""
+                                              , "1.00"
+                                              , "INR"
+                                              , ""
+                                              , "http://www.networkzsystems.com/sms/mailtest/netbankingresponse"
+                                              , ""
+                                              , ""
+                                              , "test_1.0_0.0"
+                                              , "18-09-2016"
+                                              , "gopikshnan@gmail.com"
+                                              , "9995220869"
+                                              , "470"
+                                              , "GopiKrishnan"
+                                              , ""
+                                              , ""
+                                              , "1848660477BEFDXF"
+                                              , "8023485116PXTNYT"
+                                              );
 
-        //        String strResponse = response.ToUpper();
+                String strResponse = response.ToUpper();
 
-        //        if (strResponse.StartsWith("ERROR"))
-        //        {
-        //            str = response;
-        //        }
-        //        else
-        //        {
-        //            if (TXT_requesttype.ToUpper() == "T")
-        //            {
+                if (strResponse.StartsWith("ERROR"))
+                {
+                    str = response;
+                }
+                else
+                {
+                    if (TXT_requesttype.ToUpper() == "T")
+                    {
 
-        //                Response.Write("<form name='s1_2' id='s1_2' action='" + response + "' method='post'> ");
+                        Response.Write("<form name='s1_2' id='s1_2' action='" + response + "' method='post'> ");
 
-        //                Response.Write("<script type='text/javascript' language='javascript' >document.getElementById('s1_2').submit();");
+                        Response.Write("<script type='text/javascript' language='javascript' >document.getElementById('s1_2').submit();");
 
-        //                Response.Write("</script>");
-        //                Response.Write("<script language='javascript' >");
-        //                Response.Write("</script>");
-        //                Response.Write("</form> ");
+                        Response.Write("</script>");
+                        Response.Write("<script language='javascript' >");
+                        Response.Write("</script>");
+                        Response.Write("</form> ");
 
-        //            }
+                    }
 
-        //        }
+                }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        str = ex.Message;
-        //    }
+            }
+            catch (Exception ex)
+            {
+                str = ex.Message;
+            }
 
-        //    return str;
-        //}
+            return str;
+        }
+
+        public string NetBankingWithDummyITC()
+        {
+            string str = string.Empty;
+            string TXT_requesttype = "T";
+            try
+            {
+                RequestURL objRequestURL = new RequestURL();
+                String response = objRequestURL.SendRequest
+                                              (
+                                                "T"
+                                              , "T45649"
+                                              , "16072014185132"
+                                              , "dummy123"
+                                              , "1.00"
+                                              , "INR"
+                                              , ""
+                                              , "http://www.networkzsystems.com/sms/mailtest/netbankingresponse"
+                                              , ""
+                                              , ""
+                                              , "test_1.0_0.0"
+                                              , "18-09-2016"
+                                              , "gopikshnan@gmail.com"
+                                              , "9995220869"
+                                              , "470"
+                                              , "GopiKrishnan"
+                                              , ""
+                                              ,""
+                                              , "1848660477BEFDXF"
+                                              , "8023485116PXTNYT"
+                                              );
+
+                String strResponse = response.ToUpper();
+
+                if (strResponse.StartsWith("ERROR"))
+                {
+                    str = response;
+                }
+                else
+                {
+                    if (TXT_requesttype.ToUpper() == "T")
+                    {
+
+                        Response.Write("<form name='s1_2' id='s1_2' action='" + response + "' method='post'> ");
+
+                        Response.Write("<script type='text/javascript' language='javascript' >document.getElementById('s1_2').submit();");
+
+                        Response.Write("</script>");
+                        Response.Write("<script language='javascript' >");
+                        Response.Write("</script>");
+                        Response.Write("</form> ");
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                str = ex.Message;
+            }
+
+            return str;
+        }
+
 
         public class PopulateSelectList
         {
@@ -845,7 +910,7 @@ namespace SMS.Controllers
 
                 _finYearList.Insert(0, _nxtFinYear);
 
-                
+
 
 
 
@@ -860,6 +925,14 @@ namespace SMS.Controllers
             {
                 //return _finYearList = null;
             }
+        }
+
+        public string DiscountSMS()
+        {
+            Common _cmn = new Common();
+            var _mobNo = _cmn.GetOfficalSMS((int)EnumClass.SMSCATEGORY.DISCOUNTSMS, 5, null);
+            return string.Join(",", _mobNo);
+
         }
 
         public void RegEmailTest()
