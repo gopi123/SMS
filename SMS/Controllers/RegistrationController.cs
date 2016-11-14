@@ -836,6 +836,7 @@ namespace SMS.Controllers
                 var _msg = "Centre : " + centreCode.ToUpper().Trim() + "\n" +
                             "Discount : " + discountPercentage + "%" + "\n" +
                             "Employee : " + Session["LoggedEmployeeName"].ToString().ToUpper() + "\n" +
+                    //"Employee : TESTING \n" +
                             "Student : " + studentName.ToUpper().Trim() + "\n" +
                             "Reason : " + discReason.ToUpper().Trim() + "\n" +
                             "PinNo : " + _randomNo;
@@ -1054,12 +1055,18 @@ namespace SMS.Controllers
                                             .OrderByDescending(t => t.FromDate)
                                             .First().Percentage;
 
+                        int _courseInterchangeFee = _studentRegistration.StudentRegistration_History.Any() ?
+                                                    _studentRegistration.StudentRegistration_History.Sum(h => h.AdditionalCourseFee.Value) : 0;
+
+                        int _courseInterchangeSTAmt = _studentRegistration.StudentRegistration_History.Any() ?
+                                                    _studentRegistration.StudentRegistration_History.Sum(h => h.AdditionalSTAmount.Value) : 0;
+
 
                         var _studentRegVM = new RegistraionVM
                         {
                             CentreCode = _studentRegistration.StudentWalkInn.CenterCode.CentreCode,
                             CentreId = _studentRegistration.StudentWalkInn.CenterCode.Id,
-                            CourseFee = _studentRegistration.TotalCourseFee.Value,
+                            CourseFee = _studentRegistration.TotalCourseFee.Value - _courseInterchangeFee,
                             CourseTitle = _studentCourseTitle,
                             CROName = _croName,
                             DefaultDiscountPercentage = (int)EnumClass.DiscountPercentage.DISCOUNT,
@@ -1079,7 +1086,7 @@ namespace SMS.Controllers
                             RoundUpList = new SelectList(_roundUpList, "Id", "Name"),
                             SoftwareDetails = _softwareUsed,
                             ST = Convert.ToDouble(_taxPercentage),
-                            STAmount = _studentRegistration.TotalSTAmount.Value,
+                            STAmount = _studentRegistration.TotalSTAmount.Value - _courseInterchangeSTAmt,
                             StudentReceipt = _studentRegistration.StudentReceipts.ToList(),
                             StudentRegistration = _studentRegistration,
                             RegistrationNumber = _studentRegistration.RegistrationNumber,
@@ -1088,7 +1095,9 @@ namespace SMS.Controllers
                             WalkInnID = _studentRegistration.StudentWalkInn.Id,
                             FeeModeType = _studentRegistration.FeeMode == (int)EnumClass.InstallmentType.SINGLE ? EnumClass.InstallmentType.SINGLE.ToString() : EnumClass.InstallmentType.INSTALLMENT.ToString(),
                             InstallmentCount = _studentRegistration.NoOfInstallment.Value,
-                            FeeMode = _studentRegistration.FeeMode.Value
+                            FeeMode = _studentRegistration.FeeMode.Value,
+                            CourseInterchangeFee = _courseInterchangeFee,
+                            CourseInterchangeSTAmount = _courseInterchangeSTAmt
 
 
                         };
@@ -1687,7 +1696,7 @@ namespace SMS.Controllers
                     _lstEmailId.Add(_centreManagerEmailId);
                     _lstEmailId.Add(_edEamilId);
 
-                    
+
 
                     using (StreamReader reader = new StreamReader(Server.MapPath("~/Template/SkippingAmountPaymentTemplate.html")))
                     {
@@ -2329,7 +2338,7 @@ namespace SMS.Controllers
             {
                 _courseTypeId = (int)EnumClass.CourseCategory.MASTERDIPLOMA;
             }
-            
+
             return _courseTypeId;
         }
 
