@@ -19,10 +19,7 @@ $(function () {
             form.validate().settings.ignore = ":disabled,:hidden";
 
             if (form.valid()) {
-                if (currentIndex == 0) {
-                    //GetPaidAmountDetails();
-                }
-
+                
                 //On clicking NEXT of Course Details
                 if (currentIndex == 1) {
                     if (!ValidateCourse()) {
@@ -37,14 +34,11 @@ $(function () {
 
                 //if the tab is pinverification
                 if (newIndex == 3) {
-                    //if (validateTableRows()) {
-                    //    //GetPinNo();
-                    //}
-                    //else {
-                    //    return false;
-                    //}
+                   
                     if (ResetFeeDetails()) {
+                        
                         GetPinNo();
+                       
                     }
                     else {
                         return false;
@@ -60,8 +54,7 @@ $(function () {
         },
         onFinishing: function (event, currentIndex) {
 
-            if (form.valid()) {
-
+            if (form.valid()) {               
                 if( ValidatePinDetails())
                 {
                     return true;
@@ -710,11 +703,12 @@ $(function () {
 
             },
             success: function (result) {
-                
+               
                 if (result.Status == "success") {
                     sendEmail(result.RegistrationId);
                 }
                 else {
+                    $.unblockUI();
                     toastr.error("Error:Something gone wrong")
                 }
             },
@@ -767,8 +761,7 @@ $(function () {
         });
 
         var href = $("#divPinVerification").data("url");
-        var mobileNo = $("#hFieldMobNo").val();
-        mobileNo = "9995220869";
+        var mobileNo = $("#hFieldMobNo").val();       
         var data = $('#ddlMultiCourse').select2('data');
         var currCourseCode = "";
         for (var i = 0; i < data.length; i++) {
