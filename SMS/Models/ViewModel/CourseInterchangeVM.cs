@@ -52,7 +52,7 @@ namespace SMS.Models.ViewModel
         public int RoundUpId { get; set; }
         public SelectList RoundUpList { get; set; }
         public int PrevStudentWalkinnId { get; set; }
-        public List<StudentReceipt> StudentReceipt { get; set; }
+        public List<StudentReceipt> StudentReceiptLists { get; set; }
         public string DefaultEmailId { get; set; }
         public string CentreCode { get; set; }
         public string PrevCourseId { get; set; }
@@ -78,13 +78,13 @@ namespace SMS.Models.ViewModel
             get
             {
                 List<string> _studRecNoList = new List<string>();
-                if (StudentReceipt != null)
+                if (StudentReceiptLists != null)
                 {
-                    for (int i = 0; i < StudentReceipt.Count; i++)
+                    for (int i = 0; i < StudentReceiptLists.Count; i++)
                     {
-                        if (StudentReceipt[i].Status == true)
+                        if (StudentReceiptLists[i].Status == true)
                         {
-                            _studRecNoList.Add(Common.GetReceiptNo(StudentReceipt[i].StudentReceiptNo));
+                            _studRecNoList.Add(Common.GetReceiptNo(StudentReceiptLists[i].StudentReceiptNo));
                         }
                         else
                         {
