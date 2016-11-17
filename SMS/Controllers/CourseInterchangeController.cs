@@ -288,7 +288,8 @@ namespace SMS.Controllers
 
                         PaidPaymentCount = _dbRegn.StudentReceipts
                                         .Where(r => r.Status == true)
-                                        .Count()
+                                        .Count(),
+                        CourseInterchangeCount = _dbRegn.StudentRegistration_History.Count
                     };
                 }
                 return PartialView("_GetStudentInfo", _certificateVM);
@@ -402,7 +403,7 @@ namespace SMS.Controllers
                         PrevCourseId = string.Join(",", _dbRegn.StudentRegistrationCourses
                                                       .Select(rc => rc.MultiCourse.Id)),
                         //CourseIds = string.Join(",", _notFeedbackCourseIds.ToList()),
-                        StudentReceipt = _dbRegn.StudentReceipts.ToList(),
+                        StudentReceiptLists = _dbRegn.StudentReceipts.ToList(),
                         StudentMobileNo = _dbRegn.StudentWalkInn.MobileNo,
                         CroName = _dbRegn.StudentWalkInn.CROCount.Value == 1 ? _dbRegn.StudentWalkInn.Employee1.Name :
                                 _dbRegn.StudentWalkInn.Employee1.Name + "," + _dbRegn.StudentWalkInn.Employee2.Name,
@@ -411,7 +412,8 @@ namespace SMS.Controllers
                         Curr_Discount = _dbRegn.Discount.Value,
                         CourseInterchangeFee = _courseInterchangeAmount,
                         CourseInterchangeST = _courseInterchange_ST_Amount,
-                        CourseList = new SelectList(_courseList, "Id", "Name")
+                        CourseList = new SelectList(_courseList, "Id", "Name"),
+
                     };
 
                     return View(_mdlCourseInterchange);
@@ -436,9 +438,12 @@ namespace SMS.Controllers
             int _totalAmount = 0;
             try
             {
+                if (mdlCourseInterchange.StudentReceiptLists.Count <= 2)
+                {
+                    ModelState.Remove("InstallmentID");
+                }
                 if (ModelState.IsValid)
                 {
-
                     _dbRegn = _db.StudentRegistrations
                          .Where(r => r.Id == mdlCourseInterchange.StudentRegistration.Id)
                          .FirstOrDefault();
@@ -516,7 +521,7 @@ namespace SMS.Controllers
                         }
 
                         //adding new receipt
-                        foreach (var _receipt in mdlCourseInterchange.StudentReceipt)
+                        foreach (var _receipt in mdlCourseInterchange.StudentReceiptLists)
                         {
                             //adding coursefee and totalst details
                             _totalCourseFee = _totalCourseFee + _receipt.Fee.Value;
@@ -540,15 +545,15 @@ namespace SMS.Controllers
                         _dbRegn.TotalSTAmount = _totalST;
                         _dbRegn.TotalCourseFee = _totalCourseFee;
                         _dbRegn.TotalAmount = _totalAmount;
-                        _dbRegn.FeeMode = mdlCourseInterchange.InstallmentType == EnumClass.InstallmentType.SINGLE ? (int)EnumClass.InstallmentType.SINGLE : (int)EnumClass.InstallmentType.INSTALLMENT;
-                        _dbRegn.NoOfInstallment = _dbRegn.FeeMode == (int)EnumClass.InstallmentType.SINGLE ? 0 : mdlCourseInterchange.InstallmentID;
+                        _dbRegn.FeeMode = mdlCourseInterchange.StudentReceiptLists.Count <= 2 ? (int)EnumClass.InstallmentType.SINGLE : (int)EnumClass.InstallmentType.INSTALLMENT;
+                        _dbRegn.NoOfInstallment = _dbRegn.FeeMode == (int)EnumClass.InstallmentType.SINGLE ? 0 : mdlCourseInterchange.StudentReceiptLists.Count;
                         _dbRegn.MultiCourseIDs = string.Join(",", mdlCourseInterchange.MultiCourseId
                                                                        .Where(mc => !string.IsNullOrEmpty(mc))
                                                                        .Select(mc => Int32.Parse(mc))
                                                                        .OrderBy(mc => mc)
                                                                        .ToList());
                         _dbRegn.Discount = mdlCourseInterchange.Curr_Discount;
-
+                    
                         //removing non feedback courses 
                         foreach (var _existingFeedback in _dbRegn.StudentFeedbacks.Where(f => f.IsFeedbackGiven == false).ToList())
                         {
@@ -619,6 +624,7 @@ namespace SMS.Controllers
                         }
                     }
                 }
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors);
 
                 _successMsg.Status = "error";
                 return Json(_successMsg, JsonRequestBehavior.AllowGet);
@@ -807,7 +813,7 @@ namespace SMS.Controllers
                 Common _cmn = new Common();
                 string _body = PopulateBody(_studReg);
                 //Email sending
-                bool isMailSend = _cmn.SendEmailTesting(studEmailId, _body, "Student Course Interchange");
+                bool isMailSend = _cmn.SendEmail(studEmailId, _body, "Student Course Interchange");
                 if (isMailSend)
                 {
                     return Json("success", JsonRequestBehavior.AllowGet);
@@ -822,7 +828,7 @@ namespace SMS.Controllers
             {
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
-           
+
 
         }
 
