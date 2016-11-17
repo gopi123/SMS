@@ -84,8 +84,13 @@
 
             $(document).on("click", ".btnStatus", function () {
                 var paidCount = $(this).data('paid-count');
+                var interchangeCount = $(this).data('interchange-count');
                 if (paidCount == 10) {
                     bootbox.alert("Cannot perform Course Interchange as the student has completed 10 installments");
+                    return false;
+                }
+                else if (interchangeCount > 0) {
+                    bootbox.alert("Student has already done course interchange.Course Interchange cannot be done twice");
                     return false;
                 }
                 else {
