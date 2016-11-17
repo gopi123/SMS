@@ -517,13 +517,13 @@
                                                 <tbody>
                                                     @if (Model.StudentRegistration.StudentReceipts.Count > 0)
                                                     {
-                                                        for (int i = 0; i < Model.StudentReceipt.Count; i++)
+                                                        for (int i = 0; i < Model.StudentReceiptLists.Count; i++)
                                                         {
                                                             <tr>
-                                                                @Html.HiddenFor(m => m.StudentReceipt[i].Status, new { @class = "status", @id = "txtStatus_" + i })
-                                                                @Html.HiddenFor(m => m.StudentReceipt[i].CROID, new { @class = "croid", @id = "txtcroId_" + i })
-                                                                @Html.HiddenFor(m => m.StudentReceipt[i].ModeOfPayment, new { @class = "mop", @id = "txtmop" + i })
-                                                                @Html.HiddenFor(m => m.StudentReceipt[i].StudentReceiptNo, new { @class = "recNo", @id = "txtRecNo" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].Status, new { @class = "status", @id = "txtStatus_" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].CROID, new { @class = "croid", @id = "txtcroId_" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].ModeOfPayment, new { @class = "mop", @id = "txtmop" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].StudentReceiptNo, new { @class = "recNo", @id = "txtRecNo" + i })
                                                                 <td>
                                                                     @Convert.ToInt32(i + 1)
                                                                 </td>
@@ -532,41 +532,41 @@
                                                                       new { @class = "form-control receiptno", @id = "txtReceiptNo_" + i, @placeholder = "RECEIPT NO", @readonly = "readonly" })
                                                                 </td>
                                                                 <td>
-                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].Fee,
+                                                                    @Html.TextBoxFor(m => m.StudentReceiptLists[i].Fee,
                                                                       new { @class = "form-control courseFee", @id = "txtCourseFee_" + i, @placeholder = "Fee", @readonly = "readonly" })
                                                                 </td>
                                                                 <td>
-                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].STPercentage,
+                                                                    @Html.TextBoxFor(m => m.StudentReceiptLists[i].STPercentage,
                                                                       new { @class = "form-control stPercentage", @id = "txtSTPercentage_" + i, @placeholder = "ST Percentage", @readonly = "readonly" })
                                                                 </td>
                                                                 <td>
-                                                                    @Html.TextBoxFor(m => m.StudentReceipt[i].ST,
+                                                                    @Html.TextBoxFor(m => m.StudentReceiptLists[i].ST,
                                                                       new { @class = "form-control stAmt", @id = "txtST_" + i, @placeholder = "ST", @readonly = "readonly" })
                                                                 </td>
-                                                                @if (Model.StudentReceipt[i].Status == true)
+                                                                @if (Model.StudentReceiptLists[i].Status == true)
                                                                 {
                                                                     <td>
-                                                                        @Html.TextBoxFor(m => m.StudentReceipt[i].Total,
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].Total,
                                                                               new { @class = "form-control totalAmt paid", @id = "txtTotal_" + i, @placeholder = "Total", @readonly = "readonly" })
                                                                     </td>
                                                                     <td>
 
-                                                                        @Html.TextBoxFor(m => m.StudentReceipt[i].DueDate, Model.StudentReceipt[i].DueDate.Value.ToShortDateString(),
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].DueDate, Model.StudentReceiptLists[i].DueDate.Value.ToShortDateString(),
                                                                               new { @class = "form-control date", @id = "txtDueDate_" + i, @placeholder = "DueDate", @readonly = "readonly" })
                                                                     </td>
                                                                 }
                                                                 else
                                                                 {
                                                                     <td>
-                                                                        @Html.TextBoxFor(m => m.StudentReceipt[i].Total,
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].Total,
                                                                               new { @class = "form-control totalAmt numberOnly ", @id = "txtTotal_" + i, @placeholder = "Total" })
-                                                                        @Html.ValidationMessageFor(m => m.StudentReceipt[i].Total)
+                                                                        @Html.ValidationMessageFor(m => m.StudentReceiptLists[i].Total)
                                                                     </td>
                                                                     <td>
 
-                                                                        @Html.TextBoxFor(m => m.StudentReceipt[i].DueDate, Model.StudentReceipt[i].DueDate.Value.ToShortDateString(),
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].DueDate, Model.StudentReceiptLists[i].DueDate.Value.ToShortDateString(),
                                                                               new { @class = "form-control dueDate date", @id = "txtDueDate_" + i, @placeholder = "DueDate", @style = "background-color:white", @readonly = "readonly" })
-                                                                        @Html.ValidationMessageFor(m => m.StudentReceipt[i].DueDate)
+                                                                        @Html.ValidationMessageFor(m => m.StudentReceiptLists[i].DueDate)
                                                                     </td>
                                                                 }
 
