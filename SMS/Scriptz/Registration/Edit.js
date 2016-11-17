@@ -330,8 +330,8 @@ $(function () {
             var newSTAmt = parseInt(newTotalAmt - courseFee);
 
             
-            var courseInterchangeFee = parseInt(("#txtCourseInterchangeFee").val());
-            var courseInterchangeST = parseInt(("#txtCourseInterchangeST").val());
+            var courseInterchangeFee = $.isNumeric(parseInt($("#txtCourseInterchangeFee").val())) ? parseInt($("#txtCourseInterchangeFee").val()) : 0;
+            var courseInterchangeST = $.isNumeric(parseInt($("#txtCourseInterchangeST").val())) ? parseInt($("#txtCourseInterchangeST").val()) : 0;
 
             //Adding courseinterchange fee 
             newTotalAmt = newTotalAmt + courseInterchangeFee + courseInterchangeST;
