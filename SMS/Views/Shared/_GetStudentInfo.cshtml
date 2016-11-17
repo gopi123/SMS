@@ -36,7 +36,9 @@
                             else if (Model.ControllerName == "CourseInterchange")
                             {
                                 <td>
-                                    <a href="@Url.Action("CourseInterchange", new { regID=Model.RegistrationId })" data-paid-count="@Model.PaidPaymentCount" class="btn btn-sm btn-info btn-flat pull-left btnStatus">Course Interchange</a>
+                                    <a href="@Url.Action("CourseInterchange", new { regID=Model.RegistrationId })" data-paid-count="@Model.PaidPaymentCount"
+                                       data-interchange-count="@Model.CourseInterchangeCount"
+                                       class="btn btn-sm btn-info btn-flat pull-left btnStatus">Course Interchange</a>
                                     <div class="certificatespinner" style="display:none">
                                         <i class="fa fa-refresh fa-spin spin-small "></i>
                                     </div>
