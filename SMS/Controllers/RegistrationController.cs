@@ -859,9 +859,9 @@ namespace SMS.Controllers
         }
 
         //send verification mail to regtistered student
-        public bool SendMail(int studRegId, string studentRegNo, string studName, string courseList, int courseFee, string studEmailId, string courseName)
+        public bool SendMail(int studRegId, string studentRegNo, string studName, string courseList, int courseFee, string studEmailId, string courseName, bool isResendEmail)
         {
-
+            bool isMailSend;
             //Saving EmailVerificationDetails
             EmailVerification _emailVerificaiton = new EmailVerification();
             string _key = Guid.NewGuid().ToString();
@@ -875,7 +875,15 @@ namespace SMS.Controllers
                 Common _cmn = new Common();
                 string _body = PopulateBody(studName, studentRegNo, courseList, courseFee, _key, courseName);
                 //Email sending
-                var isMailSend = _cmn.SendEmail(studEmailId, _body, "Student Registration");
+                if (isResendEmail)
+                {
+                     isMailSend = _cmn.SendEmailViaGmail(studEmailId, _body, "Student Registration");
+                }
+                else
+                {
+                     isMailSend = _cmn.SendEmail(studEmailId, _body, "Student Registration");
+                }
+
                 return isMailSend;
             }
             return false;
@@ -1069,7 +1077,8 @@ namespace SMS.Controllers
                             CourseFee = _studentRegistration.TotalCourseFee.Value - _courseInterchangeFee,
                             CourseTitle = _studentCourseTitle,
                             CROName = _croName,
-                            DefaultDiscountPercentage = (int)EnumClass.DiscountPercentage.DISCOUNT,
+                            DefaultDiscountPercentage = _studentRegistration.StudentRegistration_History.Count() == 0 ? _studentRegistration.Discount.Value :
+                                                        _studentRegistration.StudentRegistration_History.FirstOrDefault().Discount.Value,
                             Discount = _studentRegistration.Discount.Value,
                             Duration = _studentRegistration.TotalDuration.Value,
                             Email = _showData == true ? _studentRegistration.StudentWalkInn.EmailId : _cmn.MaskString(_studentRegistration.StudentWalkInn.EmailId, "email"),
@@ -1288,7 +1297,7 @@ namespace SMS.Controllers
                                                                     .SelectMany(src => src.MultiCourse.MultiCourseDetails
                                                                     .Select(mcd => mcd.Course.Name)));
                                 //Mail Sending
-                                var isMailSend = SendMail(mdlRegistration.StudentRegistrationID, mdlRegistration.RegistrationNumber, mdlRegistration.Name.ToUpper(), mdlRegistration.MultiCourseCode, mdlRegistration.CourseFee, mdlRegistration.Email, _courseName);
+                                var isMailSend = SendMail(mdlRegistration.StudentRegistrationID, mdlRegistration.RegistrationNumber, mdlRegistration.Name.ToUpper(), mdlRegistration.MultiCourseCode, mdlRegistration.CourseFee, mdlRegistration.Email, _courseName, false);
                                 if (!isMailSend)
                                 {
                                     return Json("error_email", JsonRequestBehavior.AllowGet);
@@ -1344,7 +1353,7 @@ namespace SMS.Controllers
                         var courseName = string.Join(",", _studRegistration.StudentRegistrationCourses
                                                         .SelectMany(src => src.MultiCourse.MultiCourseDetails
                                                         .Select(mcd => mcd.Course.Name)));
-                        var _result = SendMail(studId, studRegId, studName, courseList, courseFee, studEmailId, courseName);
+                        var _result = SendMail(studId, studRegId, studName, courseList, courseFee, studEmailId, courseName, false);
 
                         if (_result)
                         {
@@ -1870,7 +1879,7 @@ namespace SMS.Controllers
 
                 var _isReceiptForEmail_Generated = GenerateReceipts(studentRegId);
                 var _isReceiptForPrint_Generated = GenerateReceiptForPrint(studentRegId);
-                var _isMailSend = SendMail(studentRegId, _student_RegistrationNo, _student_Name, _student_MultiCourseCode, _student_CourseFee, _stu_EamilId, _stu_SoftwareUsed);
+                var _isMailSend = SendMail(studentRegId, _student_RegistrationNo, _student_Name, _student_MultiCourseCode, _student_CourseFee, _stu_EamilId, _stu_SoftwareUsed, false);
                 var _isMailSend_PaymentSchedule = Chk_PaymentScheduleDetails(studentRegId, null);
                 var _isSMSSend = SendSMS(_student_Name, _student_RegistrationNo, _student_MultiCourseCode, _student_CourseFee, _student_MobNo);
                 var _isOfficalSMSSend = SendSMSOffical(_stu_CroName, _student_RegistrationNo, _student_Name, _stu_Discount, _student_MultiCourseCode, _student_CourseFee, _stu_CentreId, _croId, discReason);
@@ -2401,7 +2410,7 @@ namespace SMS.Controllers
                                                                     .Select(mcd => mcd.Course.Name)));
 
                 bool isMailSend = SendMail(_dbRegn.Id, _dbRegn.RegistrationNumber, _dbRegn.StudentWalkInn.CandidateName, _multiCourseCode, _dbRegn.TotalCourseFee.Value
-                                        , _dbRegn.StudentWalkInn.EmailId, _courseName);
+                                        , _dbRegn.StudentWalkInn.EmailId, _courseName, true);
 
                 if (isMailSend)
                 {
