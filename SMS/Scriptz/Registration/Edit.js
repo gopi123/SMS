@@ -295,7 +295,7 @@ $(function () {
         //If there is no change in ST
         if (dbST == currST) {
             //Gets the current discount percentage
-            var currDiscount = parseInt($("#txtDiscount").val());
+            var currDiscount = parseInt($("#txtDefaultDiscountPercentage").val());
             //Gets the current fee
             var courseFee = parseInt($("#txtCourseFee").val());
             //Gets the current ST percentage
@@ -348,7 +348,7 @@ $(function () {
         else {
 
             //Gets the current discount percentage
-            var currDiscount = parseInt($("#txtDiscount").val());
+            var currDiscount = parseInt($("#txtDefaultDiscountPercentage").val());
             //Gets the current fee
             var actualCourseFee = parseInt($("#txtCourseFee").val());
             //Gets the current ST percentage
