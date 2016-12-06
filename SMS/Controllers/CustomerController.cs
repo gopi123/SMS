@@ -44,7 +44,8 @@ namespace SMS.Controllers
             return View();
         }
 
-        //searching using registrationnumber during Login
+        //searching using registrationnumber during Login and return corresponding status
+        //if status is success redirects to function SendLoginVerificationLink
         public JsonResult LoginSearch(string regNo, DateTime DOB, string mobNo, string email)
         {
             StudentLoginDetails _clsStudentLogin = new StudentLoginDetails();
@@ -260,7 +261,7 @@ namespace SMS.Controllers
                 _body = _body.Replace("{CourseName}", courseName);
                 _body = _body.Replace("{ActivationLink}", "http://www.networkzsystems.com/sms/Account/StudentVerification?key=" + _key);
                 //Email sending
-                var isMailSend = _cmn.SendEmail(_studEmailId, _body, "Student Registration");
+                var isMailSend = _cmn.SendEmailViaGmail(_studEmailId, _body, "Student Registration");
                 return isMailSend;
             }
             return false;
@@ -268,6 +269,8 @@ namespace SMS.Controllers
 
         }
 
+        //A verification link is send to the users emailid on first time registration
+        //On clicking on the link will take the user to set password
         public bool SendLoginVerificationLink(string studID, string studName, string studEmail, string verificationId)
         {
             try
@@ -285,7 +288,7 @@ namespace SMS.Controllers
                 _body = _body.Replace("{ActivationLink}", "http://networkzsystems.com/sms/customer/register?verificationid=" + verificationId);
 
                 //Email sending
-                var isMailSend = _cmn.SendEmail(studEmail, _body, "Student Login");
+                var isMailSend = _cmn.SendEmailViaGmail(studEmail, _body, "Student Login");
                 return isMailSend;
             }
             catch (Exception ex)
