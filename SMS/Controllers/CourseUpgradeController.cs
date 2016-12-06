@@ -1440,7 +1440,7 @@ namespace SMS.Controllers
                     string _mobNos = string.Join(",", _lstMobNos.Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList());
 
                     //sending message to student
-                    var _message = "Demo - Rec.No:" + _receiptNo + ", " + _receiptDate + ", " + _studRegNo + ", " + _studName + ", Cro:" + _croName + ", " + _courseCode + ", Paid:Rs." + _currPaid + " including ST, BAL:Rs." +
+                    var _message = "Rec.No:" + _receiptNo + ", " + _receiptDate + ", " + _studRegNo + ", " + _studName + ", Cro:" + _croName + ", " + _courseCode + ", Paid:Rs." + _currPaid + " including ST, BAL:Rs." +
                                     _balanceamount + ", NextDue:" + _nextDueDate;
 
                     string _result = _cmn.ApiCall("http://sms.networkzsystems.com/sendsms?uname=networkcorp&pwd=netsys123&senderid=NETSYS&to=" + _mobNos + "&msg=" + _message + "&route=T");
