@@ -1,0 +1,745 @@
+﻿@model SMS.Models.ViewModel.CourseFullEditVM
+
+
+@{
+    ViewBag.Title = "CourseFullEdit";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <style type="text/css">
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            background: none;
+            color: #999999;
+            cursor: default;
+        }
+
+        .blockMsg {
+            margin-left: 200px !important;
+        }
+    </style>
+
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Course Full Edit
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("CourseInterchangeSearch")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("CourseFullEdit")' method="post"
+                          data-redirect-url="@Url.Action("Index")" data-mail-send-url="@Url.Action("SendMail")">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.CourseIds, new { @id = "hFieldCourseIds" })
+                        @Html.HiddenFor(m => m.StudentRegistration.Id, new { @id = "hFieldRegId" })
+                        @Html.HiddenFor(m => m.StudentMobileNo, new { @id = "hFieldMobNo" })
+                        @Html.HiddenFor(m => m.CroName, new { @id = "hFieldCroName" })
+                        @Html.HiddenFor(m => m.Feedback_CourseIds, new { @id = "hFieldFeedbackCourseId" })
+                        @Html.HiddenFor(m => m.TotalFeePaid, new { @id = "hFieldTotalFeePaid" })
+
+                        <div class="box-body ">
+                            <div id="FormWithStepz">
+                                <h3>PERSONAL DATA</h3>
+                                <section>
+                                    <div class="col-md-5">
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    StudentID
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentID,
+                                                                 new { @class = "form-control ", @placeholder = "Name", @id = "txtStudentID", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Name
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Name,
+                                                                 new { @class = "form-control ", @placeholder = "Name", @id = "txtStudentName", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtEmailId" class=" control-label">
+                                                    Email-Id
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Email,
+                                                                     new { @class = "form-control", @placeholder = "EmailId", @id = "txtEmailId", @readonly = "readonly" })
+                                                @Html.ValidationMessageFor(m => m.Email)
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Mobile No
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.MobileNo,
+                                                                 new { @class = "form-control", @placeholder = "MobileNo", @id = "txtMobileNo", @readonly = "readonly" })
+
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    CourseCode
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Curr_MultiCourseCode,
+                                                                 new { @class = "form-control", @placeholder = "MobileNo", @id = "txtCurrMultiCourseCode", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtCourseTitle" class=" control-label">
+                                                    CourseTitle
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.Curr_CourseTitle,
+                                                                          new { @class = "form-control ", @placeholder = "Course Title", @id = "txtCurrCourseTitle", @rows = 3, @readonly = "readonly" })
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Duration
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.TotalDuration,
+                                                                 new { @class = "form-control", @placeholder = "Duration", @id = "txtCurrDuration", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtDiscount" class=" control-label">
+                                                    Discount
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentRegistration.Discount,
+                                                                          new { @class = "form-control numberOnly", @placeholder = "Discount", @id = "txtCurrDiscount", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtFee" class=" control-label">
+                                                    Course Fee
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Curr_CourseFee,
+                                                                 new { @class = "form-control", @placeholder = "Fee", @id = "txtCurrFee", @readonly = "readonly" })
+
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    ST
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+
+                                                @Html.TextBoxFor(m => m.Curr_STAmount,
+                                                                 new { @class = "form-control", @placeholder = "ST", @id = "txtCurrSTAmt", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        @if (Model.CourseInterchangeFee > 0)
+                                        {
+                                            <div class="form-group ">
+                                                <div>
+                                                    <label for="txtMobileNo" class=" control-label">
+                                                        Course Interchange Fee
+                                                    </label>
+                                                    <label class="reqdLabel">
+                                                        *
+                                                    </label>
+                                                </div>
+                                                <div>
+
+                                                    @Html.TextBoxFor(m => m.CourseInterchangeFee,
+                                                                 new { @class = "form-control", @placeholder = "Course Interchange Fee", @id = "txtCourseInterchangeFee", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div>
+                                                    <label for="txtMobileNo" class=" control-label">
+                                                        Course Interchange ST
+                                                    </label>
+                                                    <label class="reqdLabel">
+                                                        *
+                                                    </label>
+                                                </div>
+                                                <div>
+
+                                                    @Html.TextBoxFor(m => m.CourseInterchangeST,
+                                                                 new { @class = "form-control", @placeholder = "Course Interchange ST", @id = "txtCourseInterchangeST", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Total Amount
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 pull-left">
+                                                @Html.TextBoxFor(m => m.StudentRegistration.TotalAmount,
+                                                                 new { @class = "form-control", @placeholder = "ST", @id = "txtCurrTotalFee", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </section>
+                                <h3>COURSE DETAILS </h3>
+                                <section>
+                                    <div class="col-md-5">
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtSoftwareUsed" class=" control-label">
+                                                    Existing Software Used
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.Curr_SoftwareDetails,
+                                                                 new { @class = "form-control", @placeholder = "Software Used", @id = "txtCurrSoftwareUsed", @rows = 3, @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        @if (Model.CourseFeedbackId.Count() > 0)
+                                        {
+                                            <div class="form-group" data-url="@Url.Action("GetCourseCode")" id="divCourseCode_Interchange">
+                                                <div>
+                                                    <label for="txtMobileNo" class=" control-label">
+                                                        Feedback Courses
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    @Html.ListBoxFor(m => m.CourseFeedbackId
+                                                 , Model.CourseFeedbackList
+                                                 , new { @class = "form-control select2 ", @id = "ddlCourseInterchangeId", @style = "width:100%", @disabled = "disabled" })
+                                                </div>
+                                                <div class="spinner" style="display:none">
+                                                    <i class="fa fa-refresh fa-spin spin-small "></i>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class=" form-group" id="divFeeMode" data-url="@Url.Action("GetCourseFee","Registration")">
+                                            <div>
+                                                <label for="InstallmentType" class=" control-label">
+                                                    Fee Mode
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @foreach (var mode in Enum.GetValues(typeof(SMS.Models.EnumClass.InstallmentType)))
+                                                {
+                                                    <label style="width:120px">
+                                                        @Html.RadioButtonFor(m => m.InstallmentType, mode, new { @class = "minimal installment" })
+                                                        @mode.ToString()
+                                                    </label>
+                                                }
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group" id="divInstallmentNo" style="display:none">
+                                            <div>
+                                                <label for="ddlInstallmentNo" class=" control-label">
+                                                    No of Installment
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(m => m.InstallmentID
+                                                 , Model.InstallmentList
+                                                 , ""
+                                                 , new { @class = "form-control select2 ", @id = "ddlInstallmentNo", @style = "width:100%", @disabled = "disabled" })
+                                                @Html.ValidationMessageFor(m => m.InstallmentID)
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class=" form-group" data-url="@Url.Action("GetCourseList","Registration")" data-details-url="@Url.Action("GetCourseDetails")" id="divCourseCode">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    New CourseCode
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.ListBoxFor(m => m.MultiCourseId
+                                                 , Model.MultiCourseList
+                                                 , new { @class = "form-control select2 ", @id = "ddlMultiCourse", @style = "width:100%" })
+                                                @Html.ValidationMessageFor(m => m.MultiCourseId)
+                                                <div style="display:none">
+                                                    <input type="text" id="txtMultiCourseId" />
+                                                    @Html.TextBoxFor(m => m.MultiCourseCode, new { id = "txtMultiCourseCode" })
+                                                </div>
+                                            </div>
+
+                                            <div style="margin-top:5px">
+                                                <a class="btn btn-primary btn-xs" id="btnSearchCourseCode">CourseCode Search</a>
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtCourseTitle" class=" control-label">
+                                                    New CourseTitle
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.CourseTitle,
+                                          new { @class = "form-control ", @placeholder = "Course Title", @id = "txtCourseTitle", @rows = 3, @readonly = "readonly" })
+
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtSoftwareUsed" class=" control-label">
+                                                    New Software Used
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextAreaFor(m => m.SoftwareDetails,
+                                 new { @class = "form-control", @placeholder = "Software Used", @id = "txtSoftwareUsed", @rows = 3, @readonly = "readonly" })
+                                            </div>
+                                            <div style="display:none">
+                                                @Html.TextAreaFor(m => m.NewCourseIds, new { @id = "txtSingleCourseIds" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Duration
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Duration,
+                                 new { @class = "form-control", @placeholder = "Duration", @id = "txtDuration", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtDiscount" class=" control-label">
+                                                    Discount
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Curr_Discount,
+                                 new { @class = "form-control numberOnly", @placeholder = "Discount", @id = "txtDiscount", @readonly = "true" })
+                                            </div>
+                                            <div style="display:none">
+                                                <input type="text" id="txtMaxDiscountAllowed" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtFee" class=" control-label">
+                                                    Course Fee
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.CourseFee,
+                                 new { @class = "form-control", @placeholder = "Fee", @id = "txtFee", @readonly = "readonly" })
+                                                <div style="display:none">
+                                                    <input type="text" id="txtCourseFee" value="0" />
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    ST
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <div style="display:none">
+                                                    @Html.TextBoxFor(m => m.ST,
+                                 new { @class = "form-control", @placeholder = "ST", @id = "txtST", @readonly = "readonly" })
+                                                </div>
+
+                                                @Html.TextBoxFor(m => m.STAmount,
+                                 new { @class = "form-control", @placeholder = "ST", @id = "txtSTAmt", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+
+                                        @if (Model.CourseInterchangeFee > 0)
+                                        {
+                                            <div class="form-group ">
+                                                <div>
+                                                    <label for="txtMobileNo" class=" control-label">
+                                                        Course Interchange Fee
+                                                    </label>
+                                                    <label class="reqdLabel">
+                                                        *
+                                                    </label>
+                                                </div>
+                                                <div>
+
+                                                    @Html.TextBoxFor(m => m.CourseInterchangeFee,
+                                                                 new { @class = "form-control", @placeholder = "Course Interchange Fee", @id = "txtCourseInterchangeFee", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div>
+                                                    <label for="txtMobileNo" class=" control-label">
+                                                        Course Interchange ST
+                                                    </label>
+                                                    <label class="reqdLabel">
+                                                        *
+                                                    </label>
+                                                </div>
+                                                <div>
+
+                                                    @Html.TextBoxFor(m => m.CourseInterchangeST,
+                                                                 new { @class = "form-control", @placeholder = "Course Interchange ST", @id = "txtCourseInterchangeST", @readonly = "readonly" })
+
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Total Amount
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 pull-left">
+                                                @Html.TextBoxFor(m => m.TotalFee,
+                                                new { @class = "form-control", @placeholder = "ST", @id = "txtTotalFee", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </section>
+                                <h3>PAYMENT DETAILS</h3>
+                                <section>
+                                    <div class="col-md-12">
+                                        <div class="box-body no-padding">
+                                            <div class="callout callout-success ">
+                                                <h4 id="titleTotalamt"></h4>
+                                            </div>
+
+                                            <table class="table table-bordered table-hover" id="tblPaymentDetails">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10px">#</th>
+                                                        <th>ReceiptNo</th>
+                                                        <th>Fee</th>
+                                                        <th>ST Percentage</th>
+                                                        <th>ST</th>
+                                                        <th>Total</th>
+                                                        <th>Due/Paid Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (Model.StudentRegistration.StudentReceipts.Count > 0)
+                                                    {
+                                                        for (int i = 0; i < Model.StudentReceiptLists.Count; i++)
+                                                        {
+                                                            <tr>
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].Status, new { @class = "status", @id = "txtStatus_" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].CROID, new { @class = "croid", @id = "txtcroId_" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].ModeOfPayment, new { @class = "mop", @id = "txtmop" + i })
+                                                                @Html.HiddenFor(m => m.StudentReceiptLists[i].StudentReceiptNo, new { @class = "recNo", @id = "txtRecNo" + i })
+                                                                <td>
+                                                                    @Convert.ToInt32(i + 1)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceiptNoList[i],
+                                                                      new { @class = "form-control receiptno", @id = "txtReceiptNo_" + i, @placeholder = "RECEIPT NO", @readonly = "readonly" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceiptLists[i].Fee,
+                                                                      new { @class = "form-control courseFee", @id = "txtCourseFee_" + i, @placeholder = "Fee", @readonly = "readonly" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceiptLists[i].STPercentage,
+                                                                      new { @class = "form-control stPercentage", @id = "txtSTPercentage_" + i, @placeholder = "ST Percentage", @readonly = "readonly" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => m.StudentReceiptLists[i].ST,
+                                                                      new { @class = "form-control stAmt", @id = "txtST_" + i, @placeholder = "ST", @readonly = "readonly" })
+                                                                </td>
+                                                                @if (Model.StudentReceiptLists[i].Status == true)
+                                                                {
+                                                                    <td>
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].Total,
+                                                                              new { @class = "form-control totalAmt paid", @id = "txtTotal_" + i, @placeholder = "Total", @readonly = "readonly" })
+                                                                    </td>
+                                                                    <td>
+
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].DueDate, Model.StudentReceiptLists[i].DueDate.Value.ToShortDateString(),
+                                                                              new { @class = "form-control date", @id = "txtDueDate_" + i, @placeholder = "DueDate", @readonly = "readonly" })
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].Total,
+                                                                              new { @class = "form-control totalAmt numberOnly ", @id = "txtTotal_" + i, @placeholder = "Total" })
+                                                                        @Html.ValidationMessageFor(m => m.StudentReceiptLists[i].Total)
+                                                                    </td>
+                                                                    <td>
+
+                                                                        @Html.TextBoxFor(m => m.StudentReceiptLists[i].DueDate, Model.StudentReceiptLists[i].DueDate.Value.ToShortDateString(),
+                                                                              new { @class = "form-control dueDate date", @id = "txtDueDate_" + i, @placeholder = "DueDate", @style = "background-color:white", @readonly = "readonly" })
+                                                                        @Html.ValidationMessageFor(m => m.StudentReceiptLists[i].DueDate)
+                                                                    </td>
+                                                                }
+
+                                                            </tr>
+                                                        }
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </section>
+                                <h3>PIN VERIFICATION </h3>
+                                <section id="">
+                                    <div class="form-group col-md-8" >
+                                        <div>
+                                            <label for="txtPinNo" class=" control-label">
+                                                Enter Reason for discount
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.CourseFullEditReason,
+                             new { @class = "form-control ", @placeholder = "Enter Reason", @id = "txtReason" })
+                                            @Html.ValidationMessageFor(m => m.CourseFullEditReason)
+                                           
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="form-group col-md-8" id="divPinVerification" data-url="@Url.Action("SendPinNoToStudent")">
+                                        <div>
+                                            <label for="txtPinNo" class=" control-label">
+                                                Enter 4 digit pinno received in Students mobile
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.StudentPinNo,
+                             new { @class = "form-control numberOnly", @placeholder = "PinNo", @id = "txtPinNo" })
+                                            @Html.ValidationMessageFor(m => m.StudentPinNo)
+                                            <span id="returnMsg" class="field-validation-error"></span>
+                                        </div>
+                                        <div style="display:none">
+                                            <input type="text" id="txtReturnPinNo" />
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- form end -->
+                    <div class="modal fade" id="divModalCourseCodeSearch" data-url="@Url.Action("CourseCodeSearch","Registration")">
+                        <div class="modal-dialog">
+                            <div class="modal-content modal-lg">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">CourseCode Search</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="box-body ">
+                                        <div class=" form-group col-md-12">
+                                            <div class=" pull-left col-md-3">
+                                                <label for="ddlCourseType" class=" control-label">
+                                                    Select Course
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                @Html.ListBoxFor(m => m.CourseId
+                                                , Model.CourseList
+                                                , new { @class = "form-control select2 ", @id = "ddlCourseList", @style = "width:100%" })
+
+                                            </div>
+                                            <div>
+                                                <button id="btnCourseSearch" type="button" class="btn btn-primary">Search</button>
+                                                <i class="fa fa-refresh fa-spin spin-small spinner" style="display:none"></i>
+                                            </div>
+                                            <div id="divMdlErrorPinNo" style="display:none">
+                                                <span class="field-validation-error">Invalid Pin</span>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <div class="table-responsive divCourseCodeContent" style="display:none">
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-modal " data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    @Scripts.Render("~/bundles/jqueryForms")
+    <script src="~/Scriptz/CourseFullEdit/Add.js?vid=@DateTime.Now.ToString("ddMMyyyy")@DateTime.Now.Second"></script>
+
+
+}
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+
+
+        });
+    </script>
+}
+
+
+
+
