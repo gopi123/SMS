@@ -1,0 +1,350 @@
+﻿@model SMS.Models.ViewModel.CourseFullEditApprovalVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section styles{
+
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/jQueryStepsSytle")
+    @Styles.Render("~/bundles/fileUploadStyle")
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css" type="text/css" />
+    <link href="~/plugins/sweetalert/css/sweetalert.css" rel="stylesheet" />
+    <style type="text/css">
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            background: none;
+            color: #999999;
+            cursor: default;
+        }
+
+        .blockMsg {
+            margin-left: 200px !important;
+        }
+
+        .minimal {
+            margin-right: 100px !important     ;
+        }
+    </style>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Course Full Edit Approval
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <a class="btn btn-info" href="@Url.Action("Index", "Registration")">
+                            <i class="fa  fa-hand-o-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <!-- form start -->
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("CourseFullEditApproval")' method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body ">
+                            <div id="FormWithStepz">
+                                <h3>PERSONAL DATA</h3>
+                                <section>
+                                    <div class="col-md-5">
+
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Student ID
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.RegistrationNumber,
+                                                                 new { @class = "form-control ", @placeholder = "RegistrationID", @id = "txtRegistrationID", @readonly = "readonly" })
+
+                                            </div>
+                                        </div>
+                                        <div class=" form-group ">
+                                            <div>
+                                                <label for="txtStudentName" class=" control-label">
+                                                    Name
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.StudentName,
+                                                  new { @class = "form-control ", @placeholder = "Name", @id = "txtStudentName", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtEmailId" class=" control-label">
+                                                    Email-Id
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Email,
+                                                                     new { @class = "form-control", @placeholder = "EmailId", @id = "txtEmailId", @readonly = "readonly" })
+                                            </div>
+
+
+                                        </div>
+                                        <div class="form-group ">
+                                            <div>
+                                                <label for="txtMobileNo" class=" control-label">
+                                                    Mobile No
+                                                </label>
+                                                <label class="reqdLabel">
+                                                    *
+                                                </label>
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.MobileNo,
+                                                                          new { @class = "form-control", @placeholder = "MobileNo", @id = "txtMobileNo", @readonly = "readonly" })
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+                                        <div class=" form-group ">
+                                            <label for="txtPhoto" class=" control-label">
+                                                Photo
+                                            </label>
+                                            @Html.TextBoxFor(m => m.PhotoUrl,
+                                                                  new { @class = "form-control imgUpload", @placeholder = "Please upload Photo", @id = "txtPhoto", @type = "file", @disabled = "disabled" })
+
+
+
+                                        </div>
+                                    </div>
+
+                                </section>
+                                <h3>COURSE DETAILS </h3>
+                                <section>
+                                    <div class=" form-group  ">
+                                        <div>
+                                            <label for="txtStudentName" class=" control-label">
+                                                Reason for Course Full Edit
+                                            </label>
+                                            <label class="reqdLabel">
+                                                *
+                                            </label>
+                                        </div>
+                                        <div>
+                                            @Html.TextBoxFor(m => m.CourseFullEditReason,
+                                                                 new { @class = "form-control ", @placeholder = "RegistrationID", @id = "txtCourseFullEditReason", @readonly = "readonly" })
+
+                                        </div>
+
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="box box-info">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">COURSE COMPARISON DETAILS</h3>
+
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <div class="table-responsive">
+                                                    <table class="table no-margin">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width:20%"></th>
+                                                                <th>New</th>
+                                                                <th>Old</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <td>COURSE</td>
+                                                                <td>@Model.CourseCombination_NewValue</td>
+                                                                <td>@Model.CourseCombination_OldValue</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td>DISCOUNT</td>
+                                                                <td>@Model.Discount_NewValue</td>
+                                                                <td>@Model.Discount_OldValue</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td>FEES</td>
+                                                                <td>@Model.CourseFee_NewValue</td>
+                                                                <td>@Model.CourseFee_OldValue</td>
+
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div><!-- /.table-responsive -->
+                                            </div><!-- /.box-body -->
+
+                                        </div>
+                                    </div>
+
+                                </section>
+                                <h3>APPROVAL SECTION</h3>
+                                <section>
+                                    <div class="form-group">
+
+                                        <label>
+                                            New and Old combinations are cross checked
+                                            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                            @Html.CheckBoxFor(m => m.IsCourseCombination_CrossChecked, new { @class = "minimal" })
+                                        </label>
+                                        <div>
+                                            @Html.ValidationMessageFor(m => m.IsCourseCombination_CrossChecked)
+                                        </div>                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            New and Old discount details are cross checked 
+                                            &nbsp;&nbsp; 
+                                            @Html.CheckBoxFor(m => m.IsDiscountDetails_CrossChecked, new { @class = "minimal" })
+                                        </label>
+                                        <div>
+                                            @Html.ValidationMessageFor(m => m.IsDiscountDetails_CrossChecked)
+                                        </div>    
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            New and Old course fees are cross checked
+                                            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        
+                                            @Html.CheckBoxFor(m => m.IsCourseFees_CrossChecked, new { @class = "minimal" })
+                                        </label>
+                                        <div>
+                                            @Html.ValidationMessageFor(m => m.IsCourseFees_CrossChecked)
+                                        </div>   
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            Discussed with customer and found genuine
+                                            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                            @Html.CheckBoxFor(m => m.IsCustomer_CrossChecked, new { @class = "minimal" })
+                                        </label>
+                                        <div>
+                                            @Html.ValidationMessageFor(m => m.IsCustomer_CrossChecked)
+                                        </div>  
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            Reason for full edit is found genuine
+                                            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                                            &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                            @Html.CheckBoxFor(m => m.IsReason_CrossChecked, new { @class = "minimal"})
+                                        </label>
+                                        <div>
+                                            @Html.ValidationMessageFor(m => m.IsReason_CrossChecked)
+                                        </div> 
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- form end -->
+
+                    <div class="modal fade" id="approvalStatusModal" aria-hidden="true" data-backdrop="static" data-logout-url="@Url.Action("Logout","Account")">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Approval Status</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>What would you like to do ? <span style="font-weight:bold" >APPROVE OR REJECT</span> </p>
+                                    <p>Please click the below button to continue.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="extendSession" type="button" class="btn btn-default btn-success" data-dismiss="modal">Stay Online</button>
+                                    <button id="logoutSession" type="button" class="btn btn-default" data-dismiss="modal">Logout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+            </div>
+
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryStepsScript")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/fileUploadScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    @Scripts.Render("~/bundles/jqueryForms")
+    <script src="~/plugins/sweetalert/js/sweetalert.min.js"></script>
+    <script src="~/Scriptz/CourseFullEditApproval/Add.js?vid=@DateTime.Now.ToString("ddMMyyyy")@DateTime.Now.Second"></script>
+}
+
+@section jsCode{
+    <script type="text/javascript">
+        $(function () {
+
+            var getCaption = function (imgUrl) {
+                if (imgUrl != "") {
+                    var dataArray = imgUrl.split("/");
+                    var caption = dataArray[dataArray.length - 1];
+                    return caption
+                }
+                else {
+                    return "No File Selected"
+                }
+
+            }
+
+            //fileUpload plugin
+            $("#txtPhoto").fileinput({
+                showUpload: false,
+                initialPreview: [
+                    '<img src="@Url.Content(Model.PhotoUrl!=null?Model.PhotoUrl:"#")" class="file-preview-image" alt="' + getCaption("@Model.PhotoUrl") + '" title="' + getCaption("@Model.PhotoUrl") + '">'
+                ],
+                overwriteInitial: true,
+                initialCaption: getCaption("@Model.PhotoUrl")
+            });
+
+            // extend jquery range validator to work for required checkboxes
+            var defaultRangeValidator = $.validator.methods.range;
+            $.validator.methods.range = function (value, element, param) {
+                if (element.type === 'checkbox') {
+                    // if it's a checkbox return true if it is checked
+                    return element.checked;
+                } else {
+                    // otherwise run the default validation function
+                    return defaultRangeValidator.call(this, value, element, param);
+                }
+            }
+        });
+    </script>
+}
+
+
+
+
+
+
