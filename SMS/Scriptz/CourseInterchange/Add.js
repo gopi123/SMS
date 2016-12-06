@@ -37,6 +37,7 @@ $(function () {
                    
                     if (ResetFeeDetails()) {
                         
+                        
                         GetPinNo();
                        
                     }
@@ -54,7 +55,8 @@ $(function () {
         },
         onFinishing: function (event, currentIndex) {
 
-            if (form.valid()) {               
+            if (form.valid()) {
+                
                 if( ValidatePinDetails())
                 {
                     return true;
@@ -342,28 +344,28 @@ $(function () {
         for (var i = start; i < end; i++) {
             var slno = parseInt(i + 1);
             var $row = $('<tr/>');
-            $row.append('<input class="status" id="txtStatus_0"  name="StudentReceipt[' + i + '].Status" type="hidden" value="False">')
+            $row.append('<input class="status" id="txtStatus_0"  name="StudentReceiptLists[' + i + '].Status" type="hidden" value="False">')
 
             $row.append(' <td class="slno">' + slno + '</td>');
 
-            $row.append(' <td><input name="StudentReceipt[' + i + '].ReceiptNo" type="text" class="form-control receiptno" placeholder="RECEIPTNO" readonly="readonly" />'
+            $row.append(' <td><input name="StudentReceiptLists[' + i + '].ReceiptNo" type="text" class="form-control receiptno" placeholder="RECEIPTNO" readonly="readonly" />'
                          + '</td>');
 
-            $row.append(' <td><input name="StudentReceipt[' + i + '].Fee" type="text" class="form-control courseFee" placeholder="FEE" readonly="readonly" />'
+            $row.append(' <td><input name="StudentReceiptLists[' + i + '].Fee" type="text" class="form-control courseFee" placeholder="FEE" readonly="readonly" />'
                            + '</td>');
 
-            $row.append(' <td><input name="StudentReceipt[' + i + '].STPercentage" type="text" class="form-control stPercentage" placeholder="ST PERCENTAGE" readonly="readonly" id="txtSTPercentage_"' + i + ' />'
+            $row.append(' <td><input name="StudentReceiptLists[' + i + '].STPercentage" type="text" class="form-control stPercentage" placeholder="ST PERCENTAGE" readonly="readonly" id="txtSTPercentage_"' + i + ' />'
                           + '</td>');
 
-            $row.append(' <td><input name="StudentReceipt[' + i + '].ST" type="text" class="form-control stAmt" placeholder="ST" readonly="readonly"  />'
+            $row.append(' <td><input name="StudentReceiptLists[' + i + '].ST" type="text" class="form-control stAmt" placeholder="ST" readonly="readonly"  />'
                            + '</td>');
 
-            $row.append(' <td><input name="StudentReceipt[' + i + '].Total" type="text" class="form-control valid totalAmt numberOnly" data-val="true" data-val-required="Enter Total" placeholder="TOTAL"  />'
-                            + '<span class="field-validation-valid " data-valmsg-for="StudentReceipt[' + i + '].Total" data-valmsg-replace="true"></span> </td>');
+            $row.append(' <td><input name="StudentReceiptLists[' + i + '].Total" type="text" class="form-control valid totalAmt numberOnly" data-val="true" data-val-required="Enter Total" placeholder="TOTAL"  />'
+                            + '<span class="field-validation-valid " data-valmsg-for="StudentReceiptLists[' + i + '].Total" data-valmsg-replace="true"></span> </td>');
 
 
-            $row.append(' <td><input name="StudentReceipt[' + i + '].DueDate" type="text" class="form-control valid dueDate date" data-val="true" data-val-required="Enter DueDate" placeholder="DUEDATE" id="txtDueDate' + i + '" readonly="readonly" style="background:white" />'
-                            + '<span class="field-validation-valid " data-valmsg-for="StudentReceipt[' + i + '].DueDate" data-valmsg-replace="true"></span> </td>');
+            $row.append(' <td><input name="StudentReceiptLists[' + i + '].DueDate" type="text" class="form-control valid dueDate date" data-val="true" data-val-required="Enter DueDate" placeholder="DUEDATE" id="txtDueDate' + i + '" readonly="readonly" style="background:white" />'
+                            + '<span class="field-validation-valid " data-valmsg-for="StudentReceiptLists[' + i + '].DueDate" data-valmsg-replace="true"></span> </td>');
 
             $tbody.append($row);
         }
