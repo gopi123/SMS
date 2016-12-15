@@ -15,7 +15,7 @@ using System.Web.Security;
 
 namespace SMS.Controllers
 {
-   
+
     public class AccountController : Controller
     {
         //update 1::(06/09/2016)::Added Session["LoggedEmployeeName"] 
@@ -24,11 +24,12 @@ namespace SMS.Controllers
         // GET: /Account/
 
 
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
             Common _cmn = new Common();
-            
-            return View();
+            LoginVM _mdlLogin = new LoginVM();
+            _mdlLogin.ReturnUrl = returnUrl;
+            return View(_mdlLogin);
 
             //string name = _cmn.ComputePassword("admin123");
             //Session["LoggedUserId"] = 10;
@@ -36,7 +37,7 @@ namespace SMS.Controllers
             //Session["LoggedUserRoleName"] = "test";
             //return RedirectToAction("Index", "DiscountSetting");
             //return View("Maintenance");
-        }     
+        }
 
 
 
@@ -52,6 +53,7 @@ namespace SMS.Controllers
                 {
                     Common _cmn = new Common();
                     var _passswordHash = _cmn.ComputePassword(mdlLogin.Password);
+                    string decodedUrl = string.Empty;
                     var _user = _db.Users
                                 .Where(u => u.UserName == mdlLogin.Username
                                         && u.Password == _passswordHash
@@ -66,6 +68,10 @@ namespace SMS.Controllers
                         Session["LoggedUserRoleName"] = _user.Employee.Designation.Role.RoleName;
                         Session["LoggedEmployeeName"] = _user.Employee.Name;
 
+                        if (!string.IsNullOrEmpty(mdlLogin.ReturnUrl))
+                        {
+                            decodedUrl = Server.UrlDecode(mdlLogin.ReturnUrl);
+                        }
 
                         if (_user.Employee.IsEmailVerified == false)
                         {
@@ -78,6 +84,10 @@ namespace SMS.Controllers
                         if (_user.IsFirstTimeLogin == true)
                         {
                             return RedirectToAction("PasswordChange");
+                        }
+                        if (Url.IsLocalUrl(decodedUrl))
+                        {
+                            return Redirect(decodedUrl);
                         }
 
                         FormsAuthentication.SetAuthCookie(mdlLogin.Username, true);
