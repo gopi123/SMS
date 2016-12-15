@@ -13,7 +13,7 @@ namespace SMS.Controllers
     {
         dbSMSNSEntities _db = new dbSMSNSEntities();
 
-        
+
 
 
         public ActionResult Index()
@@ -25,33 +25,36 @@ namespace SMS.Controllers
         {
             try
             {
-                StudentInfoVM _certificateVM = new StudentInfoVM();
-                var _dbRegn = _db.StudentRegistrations
-                            .Where(r => r.RegistrationNumber == regNo)
-                            .FirstOrDefault();
-                if (_dbRegn != null)
+                List<StudentInfoVM> _lstStudentInfo = new List<StudentInfoVM>();
+                List<StudentRegistration> _dbRegnList = _db.StudentRegistrations
+                                                    .Where(r => r.RegistrationNumber == regNo || r.StudentWalkInn.EmailId == regNo || r.StudentWalkInn.MobileNo == regNo)
+                                                    .ToList();
+                if (_dbRegnList != null)
                 {
-                    _certificateVM = new StudentInfoVM
+                    foreach (StudentRegistration _dbRegn in _dbRegnList)
                     {
-                        RegistrationId = _dbRegn.Id,
-                        RegistrationNo = _dbRegn.RegistrationNumber,
-                        SalesPerson = _dbRegn.StudentWalkInn.CROCount == 1 ? _dbRegn.StudentWalkInn.Employee1.Name :
-                                      _dbRegn.StudentWalkInn.Employee1.Name + "," + _dbRegn.StudentWalkInn.Employee2.Name,
-                        SoftwareUsed = string.Join(",", _dbRegn.StudentRegistrationCourses
-                                      .SelectMany(c => c.MultiCourse.MultiCourseDetails
-                                      .Select(mcd => mcd.Course.Name))),
-                        StudentName=_dbRegn.StudentWalkInn.CandidateName,
-                        PhotoUrl=_dbRegn.PhotoUrl,
-                        ControllerName = this.ControllerContext.RouteData.Values["controller"].ToString()
-                    };                    
+                        StudentInfoVM _mdlStudentInfo = new StudentInfoVM
+                        {
+                            RegistrationId = _dbRegn.Id,
+                            RegistrationNo = _dbRegn.RegistrationNumber,
+                            SalesPerson = _dbRegn.StudentWalkInn.CROCount == 1 ? _dbRegn.StudentWalkInn.Employee1.Name :
+                                          _dbRegn.StudentWalkInn.Employee1.Name + "," + _dbRegn.StudentWalkInn.Employee2.Name,
+                            SoftwareUsed = string.Join(",", _dbRegn.StudentRegistrationCourses
+                                          .SelectMany(c => c.MultiCourse.MultiCourseDetails
+                                          .Select(mcd => mcd.Course.Name))),
+                            StudentName = _dbRegn.StudentWalkInn.CandidateName,
+                            PhotoUrl = _dbRegn.PhotoUrl,
+                            ControllerName = this.ControllerContext.RouteData.Values["controller"].ToString()
+                        };
+                    }
                 }
-                return PartialView("_GetStudentInfo", _certificateVM);
+                return PartialView("_GetStudentInfo", _lstStudentInfo);
             }
             catch (Exception ex)
             {
                 return RedirectToAction("Index");
             }
-        }       
+        }
 
         public ActionResult CertificateStatus(int regID)
         {
@@ -83,8 +86,8 @@ namespace SMS.Controllers
             {
                 return RedirectToAction("Index");
             }
-           
-        }      
+
+        }
 
         public void CertificateVerification(string regNo)
         {
@@ -93,24 +96,24 @@ namespace SMS.Controllers
                 var _dbRegn = _db.StudentRegistrations
                             .Where(r => r.RegistrationNumber == regNo)
                             .FirstOrDefault();
-                string FilePath=string.Empty;
+                string FilePath = string.Empty;
 
                 if (_dbRegn != null)
                 {
                     var _isCertificateIssued = _dbRegn.IsCertificateIssued.Value;
                     if (_isCertificateIssued)
                     {
-                        FilePath = Server.MapPath("~/Certificates/" + _dbRegn.RegistrationNumber + ".pdf"); 
-                        
+                        FilePath = Server.MapPath("~/Certificates/" + _dbRegn.RegistrationNumber + ".pdf");
+
                     }
                     else
                     {
-                        FilePath = Server.MapPath("~/Certificates/CertificateNotProcessed.pdf"); 
+                        FilePath = Server.MapPath("~/Certificates/CertificateNotProcessed.pdf");
                     }
                 }
                 else
                 {
-                    FilePath = Server.MapPath("~/Certificates/StudentIDNotExist.pdf"); 
+                    FilePath = Server.MapPath("~/Certificates/StudentIDNotExist.pdf");
                 }
                 WebClient User = new WebClient();
                 Byte[] FileBuffer = User.DownloadData(FilePath);
@@ -121,9 +124,9 @@ namespace SMS.Controllers
                     Response.BinaryWrite(FileBuffer);
                     Response.End();
                 }
-               
 
-               
+
+
             }
             catch (Exception ex)
             {
