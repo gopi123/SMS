@@ -15,7 +15,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     <link href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-     @Styles.Render("~/bundles/layoutStyle")
+    @Styles.Render("~/bundles/layoutStyle")
     <!-- iCheck -->
     <link rel="stylesheet" href="~/Styles/Site.css">
     <!-- iCheck -->
@@ -36,13 +36,15 @@
 
 </head>
 <body class="hold-transition login-page">
-    <div class="login-box" >
+    <div class="login-box">
         <img src="@Url.Content("~/Styles/SMS_StaffLogin_Logo.jpg")" class="img-responsive" style="width:100%" />
-        <div class="login-box-body" >
+        <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
 
-            <form action="@Url.Action("Login")" method="post">
+            @using (Html.BeginForm("Login","Account", FormMethod.Post, new { @id = "formLogOn" }))
+            {
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.ReturnUrl)
                 <div class="form-group has-feedback">
                     @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = "Username" })
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -55,7 +57,7 @@
                     @Html.ValidationMessageFor(m => m.Password)
                 </div>
 
-                @if (ViewBag.ErrorMessage != null)
+                if (ViewBag.ErrorMessage != null)
                 {
                     <div class="text-center">
                         <p class="field-validation-error">@ViewBag.ErrorMessage</p>
@@ -74,7 +76,9 @@
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                     </div><!-- /.col -->
                 </div>
-            </form>
+            
+            }
+               
             <div class="social-auth-links text-center">
                 <a href="@Url.Action("ForgotPassword","Account")" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-unlock"></i> Unlock Password</a>
                 <a href="www.networkzsystems.com" target="_blank" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-chrome"></i> Visit our website</a>
