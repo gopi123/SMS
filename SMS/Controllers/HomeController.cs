@@ -137,10 +137,7 @@ namespace SMS.Controllers
                 Common _cmn = new Common();
                 var _employee = _db.Employees.AsEnumerable().Where(e => e.Id == Int32.Parse(Session["LoggedUserId"].ToString()))
                                        .FirstOrDefault();
-                Session["EmployeeName"] = _employee.Name;
-                Session["EmployeeDesignation"] = _employee.Designation.DesignationName;
-                Session["EmployeeJoinDate"] = GetJoinMonth(_employee.DateOfJoin);
-                Session["EmployeePhotoUrl"] = _employee.PhotoUrl;
+
 
                 ViewBag.WalkInnCount_Yearly = GetWalkInnCount("year");
                 ViewBag.WalkInnCount_Monthly = GetWalkInnCount("month");
@@ -212,12 +209,7 @@ namespace SMS.Controllers
 
         }
 
-        static string GetJoinMonth(DateTime? dt)
-        {
-            var month = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(dt.Value.Month); ;
-            var year = dt.Value.Year.ToString();
-            return month + ". " + year;
-        }
+        
 
         //Get Total walkinncount of current month and year
         public decimal GetWalkInnCount(string type)
