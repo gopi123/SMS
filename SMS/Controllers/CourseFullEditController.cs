@@ -3,6 +3,7 @@ using SMS.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -105,15 +106,268 @@ namespace SMS.Controllers
 
         }
 
+        public class CourseFullEditDataTable
+        {
+            public string RequestedDate
+            {
+                get
+                {
+                    return CourseFullEditDetails.TransactionDate.Value.ToString("dd/MM/yyyy");
+                }
+            }
+            public string RequestedBy
+            {
+                get
+                {
+                    return CourseFullEditDetails.Employee.Name;
+                }
+            }
+            public string RegNo { get; set; }
+
+            public string ExistingSoftwareUsed { get; set; }
+            public string NewSoftwareUsed
+            {
+                get
+                {
+                    return string.Join(",", CourseFullEditDetails.StudentRegistrationCourse_CourseFullEdit
+                                    .SelectMany(rh => rh.MultiCourse.MultiCourseDetails
+                                    .Select(rhmc => rhmc.Course.Name)));
+                }
+            }
+            public int ExistingFee { get; set; }
+            public int NewFee
+            {
+                get
+                {
+                    return CourseFullEditDetails.StudentReceipt_CourseFullEdit.Sum(s => s.Fee.Value);
+                }
+
+            }
+            public string StudentName { get; set; }
+            public StudentRegistration StudentRegistration { get; set; }
+            public StudentRegistration_CourseFullEdit CourseFullEditDetails
+            {
+                get
+                {
+                    StudentRegistration_CourseFullEdit _courseFullEdit = new StudentRegistration_CourseFullEdit();
+                    _courseFullEdit = StudentRegistration.StudentRegistration_CourseFullEdit.FirstOrDefault();
+                    return _courseFullEdit;
+                }
+            }
+
+            public string Status
+            {
+                get
+                {
+                    string _status = string.Empty;
+                    if (CourseFullEditDetails.CourseFullEdit_Approval.Count == 0)
+                    {
+                        _status = "notvalidated";
+                    }
+                    else if (CourseFullEditDetails.CourseFullEdit_Approval.FirstOrDefault().IsApproved == null)
+                    {
+                        _status = "validated_" + CourseFullEditDetails.CourseFullEdit_Approval.FirstOrDefault().ValidatedDate.Value.ToString("dd/MM/yyyy");
+                    }
+                    else if (CourseFullEditDetails.CourseFullEdit_Approval.FirstOrDefault().IsApproved == true)
+                    {
+                        _status = "approved_" + CourseFullEditDetails.CourseFullEdit_Approval.FirstOrDefault().TransactionDate.Value.ToString("dd/MM/yyyy");
+                    }
+                    else
+                    {
+                        _status = "rejected_" + CourseFullEditDetails.CourseFullEdit_Approval.FirstOrDefault().TransactionDate.Value.ToString("dd/MM/yyyy");
+                    }
+                    return _status;
+                }
+            }
+        }
+
         #endregion
 
         public ActionResult Index()
         {
+            try
+            {
+                Common _cmn = new Common();
+
+                var _finYearList = _cmn.FinancialYearList().ToList()
+                                    .OrderByDescending(x => x.ToString())
+                                    .Select(x => new
+                                    {
+                                        Id = x.ToString(),
+                                        Name = x.ToString()
+                                    });
+
+                var _monthList = from EnumClass.Month c in Enum.GetValues(typeof(EnumClass.Month))
+                                 select new { Id = c.ToString(), Name = c.ToString() };
+
+                var _indexVM = new IndexVM
+                {
+                    FinancialYearList = new SelectList(_finYearList, "Id", "Name"),
+                    MonthList = new SelectList(_monthList, "Id", "Name"),
+                    MonthName = "ALL"
+                };
+                return View(_indexVM);
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+        }
+
+        public JsonResult GetDataTable(string finYear, string month)
+        {
+            try
+            {
+
+                Common _cmn = new Common();
+                List<CourseFullEditDataTable> _dTableReg = new List<CourseFullEditDataTable>();
+                DateTime _startFinDate = new DateTime();
+                DateTime _endFinDate = new DateTime();
+
+                var arrFinYear = finYear.Split('-');
+                var _startFinYear = Convert.ToInt32(arrFinYear[0]);
+                var _endFinYear = Convert.ToInt32(arrFinYear[1]);
+                var _currentRole = _cmn.GetLoggedUserRoleId(Convert.ToInt32(Session["LoggedUserId"]));
+                int monthID = _cmn.GetMonthID(month);
+
+                if (monthID == (int)EnumClass.SelectAll.ALL)
+                {
+                    _startFinDate = new DateTime(_startFinYear, (int)EnumClass.FinYearMonth.STARTMONTH, 1).Date;
+                    _endFinDate = new DateTime(_endFinYear, (int)EnumClass.FinYearMonth.ENDMONTH, 31).Date;
+                }
+                else
+                {
+                    //Eg:FinYear=2016-2017
+                    //if month is greater than 4 then 2016 is taken else 2017 is taken
+                    if (monthID >= 4)
+                    {
+                        _startFinDate = new DateTime(_startFinYear, monthID, 1);
+                        _endFinDate = new DateTime(_startFinYear, monthID, DateTime.DaysInMonth(_startFinYear, monthID));
+                    }
+                    else
+                    {
+                        _startFinDate = new DateTime(_endFinYear, monthID, 1);
+                        _endFinDate = new DateTime(_endFinYear, monthID, DateTime.DaysInMonth(_startFinYear, monthID));
+                    }
+
+                }
+
+                //Gets all the centerCodeIds allotted to an employee
+                List<int> _centerCodeIds = _cmn.GetCenterEmpwise(Convert.ToInt32(Session["LoggedUserId"]))
+                                            .Select(x => x.Id).ToList();
+                List<StudentRegistration> _lstStudReg = new List<StudentRegistration>();
+                _lstStudReg = _db.StudentRegistrations
+                            .Where(r => r.StudentRegistration_CourseFullEdit.Any()
+                                        && _centerCodeIds.Contains(r.StudentWalkInn.CenterCode.Id))
+                            .ToList();
+
+                _dTableReg = _lstStudReg
+                                .AsEnumerable()
+                                .Where(r => (r.StudentRegistration_CourseFullEdit.OrderByDescending(rh => rh.Id).FirstOrDefault().TransactionDate.Value.Date >= _startFinDate
+                                            && r.StudentRegistration_CourseFullEdit.OrderByDescending(rh => rh.Id).FirstOrDefault().TransactionDate.Value.Date <= _endFinDate))
+                                .OrderByDescending(r => r.Id)
+                                .Select(rd => new CourseFullEditDataTable
+                                {
+                                    StudentRegistration = rd,
+                                    ExistingFee = rd.StudentReceipts.Sum(s => s.Fee.Value),
+                                    ExistingSoftwareUsed = string.Join(",", rd.StudentRegistrationCourses
+                                                         .SelectMany(c => c.MultiCourse.MultiCourseDetails
+                                                         .Select(mc => mc.Course.Name))),
+                                    RegNo = rd.RegistrationNumber,
+
+                                    StudentName = rd.StudentWalkInn.CandidateName
+
+                                }).ToList();
+
+                var _regList = _dTableReg
+                               .Select(x => new
+                               {
+                                   ReqDate = x.RequestedDate,
+                                   ReqBy = x.RequestedBy,
+                                   RegNo = x.RegNo,
+                                   ExistingSoftwareUsed = x.ExistingSoftwareUsed.ToUpper(),
+                                   NewSoftwareUsed = x.NewSoftwareUsed.ToUpper(),
+                                   ExistingFee = x.ExistingFee,
+                                   NewFee = x.NewFee,
+                                   StudentName = x.StudentName.ToUpper(),
+                                   Status = x.Status
+                               }).ToList();
+
+
+
+                return Json(new { data = _regList }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult CourseFullEditSearch()
+        {
             return View();
         }
 
-        //
-        // GET: /CourseFullEdit/
+        public ActionResult GetStudentInfo(string regNo)
+        {
+            try
+            {
+                List<StudentInfoVM> _lstStudentInfo = new List<StudentInfoVM>();
+                List<StudentRegistration> _dbRegnList = _db.StudentRegistrations
+                                                    .Where(r => r.RegistrationNumber == regNo || r.StudentWalkInn.EmailId == regNo || r.StudentWalkInn.MobileNo == regNo)
+                                                    .ToList();
+                if (_dbRegnList.Count > 0)
+                {
+
+                    foreach (StudentRegistration _dbRegn in _dbRegnList)
+                    {
+                        StudentInfoVM _mdlStudentInfo = new StudentInfoVM
+                        {
+                            RegistrationId = _dbRegn.Id,
+                            RegistrationNo = _dbRegn.RegistrationNumber,
+                            SalesPerson = _dbRegn.StudentWalkInn.CROCount == 1 ? _dbRegn.StudentWalkInn.Employee1.Name :
+                                          _dbRegn.StudentWalkInn.Employee1.Name + "," + _dbRegn.StudentWalkInn.Employee2.Name,
+                            SoftwareUsed = string.Join(",", _dbRegn.StudentRegistrationCourses
+                                          .SelectMany(c => c.MultiCourse.MultiCourseDetails
+                                          .Select(mcd => mcd.Course.Name))),
+                            StudentName = _dbRegn.StudentWalkInn.CandidateName,
+                            PhotoUrl = _dbRegn.PhotoUrl,
+                            ControllerName = this.ControllerContext.RouteData.Values["controller"].ToString(),
+                            CourseCount = _dbRegn.StudentRegistrationCourses
+                                        .SelectMany(src => src.MultiCourse.MultiCourseDetails)
+                                        .Select(mcd => mcd.Course)
+                                        .Count(),
+                            PendingPaymentCount = _dbRegn.StudentReceipts
+                                        .Where(r => r.Status == false)
+                                        .Count(),
+                            PendingFeedbackCount = _dbRegn.StudentFeedbacks
+                                                .Where(f => f.IsFeedbackGiven == false)
+                                                .Count(),
+
+                            PaidPaymentCount = _dbRegn.StudentReceipts
+                                            .Where(r => r.Status == true)
+                                            .Count(),
+                            CourseInterchangeCount = _dbRegn.StudentRegistration_History.Count,
+
+                            CourseFullEditCount = _dbRegn.StudentRegistration_CourseFullEdit.Count,
+
+                            StudentRegistration=_dbRegn
+
+
+                            
+                        };
+                        _lstStudentInfo.Add(_mdlStudentInfo);
+                    }
+
+                }
+                return PartialView("_GetStudentInfo", _lstStudentInfo);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+        }
 
         public ActionResult CourseFullEdit(int regID)
         {
@@ -203,8 +457,9 @@ namespace SMS.Controllers
                         CourseFeedbackList = new SelectList(_feedbackCourseIdList, "Id", "Name"),
                         CourseFeedbackId = _feedbackCourseIdList.Select(f => f.Id).ToArray(),
                         //InstallmentID = _dbRegn.NoOfInstallment.Value,
-                        InstallmentID = _dbRegn.StudentReceipts.Where(r => r.Status == false).Count() == 0 ?
-                                        _dbRegn.StudentReceipts.Count() + 1 : _dbRegn.StudentReceipts.Count(),
+                        //InstallmentID = _dbRegn.StudentReceipts.Where(r => r.Status == false).Count() == 0 ?
+                        //                _dbRegn.StudentReceipts.Count() + 1 : _dbRegn.StudentReceipts.Count(),
+                        InstallmentID = _dbRegn.StudentReceipts.Where(r => r.Status == true).Count() + 1,
                         InstallmentType = (_paidCount <= 2 && _dbRegn.StudentReceipts.Count() == 2)
                                             ? EnumClass.InstallmentType.SINGLE : EnumClass.InstallmentType.INSTALLMENT,
                         InstallmentList = new SelectList(_installmentNo, "Id", "Name"),
@@ -227,7 +482,8 @@ namespace SMS.Controllers
                         CourseList = new SelectList(_courseList, "Id", "Name"),
                         Curr_CourseFee = _dbRegn.TotalCourseFee.Value - _courseInterchangeFee,
                         Curr_STAmount = _dbRegn.TotalSTAmount.Value - _courseInterchangeSTAmt,
-                        TotalFeePaid = _dbRegn.StudentReceipts.Where(r => r.Status == true).Sum(r => r.Fee.Value)
+                        TotalFeePaid = _dbRegn.StudentReceipts.Where(r => r.Status == true).Sum(r => r.Fee.Value),
+
                     };
 
                     return View(_mdlCourseFullEdit);
@@ -248,6 +504,11 @@ namespace SMS.Controllers
             SuccessMessage _successMsg = new SuccessMessage();
             try
             {
+                //if single remove validation for no of installment
+                if (mdlCourseFullEdit.StudentReceiptLists.Count <= 2)
+                {
+                    ModelState.Remove("InstallmentID");
+                }
                 if (ModelState.IsValid)
                 {
                     StudentRegistration_CourseFullEdit _dbCourseFullEdit = new StudentRegistration_CourseFullEdit();
@@ -286,13 +547,13 @@ namespace SMS.Controllers
                     int j = _db.SaveChanges();
                     if (j > 0)
                     {
-                        _successMsg.Id = _dbCourseFullEdit.Id;
+                        _successMsg.Id = _dbCourseFullEdit.StudentRegistrationID.Value;
                         _successMsg.Status = "success";
 
                         return Json(_successMsg, JsonRequestBehavior.AllowGet);
                     }
                 }
-               
+
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -536,6 +797,187 @@ namespace SMS.Controllers
             catch (Exception ex)
             {
                 return Json(pinNo, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        //send course full edit request email to concerned official
+        public JsonResult Send_CourseFullEdit_Email(int regId, bool isEmailSendToCentreHead)
+        {
+            string _tdString = string.Empty;
+            string _styleContent = string.Empty;
+            string _hrefContent = string.Empty;
+            List<string> _emailList = new List<string>();
+            try
+            {
+                StudentRegistration _studReg = _db.StudentRegistrations
+                                             .Where(r => r.Id == regId).FirstOrDefault();
+
+                string _studentId = _studReg.RegistrationNumber;
+                string _studentName = _studReg.StudentWalkInn.CandidateName;
+                string _studentMobNo = _studReg.StudentWalkInn.MobileNo;
+                string _croName = _studReg.StudentWalkInn.CROCount == (int)EnumClass.CROCount.ONE ? _studReg.StudentWalkInn.Employee1.Name :
+                                _studReg.StudentWalkInn.Employee1.Name + "," + _studReg.StudentWalkInn.Employee2.Name;
+                string _fullEditReason = _studReg.StudentRegistration_CourseFullEdit.FirstOrDefault().Reason.ToUpper();
+
+
+                string _courseCombination_NewValue = string.Join(",", _studReg.StudentRegistration_CourseFullEdit.FirstOrDefault()
+                                                                                .StudentRegistrationCourse_CourseFullEdit
+                                                                                .SelectMany(c => c.MultiCourse.MultiCourseDetails
+                                                                                .Select(mcd => mcd.Course.Name)));
+                string _courseCombination_OldValue = string.Join(",", _studReg
+                                                                     .StudentRegistrationCourses
+                                                                     .SelectMany(c => c.MultiCourse.MultiCourseDetails
+                                                                     .Select(mcd => mcd.Course.Name)));
+
+                string _courseFee_NewValue = _studReg.StudentRegistration_CourseFullEdit.FirstOrDefault().StudentReceipt_CourseFullEdit.Sum(r => r.Fee.Value).ToString();
+                string _courseFee_OldValue = _studReg.StudentReceipts.Sum(r => r.Fee.Value).ToString();
+                string _discount_NewValue = _studReg.StudentRegistration_CourseFullEdit.FirstOrDefault().Discount.Value.ToString();
+                string _discount_OldValue = _studReg.Discount.Value.ToString();
+                int _centreId = _studReg.StudentWalkInn.CenterCode.Id;
+
+                Common _cmn = new Common();
+
+                //Adding coursefee section
+                _tdString = _tdString + "<tr><td>Fees</td>";
+                _tdString = _tdString + "<td>" + _courseFee_NewValue + "</td>";
+                _tdString = _tdString + "<td>" + _courseFee_OldValue + "</td><tr>";
+
+                //Adding coursediscount section
+                _tdString = _tdString + "<tr><td>Discount</td>";
+                _tdString = _tdString + "<td>" + _discount_NewValue + "</td>";
+                _tdString = _tdString + "<td>" + _discount_OldValue + "</td><tr>";
+
+                //Adding coursecombination section
+                _tdString = _tdString + "<tr><td>Course</td>";
+                _tdString = _tdString + "<td>" + _courseCombination_NewValue + "</td>";
+                _tdString = _tdString + "<td>" + _courseCombination_OldValue + "</td><tr>";
+
+                if (isEmailSendToCentreHead)
+                {
+                    _styleContent = "padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;";
+                    _hrefContent = "http://www.networkzsystems.com/sms?returnUrl=/sms/CourseFullEdit/ValidateCourseFullEdit/" + _studReg.Id + "";
+                    //Adding centre heads emailid
+                    _emailList.Add(_studReg.StudentWalkInn.CenterCode.CenterCodePartnerDetails.FirstOrDefault().EmailId);
+                    
+                }
+                else
+                {
+                    _styleContent = "display:none";
+                    _hrefContent = "#";
+
+                    string _croEmailId = _studReg.StudentWalkInn.CROCount == (int)EnumClass.CROCount.ONE ? _studReg.StudentWalkInn.Employee1.EmailId :
+                        _studReg.StudentWalkInn.Employee1.EmailId + "," + _studReg.StudentWalkInn.Employee2.EmailId;
+
+                    string _mgrEmailId = string.Join(",", _cmn.GetEmployee_Centrewise(_centreId, (int)EnumClass.Designation.MANAGERSALES)
+                                                                        .Select(e => e.EmailId)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                    string _centreMgrEmailId = string.Join(",", _cmn.GetEmployee_Centrewise(_centreId, (int)EnumClass.Designation.CENTREMANAGER)
+                                                                        .Select(e => e.EmailId)
+                                                                         .Distinct()
+                                                                        .ToList());
+
+                    string _centreHeadEmailId = _studReg.StudentWalkInn.CenterCode.CenterCodePartnerDetails.FirstOrDefault().EmailId;
+
+                    string _edEmailId = string.Join(",", _cmn.GetEmployee_Centrewise(_centreId, (int)EnumClass.Designation.ED)
+                                                                        .Select(e => e.EmailId)
+                                                                         .Distinct()
+                                                                        .ToList());
+                    _emailList.Add(_croEmailId);
+                    _emailList.Add(_mgrEmailId);
+                    _emailList.Add(_centreMgrEmailId);
+                    _emailList.Add(_centreHeadEmailId);
+                    _emailList.Add(_edEmailId);
+                   
+
+                }
+
+                //Mail sending code
+                string _body = string.Empty;
+
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/Template/CourseFullEditRequest.html")))
+                {
+                    _body = reader.ReadToEnd();
+                }
+
+                _body = _body.Replace("{StudentID}", _studentId);
+                _body = _body.Replace("{StudentName}", _studentName);
+                _body = _body.Replace("{StudentMobileNo}", _studentMobNo);
+                _body = _body.Replace("{CroName}", _croName);
+                _body = _body.Replace("{CourseFullEditReason}", _fullEditReason);
+                _body = _body.Replace("{CourseDetailsContent}", _tdString);
+                _body = _body.Replace("{styleContent}", _styleContent);
+                _body = _body.Replace("{hrefContent}", _hrefContent);
+
+
+                //Email sending
+                var isMailSend = _cmn.SendEmailViaGmail(string.Join(",", _emailList.Distinct().ToList()), _body, "Course Full Edit Request");
+                if (isMailSend)
+                    return Json("success", JsonRequestBehavior.AllowGet);
+                else
+                    return Json("error", JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.InnerException.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        //Called while clicking validate button in the request mail
+        public ActionResult ValidateCourseFullEdit(int Id)
+        {
+            try
+            {
+                StudentRegistration _dbRegn = _db.StudentRegistrations.Where(r => r.Id == Id).FirstOrDefault();
+                int _loggedUserId = Convert.ToInt32(Session["LoggedUserId"]);
+                string _allowedEmployeeEmailId = _dbRegn.StudentWalkInn.CenterCode.CenterCodePartnerDetails.FirstOrDefault().EmailId.Trim().ToLower();
+                string _loggedEmployeeEmailId = _db.Employees.Where(r => r.Id == _loggedUserId).FirstOrDefault().EmailId.Trim().ToLower();
+
+                if (_allowedEmployeeEmailId == _loggedEmployeeEmailId)
+                {
+                    StudentRegistration_CourseFullEdit _dbCourseFullEdit = _dbRegn
+                                                                       .StudentRegistration_CourseFullEdit.FirstOrDefault();
+
+                    CourseFullEdit_Approval _dbCourseFullEditApproval = new CourseFullEdit_Approval();
+
+                    _dbCourseFullEditApproval.ValidatedBy = Convert.ToInt32(Session["LoggedUserId"]);
+                    _dbCourseFullEditApproval.ValidatedDate = Common.LocalDateTime();
+                    _dbCourseFullEditApproval.IsValidated = true;
+                    _dbCourseFullEditApproval.CourseFullEditID = _dbCourseFullEdit.Id;
+
+                    _db.CourseFullEdit_Approval.Add(_dbCourseFullEditApproval);
+                    int i = _db.SaveChanges();
+                    if (i > 0)
+                    {
+                        if (Send_CourseFullEdit_Email(Id, false).Data.ToString() == "success")
+                        {
+                            ViewBag.Message = "success";
+                        }
+                        else
+                        {
+                            ViewBag.Message = "error_sending_mail";
+                        }
+                        return View();
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "error_login";
+                    return View();
+                }
+
+
+
+                return View("Error");
+
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
             }
         }
 
