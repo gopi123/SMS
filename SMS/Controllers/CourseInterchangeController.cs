@@ -198,10 +198,11 @@ namespace SMS.Controllers
                 //Gets all the centerCodeIds allotted to an employee
                 List<int> _centerCodeIds = _cmn.GetCenterEmpwise(Convert.ToInt32(Session["LoggedUserId"]))
                                             .Select(x => x.Id).ToList();
+
                 List<StudentRegistration> _lstStudReg = new List<StudentRegistration>();
                 _lstStudReg = _db.StudentRegistrations
-                            .Where(r => r.StudentRegistration_History.Any() &&
-                                    _centerCodeIds.Contains(r.StudentWalkInn.CenterCode.Id))
+                            .Where(r => r.StudentRegistration_History.Any(x => x.HistoryType == (int)EnumClass.STUDENT_BACKUP_TYPE.COURSE_INTERCHANGE)
+                                && _centerCodeIds.Contains(r.StudentWalkInn.CenterCode.Id))
                             .ToList();
 
                 _dTableReg = _lstStudReg
@@ -257,42 +258,46 @@ namespace SMS.Controllers
         {
             try
             {
-                StudentInfoVM _certificateVM = new StudentInfoVM();
-                var _dbRegn = _db.StudentRegistrations
-                            .Where(r => r.RegistrationNumber == regNo)
-                            .FirstOrDefault();
-                if (_dbRegn != null)
+                List<StudentInfoVM> _lstStudentInfo = new List<StudentInfoVM>();
+                List<StudentRegistration> _dbRegnList = _db.StudentRegistrations
+                                                    .Where(r => r.RegistrationNumber == regNo || r.StudentWalkInn.EmailId == regNo || r.StudentWalkInn.MobileNo == regNo)
+                                                    .ToList();
+                if (_dbRegnList.Count > 0)
                 {
-                    _certificateVM = new StudentInfoVM
-                    {
-                        RegistrationId = _dbRegn.Id,
-                        RegistrationNo = _dbRegn.RegistrationNumber,
-                        SalesPerson = _dbRegn.StudentWalkInn.CROCount == 1 ? _dbRegn.StudentWalkInn.Employee1.Name :
-                                      _dbRegn.StudentWalkInn.Employee1.Name + "," + _dbRegn.StudentWalkInn.Employee2.Name,
-                        SoftwareUsed = string.Join(",", _dbRegn.StudentRegistrationCourses
-                                      .SelectMany(c => c.MultiCourse.MultiCourseDetails
-                                      .Select(mcd => mcd.Course.Name))),
-                        StudentName = _dbRegn.StudentWalkInn.CandidateName,
-                        PhotoUrl = _dbRegn.PhotoUrl,
-                        ControllerName = this.ControllerContext.RouteData.Values["controller"].ToString(),
-                        CourseCount = _dbRegn.StudentRegistrationCourses
-                                    .SelectMany(src => src.MultiCourse.MultiCourseDetails)
-                                    .Select(mcd => mcd.Course)
-                                    .Count(),
-                        PendingPaymentCount = _dbRegn.StudentReceipts
-                                    .Where(r => r.Status == false)
-                                    .Count(),
-                        PendingFeedbackCount = _dbRegn.StudentFeedbacks
-                                            .Where(f => f.IsFeedbackGiven == false)
-                                            .Count(),
 
-                        PaidPaymentCount = _dbRegn.StudentReceipts
-                                        .Where(r => r.Status == true)
+                    foreach (StudentRegistration _dbRegn in _dbRegnList)
+                    {
+                        StudentInfoVM _mdlStudentInfo = new StudentInfoVM
+                        {
+                            RegistrationId = _dbRegn.Id,
+                            RegistrationNo = _dbRegn.RegistrationNumber,
+                            SalesPerson = _dbRegn.StudentWalkInn.CROCount == 1 ? _dbRegn.StudentWalkInn.Employee1.Name :
+                                          _dbRegn.StudentWalkInn.Employee1.Name + "," + _dbRegn.StudentWalkInn.Employee2.Name,
+                            SoftwareUsed = string.Join(",", _dbRegn.StudentRegistrationCourses
+                                          .SelectMany(c => c.MultiCourse.MultiCourseDetails
+                                          .Select(mcd => mcd.Course.Name))),
+                            StudentName = _dbRegn.StudentWalkInn.CandidateName,
+                            PhotoUrl = _dbRegn.PhotoUrl,
+                            ControllerName = this.ControllerContext.RouteData.Values["controller"].ToString(),
+                            CourseCount = _dbRegn.StudentRegistrationCourses
+                                        .SelectMany(src => src.MultiCourse.MultiCourseDetails)
+                                        .Select(mcd => mcd.Course)
                                         .Count(),
-                        CourseInterchangeCount = _dbRegn.StudentRegistration_History.Count
-                    };
+                            PendingPaymentCount = _dbRegn.StudentReceipts
+                                        .Where(r => r.Status == false)
+                                        .Count(),
+                            PendingFeedbackCount = _dbRegn.StudentFeedbacks
+                                                .Where(f => f.IsFeedbackGiven == false)
+                                                .Count(),
+
+                            PaidPaymentCount = _dbRegn.StudentReceipts
+                                            .Where(r => r.Status == true)
+                                            .Count(),
+                            CourseInterchangeCount = _dbRegn.StudentRegistration_History.Count
+                        };
+                    }
                 }
-                return PartialView("_GetStudentInfo", _certificateVM);
+                return PartialView("_GetStudentInfo", _lstStudentInfo);
             }
             catch (Exception ex)
             {
