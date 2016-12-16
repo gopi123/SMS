@@ -9,7 +9,9 @@ namespace SMS.Models.ViewModel
 {
     public class CourseFullEditApprovalVM
     {
-        
+
+        public int CourseFullEditID { get; set; }
+        public int StudentRegistrationID { get; set; }
         public string RegistrationNumber { get; set; }
         public string StudentName { get; set; }
         public string  Email { get; set; }
@@ -41,7 +43,7 @@ namespace SMS.Models.ViewModel
         [Range(typeof(bool), "true", "true", ErrorMessage = "The field must be checked inorder to continue")]
         public bool IsReason_CrossChecked { get; set; }
 
-        [Range(typeof(bool), "true", "true", ErrorMessage = "The field must be checked inorder to continue")]
+        [Required(ErrorMessage="Please enter rejected reason")]
         public string RejectedReason { get; set; }
         
     }
