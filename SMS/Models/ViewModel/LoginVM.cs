@@ -12,5 +12,6 @@ namespace SMS.Models.ViewModel
         public string Username { get; set; }
         [Required(ErrorMessage = "Password is required", AllowEmptyStrings = false)]
         public string Password { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }
