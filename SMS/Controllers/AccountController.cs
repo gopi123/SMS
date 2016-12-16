@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -28,15 +29,10 @@ namespace SMS.Controllers
         {
             Common _cmn = new Common();
             LoginVM _mdlLogin = new LoginVM();
+            //So that the user can be referred back to where they were when they click logon   
             _mdlLogin.ReturnUrl = returnUrl;
-            return View(_mdlLogin);
 
-            //string name = _cmn.ComputePassword("admin123");
-            //Session["LoggedUserId"] = 10;
-            //Session["LoggedUserName"] = "test";
-            //Session["LoggedUserRoleName"] = "test";
-            //return RedirectToAction("Index", "DiscountSetting");
-            //return View("Maintenance");
+            return View(_mdlLogin);            
         }
 
 
@@ -67,12 +63,11 @@ namespace SMS.Controllers
                         Session["LoggedUserName"] = _user.UserName;
                         Session["LoggedUserRoleName"] = _user.Employee.Designation.Role.RoleName;
                         Session["LoggedEmployeeName"] = _user.Employee.Name;
-
-                        if (!string.IsNullOrEmpty(mdlLogin.ReturnUrl))
-                        {
-                            decodedUrl = Server.UrlDecode(mdlLogin.ReturnUrl);
-                        }
-
+                        Session["EmployeeName"] = _user.Employee.Name;
+                        Session["EmployeeDesignation"] = _user.Employee.Designation.DesignationName;
+                        Session["EmployeeJoinDate"] = GetJoinMonth(_user.Employee.DateOfJoin);
+                        Session["EmployeePhotoUrl"] = _user.Employee.PhotoUrl;
+                        
                         if (_user.Employee.IsEmailVerified == false)
                         {
                             return RedirectToAction("EmailNotVerified");
@@ -85,10 +80,9 @@ namespace SMS.Controllers
                         {
                             return RedirectToAction("PasswordChange");
                         }
-                        if (Url.IsLocalUrl(decodedUrl))
-                        {
-                            return Redirect(decodedUrl);
-                        }
+                        if (!string.IsNullOrEmpty(mdlLogin.ReturnUrl))
+                            return Redirect(mdlLogin.ReturnUrl);
+                        
 
                         FormsAuthentication.SetAuthCookie(mdlLogin.Username, true);
                         //return RedirectToAction("WalkInnReport", "Report");
@@ -650,6 +644,13 @@ namespace SMS.Controllers
         }
 
         #endregion
+
+        static string GetJoinMonth(DateTime? dt)
+        {
+            var month = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(dt.Value.Month); ;
+            var year = dt.Value.Year.ToString();
+            return month + ". " + year;
+        }
 
         public ActionResult EmailSuccessfullVerification()
         {
