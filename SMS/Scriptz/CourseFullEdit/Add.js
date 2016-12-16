@@ -787,7 +787,7 @@ $(function () {
             success: function (result) {
 
                 if (result.Status == "success") {
-                    sendEmail(result.RegistrationId);
+                    sendEmail(result.Id);
                 }
                 else {
                     $.unblockUI();
@@ -804,18 +804,18 @@ $(function () {
 
     var sendEmail = function (studRegId) {
         var href = $("#frmAdd").data("mail-send-url");
+        var isEmailSendToCentreHead = true;
         $.ajax({
             type: "GET",
             url: href,
-            data: { studentRegID: studRegId },
+            data: { regId: studRegId, isEmailSendToCentreHead: isEmailSendToCentreHead },
             datatype: "json",
             success: function (data) {
                 $.unblockUI();
                 if (data == "success") {
                     toastr.success("Successfully saved the details.");
                     setTimeout(function () {
-                        var url = $(form).data("redirect-url");
-                        url = url.replace('param1_placeholder', data.RegistrationId);
+                        var url = $(form).data("redirect-url");                       
                         window.location.href = url;
                     }, 2000);
 
@@ -843,8 +843,7 @@ $(function () {
         });
 
         var href = $("#divPinVerification").data("url");
-        var mobileNo = $("#hFieldMobNo").val();
-        mobileNo = "9995220869";
+        var mobileNo = $("#hFieldMobNo").val();       
         var data = $('#ddlMultiCourse').select2('data');
         var currCourseCode = "";
         for (var i = 0; i < data.length; i++) {
