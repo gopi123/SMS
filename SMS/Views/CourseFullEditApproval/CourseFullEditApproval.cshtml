@@ -24,7 +24,7 @@
         }
 
         .minimal {
-            margin-right: 100px !important     ;
+            margin-right: 100px !important;
         }
     </style>
 
@@ -44,14 +44,19 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
-                        <a class="btn btn-info" href="@Url.Action("Index", "Registration")">
+                        <a class="btn btn-info" href="@Url.Action("Index")">
                             <i class="fa  fa-hand-o-left"></i>
                             Back
                         </a>
                     </div>
                     <!-- form start -->
-                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("CourseFullEditApproval")' method="post">
+                    <form id="frmAdd" class="form-horizontal" action='@Url.Action("CourseFullEditApproval")' method="post"
+                          data-reject-url="@Url.Action("CourseFullEditApproval_Reject")" data-redirect-url="@Url.Action("Index")"
+                          data-approval-url="@Url.Action("CourseFullEditApproval")" data-mail-send-url="@Url.Action("Send_CourseFullEditApproval_Email")">
                         @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.CourseFullEditID)
+                        @Html.HiddenFor(m => m.RejectedReason, new { @id = "hFieldRejectedReason" })
+                        @Html.HiddenFor(m => m.StudentRegistrationID)
                         <div class="box-body ">
                             <div id="FormWithStepz">
                                 <h3>PERSONAL DATA</h3>
@@ -139,23 +144,7 @@
                                 </section>
                                 <h3>COURSE DETAILS </h3>
                                 <section>
-                                    <div class=" form-group  ">
-                                        <div>
-                                            <label for="txtStudentName" class=" control-label">
-                                                Reason for Course Full Edit
-                                            </label>
-                                            <label class="reqdLabel">
-                                                *
-                                            </label>
-                                        </div>
-                                        <div>
-                                            @Html.TextBoxFor(m => m.CourseFullEditReason,
-                                                                 new { @class = "form-control ", @placeholder = "RegistrationID", @id = "txtCourseFullEditReason", @readonly = "readonly" })
 
-                                        </div>
-
-
-                                    </div>
                                     <div class="form-group">
                                         <div class="box box-info">
                                             <div class="box-header with-border">
@@ -170,29 +159,70 @@
                                                                 <th style="width:20%"></th>
                                                                 <th>New</th>
                                                                 <th>Old</th>
-
+                                                                <th style="width:20%">Status</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
 
                                                             <tr>
-                                                                <td>COURSE</td>
+                                                                <td>Course combination cross checked</td>
                                                                 <td>@Model.CourseCombination_NewValue</td>
                                                                 <td>@Model.CourseCombination_OldValue</td>
+                                                                <td>
+                                                                    @Html.CheckBoxFor(m => m.IsCourseCombination_CrossChecked, new { @class = "minimal" })
+                                                                    @Html.ValidationMessageFor(m => m.IsCourseCombination_CrossChecked)
+                                                                </td>
 
                                                             </tr>
                                                             <tr>
-                                                                <td>DISCOUNT</td>
+
+                                                                <td>Discount details cross checked</td>
                                                                 <td>@Model.Discount_NewValue</td>
                                                                 <td>@Model.Discount_OldValue</td>
+                                                                <td>
+                                                                    @Html.CheckBoxFor(m => m.IsDiscountDetails_CrossChecked, new { @class = "minimal" })
+                                                                    @Html.ValidationMessageFor(m => m.IsDiscountDetails_CrossChecked)
+                                                                </td>
 
                                                             </tr>
                                                             <tr>
-                                                                <td>FEES</td>
+
+                                                                <td>Course fees  cross checked</td>
                                                                 <td>@Model.CourseFee_NewValue</td>
                                                                 <td>@Model.CourseFee_OldValue</td>
+                                                                <td>
+                                                                    @Html.CheckBoxFor(m => m.IsCourseFees_CrossChecked, new { @class = "minimal" })
+                                                                    @Html.ValidationMessageFor(m => m.IsCourseFees_CrossChecked)
+                                                                </td>
 
                                                             </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Discussed with customer and found genuine
+                                                                </td>
+                                                                <td colspan="2">
+                                                                    @Model.MobileNo
+                                                                </td>
+                                                                <td>
+                                                                    @Html.CheckBoxFor(m => m.IsCustomer_CrossChecked, new { @class = "minimal" })
+                                                                    @Html.ValidationMessageFor(m => m.IsCustomer_CrossChecked)
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Reason for full edit is found genuine
+                                                                </td>
+                                                                <td colspan="2">
+                                                                    @Model.CourseFullEditReason.ToUpper()
+                                                                </td>
+
+
+                                                                <td>
+                                                                    @Html.CheckBoxFor(m => m.IsReason_CrossChecked, new { @class = "minimal" })
+                                                                    @Html.ValidationMessageFor(m => m.IsReason_CrossChecked)
+                                                                </td>
+                                                            </tr>
+
 
                                                         </tbody>
                                                     </table>
@@ -203,61 +233,7 @@
                                     </div>
 
                                 </section>
-                                <h3>APPROVAL SECTION</h3>
-                                <section>
-                                    <div class="form-group">
 
-                                        <label>
-                                            New and Old combinations are cross checked
-                                            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                                            @Html.CheckBoxFor(m => m.IsCourseCombination_CrossChecked, new { @class = "minimal" })
-                                        </label>
-                                        <div>
-                                            @Html.ValidationMessageFor(m => m.IsCourseCombination_CrossChecked)
-                                        </div>                                        
-                                    </div>
-                                    <div class="form-group">
-                                        <label>
-                                            New and Old discount details are cross checked 
-                                            &nbsp;&nbsp; 
-                                            @Html.CheckBoxFor(m => m.IsDiscountDetails_CrossChecked, new { @class = "minimal" })
-                                        </label>
-                                        <div>
-                                            @Html.ValidationMessageFor(m => m.IsDiscountDetails_CrossChecked)
-                                        </div>    
-                                    </div>
-                                    <div class="form-group">
-                                        <label>
-                                            New and Old course fees are cross checked
-                                            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        
-                                            @Html.CheckBoxFor(m => m.IsCourseFees_CrossChecked, new { @class = "minimal" })
-                                        </label>
-                                        <div>
-                                            @Html.ValidationMessageFor(m => m.IsCourseFees_CrossChecked)
-                                        </div>   
-                                    </div>
-                                    <div class="form-group">
-                                        <label>
-                                            Discussed with customer and found genuine
-                                            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                                            @Html.CheckBoxFor(m => m.IsCustomer_CrossChecked, new { @class = "minimal" })
-                                        </label>
-                                        <div>
-                                            @Html.ValidationMessageFor(m => m.IsCustomer_CrossChecked)
-                                        </div>  
-                                    </div>
-                                    <div class="form-group">
-                                        <label>
-                                            Reason for full edit is found genuine
-                                            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                                            &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                                            @Html.CheckBoxFor(m => m.IsReason_CrossChecked, new { @class = "minimal"})
-                                        </label>
-                                        <div>
-                                            @Html.ValidationMessageFor(m => m.IsReason_CrossChecked)
-                                        </div> 
-                                    </div>
-                                </section>
                             </div>
                         </div>
                     </form>
@@ -270,7 +246,7 @@
                                     <h4 class="modal-title">Approval Status</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p>What would you like to do ? <span style="font-weight:bold" >APPROVE OR REJECT</span> </p>
+                                    <p>What would you like to do ? <span style="font-weight:bold">APPROVE OR REJECT</span> </p>
                                     <p>Please click the below button to continue.</p>
                                 </div>
                                 <div class="modal-footer">

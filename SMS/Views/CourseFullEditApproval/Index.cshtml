@@ -1,0 +1,102 @@
+﻿@model SMS.Models.ViewModel.IndexVM
+@{
+    ViewBag.Title = "Index";
+}
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+    @Styles.Render("~/bundles/dataTableStyle")
+
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="col-md-12">
+            <h4>
+                Course Full Edit Approval
+            </h4>
+        </div>      
+
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div>
+                                    <label for="ddlInstallmentNo" class=" control-label">
+                                        Financial Year
+                                    </label>
+
+                                </div>
+                                <div>
+                                    @(Html.DropDownList("ddlFinYearList", Model.FinancialYearList, new { @style = "width:100%" }))
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <div>
+                                <label for="ddlInstallmentNo" class=" control-label">
+                                    Select Month
+                                </label>
+                            </div>
+                            <div>
+                                @Html.DropDownListFor(m => m.MonthName, Model.MonthList, new { @style = "width:100%", @id = "ddlMonth" })                                
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- form start -->
+                    <form id="frmIndex" class="form-horizontal" 
+                          data-redirect-url="@Url.Action("CourseFullEditApproval", new { courseFullEditID = "param1_placeholder" })"
+                          data-mail-url="@Url.Action("")" >
+                        <!-- /.box-body -->
+                        <div class="box-body ">
+                            <table class="table table-bordered table-striped dTable" style="margin-top:0px;overflow:auto" data-url="@Url.Action("GetDataTable")">
+                                <thead>
+                                    <tr>
+                                        <th>Req Date</th>
+                                        <th>Req by </th>
+                                        <th>Reg No </th>
+                                        <th>Student Name</th>
+                                        <th>Ex: S/W Used</th>
+                                        <th>New S/W Used</th>
+                                        <th>Ex: Fee</th>
+                                        <th>New Fee</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="box-footer col-md-12">
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                    <!-- /.modal -->
+                    <div class="box-footer col-md-12">
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+
+</div>
+
+
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/pageScript")
+    @Scripts.Render("~/bundles/dataTableScript")
+    <script src="~/plugins/jQueryBlockUI/jquery.blockUI.js"></script>
+    <script src="~/Scriptz/CourseFullEditApproval/Index.js"></script>
+}
