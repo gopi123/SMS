@@ -19,5 +19,29 @@ namespace SMS.Models.ViewModel
         public int CourseCount { get; set; }
         public int PaidPaymentCount { get; set; }
         public int CourseInterchangeCount { get; set; }
+        public int CourseFullEditCount { get; set; }
+        public StudentRegistration StudentRegistration { get; set; }
+        public int Feedback_Payment_Count
+        {
+            get
+            {
+                int _returnAmount=0;
+                int _totalFeePaid = StudentRegistration.StudentReceipts.Where(r => r.Status == true)
+                                  .Sum(r => r.Total.Value);
+                int _totalFeedbackAmount = StudentRegistration.StudentFeedbacks.Where(r => r.IsFeedbackGiven == true)
+                                  .Sum(r => r.TotalCourseAmount.Value);
+                if (_totalFeedbackAmount > _totalFeePaid)
+                {
+                    _returnAmount = _totalFeedbackAmount - _totalFeePaid;
+                }
+                else
+                {
+                    _returnAmount = 0;
+                }
+
+                return _returnAmount;
+            }
+        }
+
     }
 }
