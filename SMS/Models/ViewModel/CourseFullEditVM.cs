@@ -23,14 +23,13 @@ namespace SMS.Models.ViewModel
         public int Curr_STAmount { get; set; }
         public int CourseInterchangeFee { get; set; }
         public int CourseInterchangeST { get; set; }
-
+        
         public int[] CourseFeedbackId { get; set; }
         public SelectList CourseFeedbackList { get; set; }
 
-        [Required(ErrorMessage = "Installment")]
+        
         public EnumClass.InstallmentType InstallmentType { get; set; }
-
-        [Required(ErrorMessage = "Please select no of installment", AllowEmptyStrings = false)]
+        
         public int? InstallmentID { get; set; }
         public SelectList InstallmentList { get; set; }
 
