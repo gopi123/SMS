@@ -57,6 +57,14 @@ $(function () {
         $(event.target).valid();
     });
 
+    //toastr options
+    toastr.options = {
+        "closeButton": true,
+        "positionClass": "toast-bottom-right",
+        "progressBar": true
+    }
+
+
     var ShowApprovalAlert = function () {
         //initial approval or reject popup
         swal({
@@ -83,8 +91,9 @@ $(function () {
                     closeOnConfirm: true
                 },
                 function () {
+                   
                     setTimeout(function () {
-                        ajaxUpdate();
+                        ajaxApproval();
                     }, 250);
                     
                 });
@@ -109,21 +118,118 @@ $(function () {
                         swal.showInputError("Please enter reason!");
                         return false
                     }
-
-                    
+                    else {
+                        $("#hFieldRejectedReason").val(inputValue);
+                    }
+                    swal.close();
+                    setTimeout(function () {
+                        ajaxReject();
+                    }, 250);
                 });
             }
             
         });
     }
 
-    
+    var ajaxApproval = function () {
+        console.log($("#hFieldRejectedReason").val());
+        var form = $("#frmAdd");
+        var redirectUrl = $(form).data("redirect-url");
+        var href = $(form).data("approval-url");
+        var formData = $(form).serialize();
 
-    var ajaxUpdate = function () 
-    {
-        
-        
-        alert("processing.....");
+        $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Please wait... </b></h3>' });
+
+        $.ajax({
+
+            type: "POST",
+            url: href,
+            data: formData,
+            datatype: "json",
+
+            success: function (data) {
+               
+                if (data.Status == "success") {
+                    sendEmail(data.RegistrationId);
+
+                }
+                else {
+                    $.unblockUI();
+                    toastr.warning("Successfully saved the Student Registration.But error while sending email or sms");
+                }
+            },
+
+            error: function (err) {
+                toastr.error("Error:" + this.message)
+            }
+        });
+    };
+    
+    //Code for sending reject 
+    var ajaxReject = function () {
+
+        console.log($("#hFieldRejectedReason").val());
+        var form = $("#frmAdd");
+        var redirectUrl = $(form).data("redirect-url");
+        var href = $(form).data("reject-url");
+        var formData = $(form).serialize();
+
+        $.blockUI({ message: '<h3><img src="../plugins/jQueryBlockUI/images/busy.gif" /> <b>Please wait... </b></h3>' });
+
+        $.ajax({
+
+            type: "POST",
+            url: href,
+            data: formData,
+            datatype: "json",
+            
+            success: function (data) {
+               
+                if (data.Status == "success") {
+                    //send email code goes here
+                    sendEmail(data.RegistrationId);
+
+                }
+                else {
+                    $.unblockUI();
+                    toastr.warning("Successfully saved the Student Registration.But error while sending email or sms");
+                }
+            },
+
+            error: function (err) {
+                toastr.error("Error:" + this.message)
+            }
+        });
+    };
+
+    var sendEmail = function (studRegId) {
+        var href = $("#frmAdd").data("mail-send-url");       
+        $.ajax({
+            type: "GET",
+            url: href,
+            data: { regId: studRegId},
+            datatype: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data == "success") {
+                    toastr.success("Successfully saved the details.");
+                    setTimeout(function () {
+                        var url = $(form).data("redirect-url");                       
+                        window.location.href = url;
+                    }, 2000);
+
+                }
+                else {
+                    toastr.warning("Successfully saved the Student Registration.But error while sending email or sms");
+                }
+                //toastr.success("Successfully saved the details.")
+
+
+            },
+            error: function (err) {
+                toastr.error("Error:" + this.message)
+            }
+        });
     }
 
 
