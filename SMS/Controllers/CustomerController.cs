@@ -153,6 +153,21 @@ namespace SMS.Controllers
                 var _dbLogin = _db.StudentLogins
                             .Where(s => s.Username == LoginUserName && s.Password == _password)
                             .FirstOrDefault();
+
+                var _dbReg = _db.StudentRegistrations
+                           .Where(r => r.Id == _dbLogin.StudentRegistration.Id).FirstOrDefault();
+
+                //if student requested for coursefulledit
+                if (_dbReg.StudentRegistration_CourseFullEdit.Count > 0)
+                {
+                    //if request is in pending or validated state
+                    if(_dbReg.StudentRegistration_CourseFullEdit.FirstOrDefault().CourseFullEdit_Approval.Count==0 ||
+                        _dbReg.StudentRegistration_CourseFullEdit.FirstOrDefault().CourseFullEdit_Approval.FirstOrDefault().IsApproved == null)
+                    {
+                        ViewBag.ErrorMessage = "Course Full Edit has been initiated and is not verified yet.Cannot Login ";
+                        return View();
+                    }
+                }
                 if (_dbLogin != null)
                 {
                     Session["CustomerRegNo"] = _dbLogin.StudentRegistration.RegistrationNumber;
