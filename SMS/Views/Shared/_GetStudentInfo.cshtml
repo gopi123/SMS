@@ -1,4 +1,4 @@
-﻿@model SMS.Models.ViewModel.StudentInfoVM
+﻿@model List<SMS.Models.ViewModel.StudentInfoVM>
 
 <div class="box ">
 
@@ -7,79 +7,101 @@
             <table class="table no-margin">
                 <thead>
                     <tr>
-                        <th ></th>
-                        <th >StudentID</th>
-                        <th >Student Name</th>
-                        <th >Sales Person</th>
-                        <th >Software Used</th>
+                        <th></th>
+                        <th>StudentID</th>
+                        <th>Student Name</th>
+                        <th>Sales Person</th>
+                        <th>Software Used</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.RegistrationNo != null)
+                    @if (Model.Count > 0)
                     {
-                        <tr>
-                            <td><img src='@Url.Content(Model.PhotoUrl)' class="profile-user-img img-responsive img-thumbnail"  /></td>
-                            <td>@Model.RegistrationNo</td>
-                            <td>@Model.StudentName</td>
-                            <td>@Model.SalesPerson</td>
-                            <td>@Model.SoftwareUsed</td>
-                            @if (Model.ControllerName == "Certificate")
+                        foreach (var item in Model)
+                        {
+                            if (item.RegistrationNo != null)
                             {
-                                <td>
-                                    <a href="@Url.Action("CertificateStatus", new { regID=Model.RegistrationId })" class="btn btn-sm btn-info btn-flat pull-left btnStatus">View Status</a>
-                                    <div class="certificatespinner" style="display:none">
-                                        <i class="fa fa-refresh fa-spin spin-small "></i>
-                                    </div>
-                                </td>
-                            }
-                            else if (Model.ControllerName == "CourseInterchange")
-                            {
-                                <td>
-                                    <a href="@Url.Action("CourseInterchange", new { regID=Model.RegistrationId })" data-paid-count="@Model.PaidPaymentCount"
-                                       data-interchange-count="@Model.CourseInterchangeCount"
-                                       class="btn btn-sm btn-info btn-flat pull-left btnStatus">Course Interchange</a>
-                                    <div class="certificatespinner" style="display:none">
-                                        <i class="fa fa-refresh fa-spin spin-small "></i>
-                                    </div>
-                                </td>
-
-                            }
-                            else
-                            {
-                                <td>
-                                    <div>
-                                        <a href="@Url.Action("CourseUpgrade", new { regID=Model.RegistrationId })" class="btn btn-xs btn-success btn-flat pull-left btnStatus">
-                                            <i class="fa fa-thumbs-o-up"></i>
-                                        Upgrade</a>
-                                    </div> 
-                                    @if (Model.CourseCount > 1 && Model.PendingPaymentCount > 0 && Model.PendingFeedbackCount > 0)
+                                <tr>
+                                    <td><img src='@Url.Content(item.PhotoUrl)' class="profile-user-img img-responsive img-thumbnail" /></td>
+                                    <td>@item.RegistrationNo</td>
+                                    <td>@item.StudentName</td>
+                                    <td>@item.SalesPerson</td>
+                                    <td>@item.SoftwareUsed</td>
+                                    @if (item.ControllerName == "Certificate")
                                     {
-                                        <div>
-                                            <a id="btnDwngrade" href="@Url.Action("CourseDowngrade", "CourseDowngrade", new { regID = Model.RegistrationId })" class="btn btn-xs btn-danger btn-flat pull-left btnStatus">
-                                                <i class="fa fa-thumbs-o-down"></i>
-                                                Degrade
-                                            </a>
-                                        </div>
+                                        <td>
+                                            <a href="@Url.Action("CertificateStatus", new { regID=item.RegistrationId })" class="btn btn-sm btn-info btn-flat pull-left btnStatus">View Status</a>
+                                            <div class="certificatespinner" style="display:none">
+                                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                                            </div>
+                                        </td>
+                                    }
+                                    else if (item.ControllerName == "CourseInterchange")
+                                    {
+                                        <td>
+                                            <a href="@Url.Action("CourseInterchange", new { regID=item.RegistrationId })" data-paid-count="@item.PaidPaymentCount"
+                                               data-interchange-count="@item.CourseInterchangeCount"
+                                               class="btn btn-sm btn-info btn-flat pull-left btnStatus">Course Interchange</a>
+                                            <div class="certificatespinner" style="display:none">
+                                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                                            </div>
+                                        </td>
 
-                                        <div class="certificatespinner" style="display:none">
-                                            <i class="fa fa-refresh fa-spin spin-small "></i>
-                                        </div>
-                                    }                                  
-                                   
-                                </td>
+                                    }
+                                    else if (item.ControllerName == "CourseFullEdit")
+                                    {
+                                        <td>
+                                            <a href="@Url.Action("CourseFullEdit", new { regID=item.RegistrationId })" data-fulledit-count="@item.CourseFullEditCount"
+                                               data-feedback-payment-count="@item.Feedback_Payment_Count"
+                                               class="btn btn-sm btn-info btn-flat pull-left btnStatus">Course Full Edit</a>
+                                            <div class="certificatespinner" style="display:none">
+                                                <i class="fa fa-refresh fa-spin spin-small "></i>
+                                            </div>
+                                        </td>
+
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <div>
+                                                <a href="@Url.Action("CourseUpgrade", new { regID=item.RegistrationId })" class="btn btn-xs btn-success btn-flat pull-left btnStatus">
+                                                    <i class="fa fa-thumbs-o-up"></i>
+                                                    Upgrade
+                                                </a>
+                                            </div>
+                                            @if (item.CourseCount > 1 && item.PendingPaymentCount > 0 && item.PendingFeedbackCount > 0)
+                                            {
+                                                <div>
+                                                    <a id="btnDwngrade" href="@Url.Action("CourseDowngrade", "CourseDowngrade", new { regID = item.RegistrationId })" class="btn btn-xs btn-danger btn-flat pull-left btnStatus">
+                                                        <i class="fa fa-thumbs-o-down"></i>
+                                                        Degrade
+                                                    </a>
+                                                </div>
+
+                                                <div class="certificatespinner" style="display:none">
+                                                    <i class="fa fa-refresh fa-spin spin-small "></i>
+                                                </div>
+                                            }
+
+                                        </td>
+                                    }
+
+                                </tr>
                             }
                            
-                        </tr>
+                        }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="5">
-                                No such StudentID exists
+                            <td colspan="5" style="text-align:center">
+                                No details available
                             </td>
                         </tr>
                     }
+                   
+
 
 
 
@@ -88,22 +110,22 @@
         </div><!-- /.table-responsive -->
     </div><!-- /.box-body -->
     <div class="box-footer clearfix">
-       
-       
+
+
     </div><!-- /.box-footer -->
 </div>
 
 <script type="text/javascript">
     $(function () {
         $(document).on("click", "#btnDwngrade", function () {
-            
+
             bootbox.confirm("On <b>Course Downgrade</b> all the given <b>discount</b> will be cancelled for the <b>user</b>.Are you sure " +
                 " you want to continue ?", function (result) {
                     if (result) {
-                        
-                        var url = $("#btnDwngrade").attr("href");                       
+
+                        var url = $("#btnDwngrade").attr("href");
                         window.location.href = url;
-                    }                   
+                    }
 
                 });
 
