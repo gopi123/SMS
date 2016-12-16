@@ -1,0 +1,67 @@
+﻿
+
+@{
+    ViewBag.Title = "Add";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/pageStyle")
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h4>
+            Course Full Edit Validation
+        </h4>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">          
+
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bullhorn"></i>
+                        <h3 class="box-title">Callouts</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                       @if (ViewBag.Message == "success")
+                       {
+                        <div class="callout callout-success">
+                            <h4>Successfully validated</h4>
+                            <p>Congratz..You have successfully validated the course full edit request.</p>
+                        </div>
+                       }
+                       else if (ViewBag.Message == "error_login")
+                       {
+                        <div class="callout callout-error">
+                            <h4>Not allowed</h4>
+                            <p>Sorry you are not allowed to validate this page</p>
+                        </div>
+                       }
+                       else
+                       {
+                        <div class="callout callout-warning">
+                            <h4>Error while sending email!</h4>
+                            <p>Successfully validated the details but error while sending email.</p>
+                        </div>
+                       }
+                        
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div>
+        <!-- Default box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/pageScript")
+}
+
+

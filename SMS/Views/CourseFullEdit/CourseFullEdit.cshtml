@@ -39,14 +39,14 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
-                        <a class="btn btn-info" href="@Url.Action("CourseInterchangeSearch")">
+                        <a class="btn btn-info" href="@Url.Action("CourseFullEditSearch")">
                             <i class="fa  fa-hand-o-left"></i>
                             Back
                         </a>
                     </div>
                     <!-- form start -->
                     <form id="frmAdd" class="form-horizontal" action='@Url.Action("CourseFullEdit")' method="post"
-                          data-redirect-url="@Url.Action("Index")" data-mail-send-url="@Url.Action("SendMail")">
+                          data-redirect-url="@Url.Action("Index")" data-mail-send-url="@Url.Action("Send_CourseFullEdit_Email")">
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(m => m.CourseIds, new { @id = "hFieldCourseIds" })
                         @Html.HiddenFor(m => m.StudentRegistration.Id, new { @id = "hFieldRegId" })
